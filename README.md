@@ -1,593 +1,78 @@
-<p align="center" width="100%">
-    <img height="100" src="https://github.com/said7388/developer-portfolio/assets/77630868/c0064908-cd5f-4751-a77c-eba90a62b55c">
-</p>
+# Sujith
 
-<h1 align="center">Developer Portfolio</h1>
+Final-year B.Eng. (Honours) Aerospace Engineering student at Nanyang Technological University (NTU), Singapore, graduating May 2026. Incoming MSc Space Engineering student at TU Berlin (Oct 2026–Sept 2028). Working across autonomous systems, spacecraft/propulsion systems engineering, and mechanical/thermal design.
 
-<p align="center">
-  <strong>A modern, responsive, and customizable portfolio template for developers and freelancers</strong>
-</p>
+<!-- TODO: one paragraph on what actually connects RobotX perception work, ISRU thermal/FEA, propulsion micro-fluidics, and CubeSat ADCS control law into a single thread — the resume lists the domains but doesn't say why one person works across all of them. Write this yourself; don't want to guess at it. -->
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.0.1-black?style=for-the-badge&logo=next.js" alt="Next.js 16.0.1">
-  <img src="https://img.shields.io/badge/React-19.2.0-blue?style=for-the-badge&logo=react" alt="React 19.2.0">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS 4">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License">
-</p>
+This is the source for [my portfolio site](https://sujith-portfolio-eight.vercel.app/). Below is a plainer, denser version of the same information — what I've actually worked on, with the context and numbers that don't fit on a landing page.
 
-<p align="center">
-  <a href="#demo-movie_camera">Demo</a> •
-  <a href="#features-sparkles">Features</a> •
-  <a href="#installation-arrow_down">Installation</a> •
-  <a href="#usage-joystick">Usage</a> •
-  <a href="#deployment-rocket">Deployment</a> •
-  <a href="#tutorials-wrench">Tutorials</a>
-</p>
+## Work
 
----
+**Archimedes Autonomous Vehicles**, Singapore — Autonomous Vehicle AI Lead (Aug 2024–Present)
 
-## Overview
+Leading perception and autonomy for Archimedes' RobotX entry. Built an edge-accelerated perception stack around real-time YOLOv8 inference (>30 FPS) with extrinsic-invariant 3D projection, fusing LiDAR, camera, and IMU data asynchronously for buoy recognition in dynamic maritime conditions. Also built a hybrid autonomy framework — stochastic decision models (MDPs) combined with generative AI for adaptive mission planning — that hit >95% Mission Assurance across all 8 RobotX 2024 task scenarios. The team qualified 2nd globally for RobotX 2024.
 
-A professional portfolio template built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**. Features a modern App Router architecture, server components, and data-driven configuration for easy customization.
+**Space Copy**, California — Robotics Engineering Intern, ISRU (Jun–Sept 2025)
 
----
+Ran high-fidelity CFD simulations of regolith melt-pool thermodynamics and elastodynamic modal/harmonic FEA (10–250 Hz) to design structural damping strategies for space-grade additive manufacturing platforms, cutting peak resonance amplification by 30%. Also engineered a reconfigurable robotic end-effector architecture with sub-2-second magnetic coupling, and authored systems-level trade studies and technical narratives for NASA NIAC and CSA ROSS ISRU proposals that helped bring in over $500K in competitive grant funding.
 
-## Demo :movie_camera:
+**Aliena**, Singapore — Space System Engineering Intern, R&D (Jan–Jun 2025)
 
-<p align="center">
-  <img src="./public/image/screen.png" alt="Portfolio Screenshot" width="100%">
-</p>
+Built a Command & Telemetry interface for PWM-driven propellant modulation with real-time oscilloscopic flow diagnostics, and empirically characterized 20/100 μm micro-fluidic restrictors for the Propellant Management Assembly across ultra-low flow regimes (0.2–20 sccm). Separately built Ground Support Equipment and precision mechanical interfaces for a segmented avionics testbed (FLATSAT), and ran environmental stress screening — thermal cycling from −40°C to 80°C — per the SpaceX Rideshare Payload User's Guide. Co-authored a paper on a second-generation compact Xenon Propellant Management Assembly for low-power Hall effect thrusters, presented at IEPC 2025 (39th International Electric Propulsion Conference, Imperial College London).
 
-<p align="center">
-  <a href="" target="_blank">
-    <strong>🚀 View Live Demo</strong>
-  </a>
-</p>
+**ASTRAEUS**, Germany — Thermal & Radiation Systems Researcher (Aug 2025–Present)
 
----
+Working on the DIANA project: optimizing active/passive thermal control and radiation mitigation strategies across four architectural concepts, improving projected mission survivability margins by 15%. Also running system-level trade studies with VHAB and DALUS for ECLSS modeling, cutting Equivalent System Mass by 12% and improving power efficiency by 18%.
 
-## Features :sparkles:
+**SEDS in NTU**, Singapore — Technical Director & Co-founder (Aug 2022–Apr 2026)
 
-- ✅ **Cutting-Edge Tech Stack**: Built with Next.js 16, React 19, and Tailwind CSS 4
-- ✅ **Fully Responsive**: Optimized for all devices and screen sizes
-- ✅ **SEO Optimized**: Better visibility on search engines with Next.js metadata API
-- ✅ **Blazing Fast Performance**: Leverages Next.js 16 server components and streaming
-- ✅ **App Router**: Uses the modern Next.js App Router architecture
-- ✅ **Easy Customization**: Simple data-driven configuration
-- ✅ **Contact Form**: Integrated email and Telegram notifications
-- ✅ **Blog Integration**: Automatically fetch posts from dev.to
-- ✅ **Dark Theme**: Beautiful gradient design with Lottie animations
-- ✅ **Docker Support**: Easy containerized deployment
-- ✅ **Google Analytics**: Track visitor insights with GTM support
+Co-founded and led the technical program. Directed Project New Dawn end-to-end, from concept to functional prototype — secured seed funding and led a cross-functional team of 40+. Built a long-range TT&C link over APRS with a 20 km tracking radius, and designed and fabricated a sub-2kg high-stiffness composite airframe using vacuum-assisted resin transfer molding and thermal curing.
 
----
+<!-- TODO: project narratives with more concrete context (what the problem actually was, what specifically I decided vs. the team) belong here or in a Projects section on the site itself — resume bullets above are accurate but compressed. -->
 
-## Next.js 16 Features Used :rocket:
+## Notable results
 
-This portfolio leverages the latest Next.js 16 and React 19 capabilities:
+- **1st place, DSTA National CubeSat Challenge 2025** (Singapore, June 2025) — engineered an ADCS control law for inertial maneuvering, a 400% improvement in pointing agility over the baseline and a significant reduction in target-acquisition latency.
+- **Co-authored paper, IEPC 2025** — "Design and Testing of a Second-generation Compact Xenon Propellant Management Assembly for Low Power Hall Effect Thrusters," presented at the 39th International Electric Propulsion Conference, Imperial College London.
 
-| Feature                  | Benefit                                                      |
-| ------------------------ | ------------------------------------------------------------ |
-| **App Router**           | Modern routing with layouts and nested routes                |
-| **Server Components**    | Improved performance with zero JavaScript for static content |
-| **Server Actions**       | Simplified form handling in contact page                     |
-| **Metadata API**         | Enhanced SEO with type-safe metadata                         |
-| **Image Optimization**   | Automatic image optimization with `next/image`               |
-| **Font Optimization**    | Automatic font loading with `next/font`                      |
-| **Streaming & Suspense** | Better loading states and progressive rendering              |
-| **React 19 Features**    | Actions, use hook, and improved hydration                    |
+## Education
+
+**Nanyang Technological University (NTU)**, Singapore — B.Eng. (Honours) Aerospace Engineering, Aug 2022–May 2026
+
+Alongside coursework: managed a $30,000+ budget for library construction and educational programs in Trà Vinh, Vietnam, as part of an Overseas Community Engagement service project. Separately, as part of a Leadership Development Programme, designed and delivered an embedded-systems curriculum on Micro:bit platforms for STEM outreach workshops at Taman Jurong CC.
+
+**TU Berlin**, Germany — MSc Space Engineering, Oct 2026–Sept 2028 (incoming)
+
+## Stack
+
+What I actually work with, day to day:
+
+- **Languages / ML** — Python, C++, PyTorch, YOLOv8
+- **Robotics / simulation** — ROS 2, Gazebo, Isaac Sim, MuJoCo, OpenCV, LiDAR/depth sensing, TensorRT
+- **CAD / analysis** — SolidWorks, ANSYS, Fusion 360
+- **Embedded / hardware** — MATLAB, Simulink, Arduino, Raspberry Pi
+- **Tooling** — Linux, Docker, Git, Jetson/CUDA
+
+(This is a fairly recent correction — the site's `utils/data/skills.js` still listed a generic web-development stack inherited from the template this repo started from; see `docs/CONTENT-AUDIT.md` for the full before/after.)
+
+## About this repository
+
+This repo is the source for my portfolio site: Next.js 16 (App Router), React 19, Tailwind CSS 4, Sass, deployed on Vercel. It started from a generic open-source portfolio template and is now standalone — most of the content it originally shipped with (a web-developer skill list, placeholder projects, template copy) is in the process of being replaced with content that actually reflects the work above.
+
+`docs/` in this repo holds the working audit trail for that rewrite — a full extraction of what's on my resume cross-checked against what the site currently says, a triage of design/animation resources under consideration, a PRD, and a sequenced build plan. Left in place for anyone curious about the process, not just the result.
+
+## Links
+
+- Site: [sujith-portfolio-eight.vercel.app](https://sujith-portfolio-eight.vercel.app/)
+- LinkedIn: [harirajan-sujith](https://www.linkedin.com/in/harirajan-sujith-784a861a4/)
+- GitHub: [Sujith-013](https://github.com/Sujith-013)
+- Email: hsujith5@gmail.com
 
 ---
-
-## Sections :bookmark:
-
-| Section           | Description                                         |
-| ----------------- | --------------------------------------------------- |
-| 🦸 **Hero**       | Eye-catching introduction with animated elements    |
-| 👤 **About Me**   | Personal information and professional summary       |
-| 💼 **Experience** | Work history and professional accomplishments       |
-| 🛠️ **Skills**     | Technical skills with animated marquee display      |
-| 🚀 **Projects**   | Showcase your best work with descriptions and links |
-| 🎓 **Education**  | Academic background and certifications              |
-| 📝 **Blog**       | Latest articles from dev.to (auto-fetched)          |
-| 📧 **Contact**    | Get in touch form with email/Telegram integration   |
-
----
-
-## Table of Contents :scroll:
-
-- [Overview](#overview)
-- [Demo](#demo-movie_camera)
-- [Features](#features-sparkles)
-- [Sections](#sections-bookmark)
-- [Tech Stack](#tech-stack-computer)
-- [Installation](#installation-arrow_down)
-- [Getting Started](#getting-started-dart)
-- [Usage](#usage-joystick)
-- [Deployment](#deployment-rocket)
-- [Tutorials](#tutorials-wrench)
-  - [Gmail App Password Setup](#gmail-app-password-setup)
-  - [Create a Telegram Bot](#create-a-telegram-bot)
-  - [Fetching Blog from dev.to](#fetching-blog-from-devto)
-- [Packages Used](#packages-used-package)
-- [Contributing](#contributing-handshake)
-- [License](#license-page_with_curl)
-- [Support](#support-coffee)
-
----
-
-## Tech Stack :computer:
-
-| Technology       | Version | Purpose                                   |
-| ---------------- | ------- | ----------------------------------------- |
-| **Next.js**      | 16.0.1  | React framework with App Router           |
-| **React**        | 19.2.0  | UI component library with latest features |
-| **Tailwind CSS** | 4.x     | Utility-first CSS framework               |
-| **SASS**         | Latest  | CSS preprocessor                          |
-| **Lottie**       | Latest  | Lightweight animations                    |
-| **Nodemailer**   | Latest  | Email sending functionality               |
-| **Axios**        | Latest  | HTTP client for API requests              |
-| **Docker**       | -       | Containerization platform                 |
-
----
-
-## Installation :arrow_down:
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
-
-| Tool                   | Minimum Version | Download Link                               |
-| ---------------------- | --------------- | ------------------------------------------- |
-| **Node.js**            | v18.17.0+       | [Download](https://nodejs.org/en/download/) |
-| **Git**                | Latest          | [Download](https://git-scm.com/downloads)   |
-| **pnpm** (recommended) | Latest          | [Install](https://pnpm.io/installation)     |
-
-> **Note**: Next.js 16 requires Node.js 18.17 or later. Node.js 20+ is recommended for optimal performance.
-
-#### Verify Installation
-
-Check your installations with these commands:
-
-```bash
-node --version
-git --version
-pnpm --version  # or npm --version
-```
-
----
-
-## Getting Started :dart:
-
-### 1. Fork and Clone the Repository
-
-```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/developer-portfolio.git
-cd developer-portfolio
-```
-
-### 2. Install Dependencies
-
-```bash
-# Using pnpm (recommended)
-pnpm install
-
-# Using npm
-npm install
-
-# Using yarn
-yarn install
-```
-
-### 3. Set Up Environment Variables
-
-```bash
-cp .env.example .env
-```
-
-Edit the `.env` file with your values (see [Usage](#usage-joystick) section).
-
-### 4. Run the Development Server
-
-```bash
-pnpm dev
-# or
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-### 🐳 Docker Deployment (Alternative)
-
-#### Option 1: Using Docker Compose (Recommended)
-
-```bash
-docker-compose up --build
-
-# Run in detached mode
-docker-compose up -d --build
-
-# Stop
-docker-compose down
-```
-
-#### Option 2: Using Docker Directly
-
-**For Development:**
-
-```bash
-# Build the development image
-docker build -t developer-portfolio:dev -f Dockerfile.dev .
-
-# Run the container
-docker run -p 3000:3000 --name portfolio-dev developer-portfolio:dev
-
-# Stop and remove container
-docker stop portfolio-dev && docker rm portfolio-dev
-```
-
-**For Production:**
-
-```bash
-# Build the production image
-docker build -t developer-portfolio:prod -f Dockerfile.prod .
-
-# Run the production container
-docker run -p 3000:3000 --name portfolio-prod developer-portfolio:prod
-```
-
----
-
-## Usage :joystick:
-
-### Environment Variables Configuration
-
-Create a `.env` file in the root directory with the following variables:
-
-```env
-# Google Tag Manager (Optional - for analytics)
-NEXT_PUBLIC_GTM=GTM-XXXXXXX
-
-# Your deployed app URL
-NEXT_PUBLIC_APP_URL=https://your-domain.com
-
-# Telegram Bot Configuration (for contact form notifications)
-TELEGRAM_BOT_TOKEN=your_bot_token_here
-TELEGRAM_CHAT_ID=your_chat_id_here
-
-# Gmail Configuration (for contact form emails)
-GMAIL_PASSKEY=your_gmail_app_password
-EMAIL_ADDRESS=your_email@gmail.com
-```
-
-#### Variable Descriptions:
-
-| Variable              | Required | Description                                  |
-| --------------------- | -------- | -------------------------------------------- |
-| `NEXT_PUBLIC_GTM`     | No       | Google Tag Manager ID for analytics tracking |
-| `NEXT_PUBLIC_APP_URL` | Yes      | Your portfolio's public URL                  |
-| `TELEGRAM_BOT_TOKEN`  | No       | Token for Telegram bot notifications         |
-| `TELEGRAM_CHAT_ID`    | No       | Your Telegram chat ID for receiving messages |
-| `GMAIL_PASSKEY`       | No       | Gmail app password for email notifications   |
-| `EMAIL_ADDRESS`       | No       | Your Gmail address for sending emails        |
-
-> **Note**: Contact form features require either Telegram or Gmail configuration (or both).
-
----
-
-### Customize Your Portfolio Data
-
-All portfolio content is managed through data files in the `utils/data/` folder:
-
-#### 📝 Personal Information (`personal-data.js`)
-
-```javascript
-export const personalData = {
-  name: "YOUR NAME",
-  profile: "/profile.png", // Path to your profile image
-  designation: "Software Developer", // Your job title
-  description: "Your bio and introduction...", // About yourself
-  email: "your.email@example.com",
-  phone: "+1234567890",
-  address: "City, Country",
-  github: "https://github.com/yourusername",
-  facebook: "https://www.facebook.com/yourprofile",
-  linkedIn: "https://www.linkedin.com/in/yourprofile",
-  twitter: "https://twitter.com/yourusername",
-  stackOverflow: "https://stackoverflow.com/users/your-id",
-  leetcode: "https://leetcode.com/yourusername/",
-  devUsername: "yourusername", // dev.to username for blog integration
-  resume: "https://link-to-your-resume.pdf",
-};
-```
-
-#### 💼 Additional Data Files
-
-| File               | Purpose                                        |
-| ------------------ | ---------------------------------------------- |
-| `experience.js`    | Your work experience and job history           |
-| `projects-data.js` | Portfolio projects with descriptions and links |
-| `skills.js`        | Technical skills and competencies              |
-| `educations.js`    | Academic background and certifications         |
-| `contactsData.js`  | Contact form configuration                     |
-
-#### 🎨 Adding Your Profile Image
-
-Place your profile picture in the `public/` directory and update the `profile` field in `personal-data.js`:
-
-```javascript
-profile: "/your-image-name.png"; // or .jpg, .webp
-```
-
----
-
-## Deployment :rocket:
-
-### 🚀 Deploy to Vercel (Recommended)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/said7388/developer-portfolio)
-
-**Manual Deployment:**
-
-1. Sign up at [Vercel](https://vercel.com/)
-2. Import your GitHub repository
-3. Add environment variables in **Settings** → **Environment Variables**
-4. Deploy
-
-**Features:**
-
-- Native Next.js 16 support
-- Automatic deployments on push
-- Preview deployments for PRs
-- Edge runtime support
-- Global CDN and free SSL
-
----
-
-### 🌐 Deploy to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/said7388/developer-portfolio)
-
-**Manual Deployment:**
-
-1. Sign up at [Netlify](https://www.netlify.com/)
-2. Import your GitHub repository
-3. Build command: `npm run build`
-4. Publish directory: `.next`
-5. Add environment variables in **Site Settings** → **Environment**
-
----
-
-### 🐳 Deploy with Docker
-
-```bash
-# Build production image
-docker build -t developer-portfolio:prod -f Dockerfile.prod .
-
-# Run
-docker run -d -p 80:3000 --name portfolio developer-portfolio:prod
-
-# Or use Docker Compose
-docker-compose -f docker-compose.prod.yml up -d
-```
-
----
-
-## Tutorials :wrench:
-
-### 📧 Gmail App Password Setup
-
-1. Go to [https://myaccount.google.com/](https://myaccount.google.com/)
-2. Navigate to **Security** → **2-Step Verification** (enable if not already)
-3. Go to **Security** → **App Passwords**
-4. Select app: **Mail**, device: **Other (Custom name)**
-5. Generate and copy the 16-character password
-6. Add to `.env` file:
-
-```env
-GMAIL_PASSKEY=abcd efgh ijkl mnop
-EMAIL_ADDRESS=your.email@gmail.com
-```
-
----
-
-### 🤖 Create a Telegram Bot
-
-1. Open Telegram and search for `@BotFather`
-2. Send `/newbot` command
-3. Set bot name and username (must end with `bot`)
-4. Copy the bot token
-5. Send a message to your bot
-6. Get chat ID from: `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
-7. Add to `.env` file:
-
-```env
-TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
-TELEGRAM_CHAT_ID=123456789
-```
-
----
-
-### 📝 Fetching Blog from dev.to
-
-1. Create a [dev.to](https://dev.to/) account
-2. Open `utils/data/personal-data.js`
-3. Set your dev.to username:
-
-```javascript
-export const personalData = {
-  // ... other fields
-  devUsername: "yourusername",
-};
-```
-
-The portfolio automatically fetches and displays your latest public articles. No API key required.
-
----
-
-## Packages Used :package:
-
-### Core Dependencies
-
-| Package         | Version | Purpose                                                      |
-| --------------- | ------- | ------------------------------------------------------------ |
-| **next**        | ^16.0.1 | Latest React framework with App Router and Server Components |
-| **react**       | ^19.2.0 | JavaScript library with improved concurrent rendering        |
-| **react-dom**   | ^19.2.0 | React package for working with the DOM                       |
-| **tailwindcss** | ^4.1.16 | Modern utility-first CSS framework                           |
-| **sass**        | Latest  | CSS preprocessor for styling                                 |
-
-### UI & Animations
-
-| Package                | Purpose                                    |
-| ---------------------- | ------------------------------------------ |
-| **lottie-react**       | Lightweight animations with Lottie files   |
-| **react-fast-marquee** | Smooth scrolling marquee component         |
-| **react-icons**        | Popular icon library with easy integration |
-| **react-toastify**     | Beautiful notification toasts              |
-
-### Functionality
-
-| Package                    | Purpose                           |
-| -------------------------- | --------------------------------- |
-| **axios**                  | Promise-based HTTP client         |
-| **nodemailer**             | Email sending functionality       |
-| **@emailjs/browser**       | Client-side email service         |
-| **react-google-recaptcha** | Google reCAPTCHA integration      |
-| **sharp**                  | High-performance image processing |
-| **@next/third-parties**    | Third-party script optimization   |
-
----
-
-## Troubleshooting :wrench:
-
-### Common Issues and Solutions
 
 <details>
-<summary><strong>❌ "next is not recognized as an internal or external command"</strong></summary>
+<summary>Running this locally</summary>
 
-**Solution:**
-
-```bash
-# Option 1: Install Next.js globally
-npm install -g next
-
-# Option 2: Use npx (recommended)
-npx next dev
-
-# Option 3: Use package manager scripts
-npm run dev
-```
+See [SETUP.md](./SETUP.md) for prerequisites, environment variables, and Docker instructions.
 
 </details>
-
-<details>
-<summary><strong>❌ Port 3000 is already in use</strong></summary>
-
-**Solution:**
-
-```bash
-# Find and kill the process using port 3000
-# On macOS/Linux:
-lsof -ti:3000 | xargs kill -9
-
-# On Windows:
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-
-# Or use a different port:
-PORT=3001 npm run dev
-```
-
-</details>
-
-<details>
-<summary><strong>❌ Module not found or dependency errors</strong></summary>
-
-**Solution:**
-
-```bash
-# Clear cache and reinstall dependencies
-rm -rf node_modules package-lock.json
-npm cache clean --force
-npm install
-
-# Or with pnpm:
-rm -rf node_modules pnpm-lock.yaml
-pnpm store prune
-pnpm install
-```
-
-</details>
-
-<details>
-<summary><strong>❌ Environment variables not working</strong></summary>
-
-**Solution:**
-
-- Ensure `.env` file is in the root directory
-- Restart the development server after changing `.env`
-- Check that variables starting with `NEXT_PUBLIC_` are used for client-side code
-- Server-side variables should NOT start with `NEXT_PUBLIC_`
-
-</details>
-
-<details>
-<summary><strong>❌ Images not loading</strong></summary>
-
-**Solution:**
-
-- Verify images are in the `public/` directory
-- Use paths starting with `/` (e.g., `/profile.png`)
-- Check image file extensions match the code
-- Ensure image files are committed to your repository
-
-</details>
-
-<details>
-<summary><strong>❌ Contact form not sending emails</strong></summary>
-
-**Solution:**
-
-- Verify Gmail App Password is correct (16 characters)
-- Check that 2-Step Verification is enabled on your Google account
-- Ensure `EMAIL_ADDRESS` matches the Gmail account
-- Test Telegram bot token and chat ID separately
-- Check browser console for error messages
-
-</details>
-
----
-
-## Contributing :handshake:
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
-
----
-
-## License :page_with_curl:
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Support :coffee:
-
-- ⭐ [Star the repository](https://github.com/said7388/developer-portfolio/stargazers)
-- � [Report bugs](https://github.com/said7388/developer-portfolio/issues)
-- � [Suggest features](https://github.com/said7388/developer-portfolio/discussions)
-
----
-
-![GitHub stars](https://img.shields.io/github/stars/said7388/developer-portfolio?style=social)
-![GitHub forks](https://img.shields.io/github/forks/said7388/developer-portfolio?style=social)
-![GitHub issues](https://img.shields.io/github/issues/said7388/developer-portfolio)
-![GitHub license](https://img.shields.io/github/license/said7388/developer-portfolio)
