@@ -54,7 +54,7 @@ function Experience() {
                           {experience.duration}
                         </p>
                       </div>
-                      <div className="flex items-center gap-x-8 px-3 py-5">
+                      <div className="flex items-start gap-x-8 px-3 py-5">
                         <div className="text-violet-500  transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} />
                         </div>
@@ -62,9 +62,18 @@ function Experience() {
                           <p className="text-base sm:text-xl mb-2 font-medium">
                             {experience.title}
                           </p>
-                          <p className="text-sm sm:text-base">
+                          <p className="text-sm sm:text-base mb-3">
                             {experience.company}
                           </p>
+                          {experience.bullets?.length > 0 && (
+                            <ul className="list-disc pl-4 flex flex-col gap-1.5">
+                              {experience.bullets.map((bullet, i) => (
+                                <li key={i} className="text-xs sm:text-sm text-gray-300">
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       </div>
                     </div>

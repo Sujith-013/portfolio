@@ -30,9 +30,16 @@ These aren't code changes; they're calls only you can make, and several later st
 
 ---
 
-## Stage 1 — Identity/content correctness (no visual changes)
+## Stage 1 — Identity/content correctness (no visual changes) — ✅ DONE
 
 Goal: every data file tells the same, resume-accurate story. Lowest risk changes in the whole plan — text-only edits to `utils/data/*.js`, verifiable by reading the rendered page, no dependency installs, no layout changes.
+
+**Completed 2026-08-04.** All six steps done; `npm run build` and a dev-server content check both pass. Notes from execution:
+- Also fixed a live bug found during this pass: `contact/index.jsx` still read `personalData.phone`/`.address`, which Stage 0 had already deleted from the data file — those fields would have rendered as blank/undefined on the live page. Removed the phone/address rows from the contact section rather than reintroducing the fields.
+- 1.1: `facebook`/`twitter`/`stackOverflow`/`leetcode` were left empty (not on the resume, not fabricated) — chose to remove those icons from Hero and Contact rather than leave dead `href=""` links. Only GitHub + LinkedIn remain. **Flagged for review**, not a hard requirement — fill any of these in later if you want them.
+- 1.2: reordered experience as resume's own primary-Experience-section-first, then volunteering (Archimedes → Space Copy → Aliena → ASTRAEUS → SEDS), rather than a strict pure reverse-chronological sort — matches the plan's explicit note to put Archimedes first. **Flagged for review** if you'd prefer a different order.
+- 1.4: skills data is now grouped by category in `skills.js`, but the Skills component still flattens it into the existing marquee for now — the marquee→grid visual rebuild is Stage 5.4, not this stage. Icon coverage: only 10 of 25 real skills have an icon in `skill-image.js` (Python, C++, PyTorch, OpenCV, MATLAB, Linux, Docker, Git, Canva, Microsoft Office); the rest render as text-only tags via a new fallback in the Skills component — no new icon set was sourced, per the plan's own note that this needs a design decision, deferred to Stage 5.4.
+- 1.6: cut the five unverified coursework projects entirely rather than building a secondary "coursework" list UI (that's additional scope, not a Stage 1 content fix). All five new projects' `code`/`demo` stayed empty — harmless, since the live `ProjectCard` component never renders those fields (only the already-dead `single-project.jsx` does, deleted in Stage 2.2). One `role` field left blank with an inline `// TODO` — no official title/role for the DSTA CubeSat Challenge entry exists in `docs/CONTENT-AUDIT.md`, so it wasn't invented.
 
 ### 1.1 Fix `personal-data.js`
 - **What:** `designation` → match `layout.js`'s already-correct "Space Systems Engineer" (or your preferred exact phrasing). Apply the address/phone decision from 0.2. Fill or blank-and-hide `facebook`/`twitter`/`stackOverflow`/`leetcode` (decide per platform, don't leave dead `href=""` icons). Leave `resume` pointing at the Drive link for now — it gets repointed in Step 2.1 once the PDF is actually in `public/`.

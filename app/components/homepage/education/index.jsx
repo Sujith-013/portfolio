@@ -53,12 +53,17 @@ function Education() {
                         height={200}
                         className="absolute bottom-0 opacity-80"
                       />
-                      <div className="flex justify-center">
+                      <div className="flex justify-center items-center gap-2">
                         <p className="text-xs sm:text-sm text-[#16f2b3]">
                           {education.duration}
                         </p>
+                        {education.status && (
+                          <span className="text-[10px] sm:text-xs uppercase tracking-wide bg-[#1a1443] text-violet-300 px-2 py-0.5 rounded-full">
+                            {education.status}
+                          </span>
+                        )}
                       </div>
-                      <div className="flex items-center gap-x-8 px-3 py-5">
+                      <div className="flex items-start gap-x-8 px-3 py-5">
                         <div className="text-violet-500  transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} />
                         </div>
@@ -66,7 +71,16 @@ function Education() {
                           <p className="text-base sm:text-xl mb-2 font-medium">
                             {education.title}
                           </p>
-                          <p className="text-sm sm:text-base">{education.institution}</p>
+                          <p className="text-sm sm:text-base mb-3">{education.institution}</p>
+                          {education.achievements?.length > 0 && (
+                            <ul className="list-disc pl-4 flex flex-col gap-1.5">
+                              {education.achievements.map((achievement, i) => (
+                                <li key={i} className="text-xs sm:text-sm text-gray-300">
+                                  {achievement}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       </div>
                     </div>
