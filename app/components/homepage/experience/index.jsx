@@ -9,7 +9,7 @@ import GlowCard from "../../helper/glow-card";
 
 function Experience() {
   return (
-    <div id="experience" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <div id="experience" className="relative z-50 border-t my-12 lg:my-24 border-border">
       <Image
         src="/section.svg"
         alt="Hero"
@@ -20,11 +20,11 @@ function Experience() {
 
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
-          <span className="bg-[#1a1443] w-fit text-white p-2 px-5 text-xl rounded-md">
+          <span className="w-24 h-[2px] bg-border-strong"></span>
+          <span className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
             Experiences
           </span>
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
+          <span className="w-24 h-[2px] bg-border-strong"></span>
         </div>
       </div>
 
@@ -50,25 +50,25 @@ function Experience() {
                         className="absolute bottom-0 opacity-80"
                       />
                       <div className="flex justify-center">
-                        <p className="text-xs sm:text-sm text-[#16f2b3]">
+                        <p className="font-mono text-xs sm:text-sm text-accent">
                           {experience.duration}
                         </p>
                       </div>
                       <div className="flex items-start gap-x-8 px-3 py-5">
-                        <div className="text-violet-500  transition-all duration-300 hover:scale-125">
+                        <div className="text-text-tertiary transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} />
                         </div>
                         <div>
-                          <p className="text-base sm:text-xl mb-2 font-medium">
+                          <p className="text-base sm:text-xl mb-2 font-medium text-text-primary">
                             {experience.title}
                           </p>
-                          <p className="text-sm sm:text-base mb-3">
+                          <p className="text-sm sm:text-base mb-3 text-text-secondary">
                             {experience.company}
                           </p>
                           {experience.bullets?.length > 0 && (
                             <ul className="list-disc pl-4 flex flex-col gap-1.5">
                               {experience.bullets.map((bullet, i) => (
-                                <li key={i} className="text-xs sm:text-sm text-gray-300">
+                                <li key={i} className="text-xs sm:text-sm text-text-secondary">
                                   {bullet}
                                 </li>
                               ))}

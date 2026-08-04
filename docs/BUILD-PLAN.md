@@ -156,9 +156,17 @@ Folds in every item from `docs/ARCHITECTURE.md`'s prioritised punch list not alr
 
 ---
 
-## Stage 3 — Design token foundation (Tailwind 4 CSS-first)
+## Stage 3 — Design token foundation (Tailwind 4 CSS-first) — ✅ DONE
 
 Everything visual in Stages 4-6 depends on this existing first — do not start copying/building components against ad-hoc arbitrary values again.
+
+**Completed 2026-08-05.** Full token system live in `app/css/theme.css`; complete rationale, token tables, the accent's reserved-use rule, font pairing justification, and contrast verification table written to `docs/DESIGN-SYSTEM.md` — read that first before touching color/type/spacing in any later stage. `npx next build` clean; every section spot-checked on the dev server. Notes from execution:
+- Deleted `tailwind.config.js` entirely (confirmed all its content dead or redundant under v4's auto-detection) rather than migrating pieces into `@theme` — there was nothing worth migrating.
+- Discovered and fixed a real bug this stage introduced: deleting `tailwind.config.js`'s `content` allowlist let Tailwind v4's default whole-repo scan sweep up example class names from `.claude/skills/*/references/*.md`, generating unused CSS for them. Fixed with `@import "tailwindcss" source(none); @source "../";` in `theme.css` — the CSS-first equivalent of the old content allowlist, not a JS config.
+- Went further than a literal find-replace on `#16f2b3`: eliminated the *other* four hues (pink/violet/amber/cyan/orange) that were competing with the accent everywhere — fake-terminal syntax highlighting, traffic-light dots, ambient blur blobs, decorative divider lines, CTA button fills — since leaving those in place would have defeated "one reserved accent" even with the accent itself correctly tokenized. Documented as deliberate recolors in `docs/DESIGN-SYSTEM.md`, not layout changes.
+- Fixed one inconsistency found during the spacing audit: About and Contact sections used a smaller `my-12 lg:my-16` than every other section's `my-12 lg:my-24`, with no apparent reason — aligned to match.
+- Chose Roboto Slab (Apache 2.0) + IBM Plex Mono (OFL 1.1) over the ui-ux-pro-max skill's top design-system match (Archivo/Space Grotesk, a light-mode dual-sans "designer portfolio" preset) — that match didn't fit Direction A's explicit serif/slab + monospace + dark-only requirements, so the skill's `typography`/`google-fonts`/`color` domains were queried directly instead and the pairing chosen against the brief. Documented in `docs/DESIGN-SYSTEM.md` under "Why Roboto Slab."
+- All contrast ratios computed via the actual WCAG relative-luminance formula (not eyeballed) before any hex was finalized — table in `docs/DESIGN-SYSTEM.md`.
 
 ### 3.1 Centralize the color system
 - **What:** Replace the scattered `#16f2b3` arbitrary-value hex and hardcoded violet gradients with a real `@theme` block. Because this repo has zero existing `tailwind.config.js` theme customization (per `docs/ARCHITECTURE.md` §4), this is a clean introduction, not a migration — no HSL→OKLCH conversion, no legacy `:root`/`.dark` `@layer base` block to untangle (see `docs/RESOURCE-AUDIT.md` "Tailwind CSS 4 fit").

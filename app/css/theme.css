@@ -1,0 +1,90 @@
+/*
+ * source(none) disables Tailwind v4's default whole-repo auto-detection
+ * (which otherwise sweeps up example class names from .claude/skills/
+ * reference docs, etc.) in favor of this explicit, precise source list.
+ */
+@import "tailwindcss" source(none);
+@source "../";
+
+/*
+ * Design token foundation — Direction A ("Flight documentation").
+ * Dark-only. Near-monochrome ink scale + one reserved accent.
+ * See docs/DESIGN-SYSTEM.md for the full rationale and usage rules.
+ *
+ * THE ACCENT RULE: --color-accent (and its signal-* primitives) is
+ * reserved for exactly two jobs — (1) quantified/proof-point data
+ * and identifying labels (dates, durations, project titles, section
+ * eyebrows), and (2) interactive affordances (links, hover/focus/
+ * active states, the primary CTA). It is never used for decorative
+ * gradients, ambient glows, large fills, or bulk emphasis. If you're
+ * reaching for --color-accent and it's neither data nor interactive,
+ * use an --color-ink-* token instead.
+ */
+
+@theme {
+  /* ---------------------------------------------------------------
+     PRIMITIVES — ink (neutral scale, hue ~227°, "night sky", dark-only)
+     Every step verified against its expected background at WCAG AA
+     (4.5:1 text, 3:1 non-text/UI) — see docs/DESIGN-SYSTEM.md §Contrast.
+     --------------------------------------------------------------- */
+  --color-ink-950: #05060d; /* deepest shadow / glow underlay */
+  --color-ink-900: #0d1224; /* canvas — unchanged from the original bg */
+  --color-ink-800: #10152c; /* surface: cards, nav */
+  --color-ink-700: #161c38; /* raised surface: form fields, code blocks */
+  --color-ink-600: #262e52; /* decorative border / divider (not functional) */
+  --color-ink-500: #5b6390; /* functional border: inputs, focus, interactive outlines (3.2:1) */
+  --color-ink-400: #7c84a8; /* muted / tertiary text (5.1:1) */
+  --color-ink-300: #a6acc7; /* secondary text: dates, durations, captions (8.3:1) */
+  --color-ink-100: #e7e9f2; /* primary body text (15.4:1) */
+  --color-ink-50: #f8f9fc; /* headings, max-emphasis text (17.7:1) */
+
+  /* ---------------------------------------------------------------
+     PRIMITIVES — signal (the one reserved accent)
+     --------------------------------------------------------------- */
+  --color-signal-600: #0fcf97; /* pressed / active state */
+  --color-signal-500: #16f2b3; /* default accent — unchanged existing hue */
+  --color-signal-400: #5cf5c8; /* hover state */
+
+  /* ---------------------------------------------------------------
+     PRIMITIVE — danger (form validation only; not a second accent)
+     --------------------------------------------------------------- */
+  --color-danger-400: #f87171;
+
+  /* ---------------------------------------------------------------
+     SEMANTIC — purpose aliases components should reach for first
+     --------------------------------------------------------------- */
+  --color-canvas: var(--color-ink-900);
+  --color-surface: var(--color-ink-800);
+  --color-surface-raised: var(--color-ink-700);
+  --color-border: var(--color-ink-600);
+  --color-border-strong: var(--color-ink-500);
+  --color-text-primary: var(--color-ink-50);
+  --color-text-secondary: var(--color-ink-100);
+  --color-text-tertiary: var(--color-ink-300);
+  --color-text-muted: var(--color-ink-400);
+  --color-accent: var(--color-signal-500);
+  --color-accent-hover: var(--color-signal-400);
+  --color-accent-active: var(--color-signal-600);
+  --color-danger: var(--color-danger-400);
+
+  /* ---------------------------------------------------------------
+     TYPOGRAPHY — display/slab + monospace + sans (Direction A)
+     Font files loaded via next/font/google in app/layout.js; these
+     vars point at the CSS variables next/font exposes.
+     --------------------------------------------------------------- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-roboto-slab), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Hero display size — formalizes what was an arbitrary text-[2.6rem] */
+  --text-display: 2.75rem;
+  --text-display--line-height: 1.15;
+
+  /* ---------------------------------------------------------------
+     SPACING — base unit confirmed at Tailwind's 4px default. The
+     site's section rhythm (my-12 lg:my-24, gap-8 lg:gap-16) is
+     expressed directly as utilities against this base rather than
+     aliased into named tokens — see docs/DESIGN-SYSTEM.md §Spacing.
+     --------------------------------------------------------------- */
+  --spacing: 0.25rem;
+}

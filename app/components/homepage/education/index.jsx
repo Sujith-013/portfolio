@@ -8,7 +8,7 @@ import GlowCard from "../../helper/glow-card";
 
 function Education() {
   return (
-    <div id="education" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <div id="education" className="relative z-50 border-t my-12 lg:my-24 border-border">
       <Image
         src="/section.svg"
         alt="Hero"
@@ -18,17 +18,17 @@ function Education() {
       />
       <div className="flex justify-center -translate-y-[1px]">
         <div className="w-3/4">
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-violet-500 to-transparent  w-full" />
+          <div className="h-[1px] bg-gradient-to-r from-transparent via-border-strong to-transparent  w-full" />
         </div>
       </div>
 
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
-          <span className="bg-[#1a1443] w-fit text-white p-2 px-5 text-xl rounded-md">
+          <span className="w-24 h-[2px] bg-border-strong"></span>
+          <span className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
             Educations
           </span>
-          <span className="w-24 h-[2px] bg-[#1a1443]"></span>
+          <span className="w-24 h-[2px] bg-border-strong"></span>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ function Education() {
               {
                 educations.map(education => (
                   <GlowCard key={education.id} identifier={`education-${education.id}`}>
-                    <div className="p-3 relative text-white">
+                    <div className="p-3 relative text-text-primary">
                       <Image
                         src="/blur-23.svg"
                         alt="Hero"
@@ -54,28 +54,28 @@ function Education() {
                         className="absolute bottom-0 opacity-80"
                       />
                       <div className="flex justify-center items-center gap-2">
-                        <p className="text-xs sm:text-sm text-[#16f2b3]">
+                        <p className="font-mono text-xs sm:text-sm text-accent">
                           {education.duration}
                         </p>
                         {education.status && (
-                          <span className="text-[10px] sm:text-xs uppercase tracking-wide bg-[#1a1443] text-violet-300 px-2 py-0.5 rounded-full">
+                          <span className="font-mono text-[10px] sm:text-xs uppercase tracking-wide bg-surface-raised text-text-tertiary px-2 py-0.5 rounded-full">
                             {education.status}
                           </span>
                         )}
                       </div>
                       <div className="flex items-start gap-x-8 px-3 py-5">
-                        <div className="text-violet-500  transition-all duration-300 hover:scale-125">
+                        <div className="text-text-tertiary transition-all duration-300 hover:scale-125">
                           <BsPersonWorkspace size={36} />
                         </div>
                         <div>
-                          <p className="text-base sm:text-xl mb-2 font-medium">
+                          <p className="text-base sm:text-xl mb-2 font-medium text-text-primary">
                             {education.title}
                           </p>
-                          <p className="text-sm sm:text-base mb-3">{education.institution}</p>
+                          <p className="text-sm sm:text-base mb-3 text-text-secondary">{education.institution}</p>
                           {education.achievements?.length > 0 && (
                             <ul className="list-disc pl-4 flex flex-col gap-1.5">
                               {education.achievements.map((achievement, i) => (
-                                <li key={i} className="text-xs sm:text-sm text-gray-300">
+                                <li key={i} className="text-xs sm:text-sm text-text-secondary">
                                   {achievement}
                                 </li>
                               ))}

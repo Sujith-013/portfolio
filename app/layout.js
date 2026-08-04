@@ -1,13 +1,33 @@
 import { GoogleTagManager } from "@next/third-parties/google";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Roboto_Slab } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/footer";
 import ScrollToTop from "./components/helper/scroll-to-top";
 import Navbar from "./components/navbar";
-import "./css/card.scss";
+import "./css/theme.css";
 import "./css/globals.scss";
-const inter = Inter({ subsets: ["latin"] });
+import "./css/card.scss";
+
+// Body copy — unchanged from the original template.
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+// Display face for name/headings/section eyebrows — a slab serif,
+// chosen for its "engineered" structural weight over a literary serif.
+const robotoSlab = Roboto_Slab({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-roboto-slab",
+});
+
+// Technical/data face — dates, durations, tool tags, spec readouts,
+// and the existing fake-terminal code blocks. IBM designed this
+// specifically for technical documentation, which is the whole brief.
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+});
 
 export const metadata = {
   title: "Portfolio of Sujith - Space Systems Engineer",
@@ -41,9 +61,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${robotoSlab.variable} ${plexMono.variable} font-sans`}>
         <ToastContainer />
-        <main className="min-h-screen relative mx-auto px-6 sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-white">
+        <main className="min-h-screen relative mx-auto px-6 sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-text-primary">
           <Navbar />
           {children}
           <ScrollToTop />
