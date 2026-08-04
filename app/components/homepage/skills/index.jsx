@@ -2,7 +2,7 @@
 // @flow strict
 
 import { skillsData } from "@/utils/data/skills";
-import { skillsImage } from "@/utils/skill-image";
+import { skillsIconComponent, skillsImage, skillsMonogram } from "@/utils/skill-image";
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
 import { useRef } from "react";
@@ -45,6 +45,8 @@ function Skills() {
         >
           {flatSkills.map((skill, id) => {
             const icon = skillsImage(skill);
+            const IconComponent = !icon ? skillsIconComponent(skill) : null;
+            const monogram = !icon && !IconComponent ? skillsMonogram(skill) : null;
             return (
               <div className="w-36 min-w-fit h-fit flex flex-col items-center justify-center transition-all duration-500 m-3 sm:m-5 rounded-lg group relative hover:scale-[1.15] cursor-pointer"
                 key={id}>
@@ -64,6 +66,18 @@ function Skills() {
                           height={40}
                           className="h-full w-auto rounded-lg"
                         />
+                      </div>
+                    )}
+                    {IconComponent && (
+                      <div className="h-8 sm:h-10 flex items-center justify-center text-text-secondary">
+                        <IconComponent size={32} />
+                      </div>
+                    )}
+                    {monogram && (
+                      <div className="h-8 sm:h-10 w-8 sm:w-10 flex items-center justify-center rounded border border-border-strong bg-surface-raised">
+                        <span className="font-mono text-[10px] sm:text-xs font-medium text-text-secondary">
+                          {monogram}
+                        </span>
                       </div>
                     )}
                     <p className="font-mono text-text-primary text-sm sm:text-lg">

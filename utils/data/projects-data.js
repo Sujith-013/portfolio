@@ -1,53 +1,99 @@
+// Personal/passion projects — NOT resume-verified. Nothing below was
+// invented: titles, descriptions, context, tools, and results are all
+// marked TODO until Sujith supplies them (see docs/ASSET-CHECKLIST.md).
+// The `name`/`domain` fields are the one thing that's already true — they're
+// the project categories/folder names Sujith gave directly.
+//
+// The resume-verified professional work formerly listed here (RobotX,
+// Aliena PMA, Space Copy ISRU, Project New Dawn, DSTA CubeSat) was NOT
+// deleted from the site — it lives in utils/data/experience.js (bullets)
+// and utils/data/educations.js (achievements), where every quantified
+// result (RobotX 2nd place, 95% mission assurance, IEPC 2025 paper, DSTA
+// 1st place / 400% pointing agility) already appears verbatim or better.
+
+const placeholderAsset = (category, width, height, extra = {}) => ({
+  category,
+  placeholder: true,
+  width,
+  height,
+  caption: 'TODO',
+  ...extra,
+});
+
+const demoAssets = () => [
+  placeholderAsset('cad', 1600, 1200),
+  placeholderAsset('cad', 1600, 1200),
+  placeholderAsset('simulation', 1600, 900),
+  placeholderAsset('simulation', 1600, 900),
+  placeholderAsset('results', 1600, 900),
+  placeholderAsset('video', 1920, 1080, { video: true }),
+  placeholderAsset('code', null, null),
+];
+
 export const projectsData = [
-    {
-        id: 1,
-        nameFull: 'RobotX Perception & Autonomy Stack',
-        name: 'Maritime Autonomous Vehicle Perception',
-        description: "Archimedes Autonomous Vehicles needed our surface vehicle to recognize navigation buoys reliably enough to run real missions, not just demos. I built an edge-accelerated perception stack — extrinsic-invariant 3D projection with real-time YOLOv8 inference at 30+ FPS, fusing LiDAR, camera, and IMU data asynchronously — and paired it with a hybrid autonomy framework combining stochastic decision models (MDPs) with generative AI for adaptive mission planning. The result: over 95% mission assurance across all 8 RobotX 2024 task scenarios, and a 2nd-place global qualification finish.",
-        tools: ['YOLOv8', 'LiDAR/Camera/IMU Sensor Fusion', 'MDPs', 'Generative AI Planning'],
-        role: 'Autonomous Vehicle AI Lead',
-        code: '',
-        demo: '',
-    },
-    {
-        id: 2,
-        nameFull: 'Second-Gen Xenon Propellant Management Assembly',
-        name: 'Micro-Fluidic Propellant Management',
-        description: "Aliena needed tighter control over ultra-low propellant flow for their compact Hall-effect thruster line. I built a Command & Telemetry interface for PWM-driven propellant modulation with real-time oscilloscopic flow diagnostics, then empirically characterized 20/100 μm micro-fluidic restrictors across a 0.2-20 sccm flow range. I also built ground support equipment and precision mechanical interfaces for a segmented avionics FLATSAT, running thermal cycling from -40°C to 80°C per SpaceX's Rideshare Payload User's Guide. The work fed into a second-generation compact xenon Propellant Management Assembly, co-authored as a paper presented at IEPC 2025.",
-        tools: ['Command & Telemetry Interface', 'Micro-Fluidic Restrictor Characterization', 'FLATSAT Integration', 'Environmental Stress Screening'],
-        role: 'Space System Engineering Intern (R&D)',
-        code: '',
-        demo: '',
-    },
-    {
-        id: 3,
-        nameFull: 'ISRU Regolith Melt-Pool Thermal & Structural Analysis',
-        name: 'In-Situ Resource Utilization Hardware',
-        description: "Space Copy needed to know whether their additive-manufacturing hardware could survive the thermal and vibration environment of in-situ resource utilization on the Moon. I ran high-fidelity multiphysics CFD on regolith melt-pool thermodynamics alongside elastodynamic modal and harmonic FEA across 10-250 Hz, cutting peak resonance amplification by 30%. I also designed reconfigurable robotic end-effector architectures with sub-2-second magnetic coupling, and co-authored the systems-level trade studies and technical narratives behind NASA NIAC and CSA ROSS ISRU proposals that went on to secure over $500K in competitive grant funding.",
-        tools: ['Multiphysics CFD', 'Modal/Harmonic FEA', 'Robotic End-Effector Design'],
-        role: 'Robotics Engineering Intern (ISRU)',
-        code: '',
-        demo: '',
-    },
-    {
-        id: 4,
-        nameFull: 'Project New Dawn',
-        name: 'Student-Built Sounding Rocket',
-        description: "As co-founder and Technical Director of SEDS in NTU, I took Project New Dawn from a conceptual architecture to a functional flight-representative prototype, securing seed funding and leading a cross-functional team of 40+ students. The rocket carries a long-range APRS tracking and telemetry link with a 20 km radius, inside a composite airframe under 2 kg that I designed and fabricated using VARTM and thermal curing.",
-        tools: ['APRS Telemetry', 'Composite Airframe (VARTM)'],
-        role: 'Technical Director & Co-founder, SEDS NTU',
-        code: '',
-        demo: '',
-    },
-    {
-        id: 5,
-        nameFull: 'DSTA National CubeSat Challenge — ADCS Control Law',
-        name: 'CubeSat Attitude Determination & Control',
-        description: "Competing in the DSTA National CubeSat Challenge 2025, I engineered an optimized ADCS control law for inertial maneuvering that delivered a 400% improvement in pointing agility and a significant cut in target-acquisition latency — the work took 1st place nationally.",
-        tools: ['ADCS Control Law Design'],
-        // TODO: confirm official team role/title for the DSTA CubeSat Challenge entry — not stated in docs/CONTENT-AUDIT.md.
-        role: '',
-        code: '',
-        demo: '',
-    },
+  {
+    id: 1,
+    slug: 'aircraft-design',
+    domain: 'Aircraft Design',
+    name: 'Aircraft Design',
+    nameFull: 'TODO: project title',
+    context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
+    result: '', // TODO (optional) — a real quantified/notable result, if one exists. Leave blank if none — the accent proof-point line won't render.
+    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    tools: [], // TODO: tools/software used
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    assets: demoAssets(),
+  },
+  {
+    id: 2,
+    slug: 'cubesats-and-satellites',
+    domain: 'CubeSats and Satellites',
+    name: 'CubeSats and Satellites',
+    nameFull: 'TODO: project title',
+    context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
+    result: '',
+    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    tools: [],
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    assets: demoAssets(),
+  },
+  {
+    id: 3,
+    slug: 'drone-and-unmanned-aerial-vehicles',
+    domain: 'Drone and Unmanned Aerial Vehicles',
+    name: 'Drone and UAV',
+    nameFull: 'TODO: project title',
+    context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
+    result: '',
+    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    tools: [],
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    assets: demoAssets(),
+  },
+  {
+    id: 4,
+    slug: 'rocket-design-technology',
+    domain: 'Rocket Design Technology',
+    name: 'Rocket Design Technology',
+    nameFull: 'TODO: project title',
+    context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
+    result: '',
+    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    tools: [],
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    assets: demoAssets(),
+  },
+  {
+    id: 5,
+    slug: 'rover',
+    domain: 'Rover',
+    name: 'Rover',
+    nameFull: 'TODO: project title',
+    context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
+    result: '',
+    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    tools: [],
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    assets: demoAssets(),
+  },
 ];

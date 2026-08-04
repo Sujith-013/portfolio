@@ -3,39 +3,26 @@
 import { projectsData } from '@/utils/data/projects-data';
 import { useSectionReveal } from '@/utils/hooks/use-section-reveal';
 import { useRef } from 'react';
-import ProjectCard from './project-card';
+import { ProjectShowcase } from './project-showcase';
 
 const Projects = () => {
   const scopeRef = useRef(null);
   useSectionReveal(scopeRef);
 
   return (
-    <div ref={scopeRef} id='projects' className="relative z-50  my-12 lg:my-24">
-      <div className="sticky top-10">
-        <div className="w-[80px] h-[80px] bg-ink-500 rounded-full absolute -top-3 left-0 translate-x-1/2 filter blur-3xl  opacity-30"></div>
-        <div className="flex items-center justify-start relative">
-          <span data-reveal="text" className="font-display bg-surface-raised absolute left-0  w-fit text-text-primary px-5 py-3 text-xl rounded-md">
-            PROJECTS
-          </span>
-          <span className="w-full h-[2px] bg-border-strong"></span>
-        </div>
+    <div ref={scopeRef} id='projects' className="relative z-50 my-12 lg:my-24">
+      <div className="w-[80px] h-[80px] bg-ink-500 rounded-full absolute -top-3 left-0 translate-x-1/2 filter blur-3xl opacity-30"></div>
+      <div className="flex items-center justify-start relative mb-12">
+        <span data-reveal="text" className="font-display bg-surface-raised absolute left-0  w-fit text-text-primary px-5 py-3 text-xl rounded-md">
+          PROJECTS
+        </span>
+        <span className="w-full h-[2px] bg-border-strong"></span>
       </div>
 
-      <div className="pt-24">
-        <div className="flex flex-col gap-6">
-          {projectsData.slice(0, 5).map((project, index) => (
-            <div
-              id={`sticky-card-${index + 1}`}
-              key={index}
-              data-reveal="figure"
-              className="sticky-card w-full mx-auto max-w-2xl sticky"
-            >
-              <div className="box-border flex items-center justify-center rounded shadow-[0_0_30px_0_rgba(0,0,0,0.3)] transition-all duration-[0.5s]">
-                <ProjectCard project={project} />
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="pt-16">
+        {projectsData.map((project, index) => (
+          <ProjectShowcase key={project.slug} project={project} index={index} />
+        ))}
       </div>
     </div>
   );

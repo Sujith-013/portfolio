@@ -85,6 +85,48 @@ import fastapi from '../app/assets/svg/skills/fastapi.svg'
 
 
 
+// react-icons/si (Simple Icons) coverage — added only where the brand
+// match is unambiguous. Checked against node_modules/react-icons/si's
+// type declarations directly, not assumed. Two lookalikes were
+// deliberately skipped: `SiYolo` (Simple Icons' "Yolo" is the Snap-based
+// anonymous-messaging app, not the YOLOv8 object-detection model — same
+// name, wrong brand) and `SiGoogle` (the plain "G" logo misrepresents
+// Google Workspace specifically, which has its own distinct product
+// mark). `SiNvidia` for "Jetson/CUDA" is a defensible parent-brand use,
+// unlike those two, because the skill entry itself names an NVIDIA
+// hardware line + an NVIDIA software framework — it isn't claiming to be
+// a separate, more specific product the way SolidWorks/Workspace are.
+import { SiAnsys, SiArduino, SiNvidia, SiRaspberrypi } from 'react-icons/si';
+
+const iconComponents = {
+  'ansys': SiAnsys,
+  'arduino': SiArduino,
+  'raspberry pi': SiRaspberrypi,
+  'jetson/cuda': SiNvidia,
+};
+
+export const skillsIconComponent = (skill) => iconComponents[skill.toLowerCase()] ?? null;
+
+// Uniform fallback for skills with no accurate, unambiguous brand icon
+// available anywhere (checked react-icons/si and the existing local SVG
+// set first — see docs/BUILD-PLAN.md Stage 5.5 notes). Same tile
+// treatment for all of them rather than a one-off per skill.
+const monograms = {
+  'yolov8': 'Y8',
+  'ros 2': 'R2',
+  'gazebo': 'GZ',
+  'isaac sim': 'IS',
+  'mujoco': 'MJ',
+  'lidar/depth': 'LD',
+  'tensorrt': 'TR',
+  'solidworks': 'SW',
+  'fusion 360': 'F360',
+  'simulink': 'SL',
+  'google workspace': 'GW',
+};
+
+export const skillsMonogram = (skill) => monograms[skill.toLowerCase()] ?? null;
+
 export const skillsImage = (skill) => {
   const skillID = skill.toLowerCase();
   switch (skillID) {

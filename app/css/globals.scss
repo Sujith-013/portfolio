@@ -5,24 +5,3 @@ body {
   color: var(--color-text-secondary);
   background-color: var(--color-canvas);
 }
-
-#sticky-card-1 {
-  --index: 1;
-}
-
-#sticky-card-2 {
-  --index: 2;
-}
-
-#sticky-card-3 {
-  --index: 3;
-}
-
-#sticky-card-4 {
-  --index: 4;
-}
-
-.sticky-card {
-  // padding-top: calc(var(--index) * 2.5rem);
-  top: calc(var(--index) * 4rem);
-}

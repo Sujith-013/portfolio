@@ -1,107 +1,118 @@
 # Asset Checklist — Project Showcase
 
-A literal, tick-through checklist for adding real project imagery, one project at a time. Full rationale for the format, routing, and pipeline lives in `docs/PRD.md` §9-10 — this file is the "what do I actually do" version, not a rehash of the reasoning.
+A literal, tick-through checklist for adding real project content and imagery, one project at a time. Full rationale for the format, routing, and pipeline lives in `docs/PRD.md` §9-10 — this file is the "what do I actually do" version, not a rehash of the reasoning.
 
-**Work through this one project at a time, in any order you like.** Nothing here needs to happen all at once — the site keeps working with however many projects have real assets and however many still don't (a project with no assets yet just doesn't get a landing-page section/detail route until it does — that's a Stage 5.5 implementation detail, not something you need to manage).
-
----
-
-## Step 0 — Blocking: the folder mapping (needed before anything else)
-
-Your assets are organized by domain on your machine — folders named `Aircraft Design`, `CubeSats and Satellites`, `Drone and Unmanned Aerial Vehicles`, `Rocket Design Technology`, `Rover`. The five projects actually on the site are the resume-verified work: RobotX (maritime autonomous vehicle), Aliena PMA (propulsion micro-fluidics), Space Copy ISRU (regolith thermal/structural), Project New Dawn (SEDS sounding rocket), and the DSTA CubeSat Challenge (ADCS). These don't map cleanly onto your five domain folders — I can see two *plausible* overlaps and no way to confirm them without you:
-
-| Your folder | Might belong to... | Confirmed? |
-|---|---|---|
-| `Rocket Design Technology` | Project New Dawn (SEDS rocket)? | **No — please confirm.** The old cut project ("IntoOrbit") this folder mapped to was described as a personal/coursework rocket-design exercise (nozzle design, case studies on other missions), which may or may not be the same hardware as the actual SEDS New Dawn rocket. |
-| `CubeSats and Satellites` | DSTA National CubeSat Challenge? | **No — please confirm.** Same issue: the old project ("PocketSat") this folder mapped to was described as a coursework exercise, not necessarily the actual competition CubeSat. |
-| `Aircraft Design` | *(no current project)* | No resume-verified project involves aircraft design. |
-| `Drone and Unmanned Aerial Vehicles` | *(no current project)* | No resume-verified project involves drones/UAVs. |
-| `Rover` | *(no current project)* | No resume-verified project involves a rover. |
-
-**What I need from you, in plain terms:**
-1. For `Rocket Design Technology` and `CubeSats and Satellites`: is the material in there actually from Project New Dawn / the DSTA Challenge specifically, or is it from a separate coursework project that isn't on the site? If it's the real thing, great — tell me and we use it. If it's a different (unlisted) project, we leave those folders alone.
-2. For RobotX, Aliena PMA, and Space Copy ISRU — none of your five domain folders obviously correspond to these. Do you have assets for these three anywhere (even unsorted), or do they still need to be gathered/exported? These are 3 of your 5 featured projects, so this is the bigger gap.
-3. `Aircraft Design`, `Drone and UAV`, and `Rover` (if not claimed by #1) aren't used by any current project — fine to leave alone; not a gap, just unused material for now.
-
-Once you answer this, Step 0 is done for good — everything below is the same repeatable process per project.
+**Work through this one project at a time, in any order you like.** The landing page and detail routes are already live with TODO placeholders and dimensioned grey boxes for every project — nothing is blocked waiting on all five to be ready at once.
 
 ---
 
-## General rules (apply to every project, every image)
+## Step 0 — RESOLVED 2026-08-06
 
-- **Formats/resolutions** (full detail in PRD §10.2):
-  - Hero image: JPEG (or PNG if transparent), max **2400px** long edge, ≤ 2MB source file.
-  - CAD/design renders: JPEG, max **1600px** long edge, ≤ 1.5MB.
-  - Simulation screenshots (CFD/FEA/thermal): PNG, max **1600px**, **cropped tightly to the plot/chart itself** — cut the toolbars/menus/window chrome before exporting.
-  - Results plots/figures: PNG or JPEG, max **1600px**, ≤ 1MB.
-  - Don't export at your tool's native/maximum resolution (often 4K+) — nothing on the web uses it and it just bloats the repo. Next.js re-optimizes everything anyway; these are source-file ceilings, not what a browser ends up downloading.
-- **Filenames**: lowercase, hyphenated, category-prefixed — `hero.jpg`, `cad-01.jpg`, `cad-02.jpg`, `sim-01.jpg`, `results-01.jpg`. The prefix is what groups the image on the detail page (Design & CAD / Simulation & Analysis / Results & Data), so keep it accurate.
-- **Where they go**: `public/projects/<slug>/`, one folder per project (slugs listed below). Create the folder if it doesn't exist yet.
-- **What I need alongside each image**: a one-line description of what it shows, in your own words — I'll turn that into the on-page caption and alt text (see PRD §10.3). Don't worry about polishing the wording, just tell me what it is (e.g. "SolidWorks assembly render of the sensor mounting bracket" or "CFD streamline plot around the regolith melt-pool, showing recirculation at the boundary"). If you'd rather write captions yourself, that's fine too — just keep them factual, matching the register of the existing project descriptions.
+Originally this step asked which (if any) of the five domain folders mapped onto the resume-verified professional projects. Resolved: **there was no mapping to work out** — the five domain folders (`Aircraft Design`, `CubeSats and Satellites`, `Drone and Unmanned Aerial Vehicles`, `Rocket Design Technology`, `Rover`) *are* the five featured projects. The resume-verified professional work (RobotX, Aliena PMA, Space Copy ISRU, Project New Dawn, DSTA CubeSat) stays fully documented on the site — in `utils/data/experience.js`'s bullets and `utils/data/educations.js`'s achievements, where every quantified result already lived independently — but is no longer duplicated in the Projects section itself. See `docs/PRD.md` §9.5 for the full writeup.
 
-## How many images per project
+---
 
-- **Minimum to go live**: 1 hero image. That alone is enough for the landing-page section to work (detail page just won't have a gallery yet).
-- **Recommended**: 1 hero + 4-8 gallery images, spread across the categories that actually apply (not every project will have all three — e.g. a pure-software project might have no "CAD" category at all).
-- **No hard maximum** — "lots per project, at full resolution" was the brief; the pipeline is designed to hold that (see PRD §10.4's performance budget, which is about *served* size after optimization, not how many source files you hand over).
+## Two things needed per project: content, then assets
+
+**Content first** (titles, descriptions, results) is what makes the page say something true. **Assets second** (images/video) is what makes it visual. You can do these in either order, but nothing in `docs/CONTENT-AUDIT.md` or the resume covers these five projects — every word of content below has to come from you, not be inferred or invented.
+
+## Part A — Content (minimum needed per project)
+
+For each project, in `utils/data/projects-data.js`:
+
+1. **Project title** (`nameFull`) — a proper name if you have one (the old template had punchy names like "IntoOrbit" for the rocket-design project) — or just confirm the domain name itself is fine as the title.
+2. **One-sentence description of what it is** — folded into the narrative below, doesn't need to be separate.
+3. **Context** (`context`) — what kind of project this is (personal build, coursework, competition entry, etc.) and roughly when (a year or academic term is enough).
+4. **Narrative** (`description`) — a short paragraph: what the goal/problem was, what you actually did, and what happened (a working prototype, a specific outcome, a competition result — whatever's true; if there's genuinely no concrete outcome yet, that's fine, just don't invent one).
+5. **Tools/software** (`tools`) — a list of what you used (SolidWorks, ANSYS, specific programming languages, whatever applies).
+6. **Result** (`result`, optional) — one quantified or notable fact worth calling out in the accent color on the page (a number, a placement, a measured result). Only fill this in if something real exists — the page cleanly omits the line if it's blank, so leaving it empty is a legitimate answer, not a gap.
+
+That's the whole list — five required fields + one optional, per project, matching the same shape the resume-verified projects used before.
+
+## Part B — Assets
+
+### General rules (every image)
+
+- **Formats/resolutions** (full detail in `docs/PRD.md` §10.2):
+  - Hero image: JPEG (or PNG if transparent), **2400 × 1350** (16:9), ≤ 2MB source file.
+  - CAD/design renders: JPEG, **1600 × 1200** (4:3), ≤ 1.5MB.
+  - Simulation screenshots (CFD/FEA/thermal): PNG, **1600 × 900** (16:9), cropped tightly to the plot/chart itself — cut toolbars/menus/window chrome before exporting.
+  - Results plots/figures: PNG or JPEG, **1600 × 900** (16:9), ≤ 1MB.
+  - These are the exact dimensions the placeholder boxes on the live site are already built to — match them and a real image will drop in with no layout changes.
+- **Filenames**: lowercase, hyphenated, category-prefixed — `hero.jpg`, `cad-01.jpg`, `sim-01.jpg`, `results-01.jpg`, `video-01.mp4`.
+- **Where they go**: `public/projects/<slug>/` — slugs are `aircraft-design`, `cubesats-and-satellites`, `drone-and-unmanned-aerial-vehicles`, `rocket-design-technology`, `rover`.
+- **Captions**: a one-line description of what each image shows, in your own words (e.g. "SolidWorks assembly render of the wing spar" or "CFD streamline plot showing separation at high angle of attack") — I'll turn it into the on-page caption/alt text, or write your own if you prefer.
+
+### Video (new — full spec in `docs/PRD.md` §10.5)
+
+- **Format**: MP4, H.264 codec. No other format needed.
+- **Resolution**: cap at **1920 × 1080** (1080p) — don't export higher.
+- **Compression**: aim for **≤ 8MB per clip** — compress with `ffmpeg`/HandBrake before adding to the repo (there's no server-side step that does this for you, unlike images).
+- **Length**: keep it short — trim to the relevant 5-20 seconds, not a full raw recording.
+- **Poster frame**: every video needs a still-frame JPEG, same rules as other images (≤1600px, ≤250KB), named to match — `video-01.mp4` → `video-01-poster.jpg`.
+- **Playback**: click-to-play by default (poster shown, visitor presses play) — not autoplay. If you have a short (<10s), silent clip you specifically want treated like an animated figure instead, flag it and we can make that one exception.
+
+### Code snippets (new — no export needed)
+
+If a project has real code worth showing, you don't need to prepare a file at all — just send me the snippet (or a link to wherever it lives, e.g. a GitHub repo) and a one-line description of what it does. It renders as a text block among the other gallery items, not as the page's visual frame.
+
+### How many assets per project
+
+- **Minimum to look finished**: 1 hero image + content (Part A). The gallery categories on the detail page simply don't appear for categories with nothing in them.
+- **Recommended**: hero + 4-8 gallery items across whichever categories actually apply (not every project needs CAD *and* simulation *and* video *and* code — use what's real).
+- **No hard maximum.**
 
 ---
 
 ## Per-project checklist
 
-### 1. RobotX Perception & Autonomy Stack
-`slug: robotx-perception-autonomy-stack`
+### 1. Aircraft Design
+`slug: aircraft-design`
 
-- [ ] Confirm source material exists (per Step 0 — likely needs gathering, no obvious existing folder)
-- [ ] Pick 1 hero image (the single best shot — vehicle in the field, a key render, or a compelling result visualization)
-- [ ] Export/resize/compress per the rules above, save as `hero.jpg`
-- [ ] Pick 4-8 supporting images across whatever categories apply (vehicle/hardware renders → `cad-`, perception/sensor-fusion visualizations → `sim-` or `results-` as fits, mission-assurance/qualification data → `results-`)
-- [ ] Export/resize/compress each, name `cad-01.jpg`, `sim-01.jpg`, `results-01.jpg` etc.
-- [ ] Drop everything in `public/projects/robotx-perception-autonomy-stack/`
-- [ ] Send me a one-line description of what each image shows (or write your own captions)
+- [ ] Part A content (title, context, narrative, tools, optional result)
+- [ ] Hero image, `hero.jpg`, 2400×1350
+- [ ] Gallery images/video across whichever categories apply
+- [ ] Captions for each
+- [ ] Drop everything in `public/projects/aircraft-design/`
 
-### 2. Second-Gen Xenon Propellant Management Assembly (Aliena)
-`slug: xenon-propellant-management-assembly`
+### 2. CubeSats and Satellites
+`slug: cubesats-and-satellites`
 
-- [ ] Confirm source material exists (per Step 0 — likely needs gathering, no obvious existing folder)
-- [ ] Pick 1 hero image (PMA hardware, FLATSAT setup, or a key diagram)
-- [ ] Export/resize/compress, save as `hero.jpg`
-- [ ] Pick 4-8 supporting images (hardware/mechanical renders → `cad-`, flow-diagnostic or oscilloscope captures → `sim-` or `results-`, environmental test data → `results-`)
-- [ ] Export/resize/compress, name and drop in `public/projects/xenon-propellant-management-assembly/`
-- [ ] Send descriptions/captions
+- [ ] Part A content
+- [ ] Hero image, `hero.jpg`, 2400×1350
+- [ ] Gallery images/video across whichever categories apply
+- [ ] Captions for each
+- [ ] Drop everything in `public/projects/cubesats-and-satellites/`
 
-### 3. ISRU Regolith Melt-Pool Thermal & Structural Analysis (Space Copy)
-`slug: isru-regolith-thermal-structural-analysis`
+### 3. Drone and Unmanned Aerial Vehicles
+`slug: drone-and-unmanned-aerial-vehicles`
 
-- [ ] Confirm source material exists (per Step 0 — likely needs gathering, no obvious existing folder)
-- [ ] Pick 1 hero image (a strong CFD/thermal visualization, or the additive-manufacturing hardware itself)
-- [ ] Export/resize/compress, save as `hero.jpg`
-- [ ] Pick 4-8 supporting images (CFD/FEA contour plots → `sim-`, end-effector/hardware renders → `cad-`, resonance-attenuation or other results data → `results-`)
-- [ ] Export/resize/compress (remember: crop simulation screenshots tight to the plot), name and drop in `public/projects/isru-regolith-thermal-structural-analysis/`
-- [ ] Send descriptions/captions
+- [ ] Part A content
+- [ ] Hero image, `hero.jpg`, 2400×1350
+- [ ] Gallery images/video across whichever categories apply
+- [ ] Captions for each
+- [ ] Drop everything in `public/projects/drone-and-unmanned-aerial-vehicles/`
 
-### 4. Project New Dawn (SEDS sounding rocket)
-`slug: project-new-dawn`
+### 4. Rocket Design Technology
+`slug: rocket-design-technology`
 
-- [ ] Confirm whether `Rocket Design Technology` is actually this project (per Step 0) — if yes, review what's in there; if it's a different coursework project, source New Dawn material separately
-- [ ] Pick 1 hero image (rocket/airframe render or field photo)
-- [ ] Export/resize/compress, save as `hero.jpg`
-- [ ] Pick 4-8 supporting images (composite airframe/CAD → `cad-`, APRS telemetry range/link data → `results-`, any structural or thermal-curing analysis → `sim-`)
-- [ ] Export/resize/compress, name and drop in `public/projects/project-new-dawn/`
-- [ ] Send descriptions/captions
+- [ ] Part A content
+- [ ] Hero image, `hero.jpg`, 2400×1350
+- [ ] Gallery images/video across whichever categories apply
+- [ ] Captions for each
+- [ ] Drop everything in `public/projects/rocket-design-technology/`
 
-### 5. DSTA National CubeSat Challenge — ADCS Control Law
-`slug: dsta-cubesat-adcs-control-law`
+### 5. Rover
+`slug: rover`
 
-- [ ] Confirm whether `CubeSats and Satellites` is actually this project (per Step 0) — if yes, review what's in there; if it's a different coursework project, source DSTA material separately
-- [ ] Pick 1 hero image (CubeSat hardware/render, or a pointing-agility/control-law result plot)
-- [ ] Export/resize/compress, save as `hero.jpg`
-- [ ] Pick 4-8 supporting images (CubeSat/ADCS hardware renders → `cad-`, control-law simulation output → `sim-`, the 400% pointing-agility result data → `results-`)
-- [ ] Export/resize/compress, name and drop in `public/projects/dsta-cubesat-adcs-control-law/`
-- [ ] Send descriptions/captions
+- [ ] Part A content
+- [ ] Hero image, `hero.jpg`, 2400×1350
+- [ ] Gallery images/video across whichever categories apply
+- [ ] Captions for each
+- [ ] Drop everything in `public/projects/rover/`
 
 ---
 
 ## When you're done with a project (or all five)
 
-Tell me which project(s) are ready and I'll wire up that project's landing-page section and detail route (Stage 5.5 in `docs/BUILD-PLAN.md`) — you don't need to wait for all five to be ready before any of them go live.
+Tell me which project(s) are ready — content, assets, or both — and I'll wire them in. You can send Part A content and Part B assets separately or together, whichever's easier.
