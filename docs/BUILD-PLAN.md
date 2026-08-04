@@ -91,9 +91,16 @@ Goal: every data file tells the same, resume-accurate story. Lowest risk changes
 
 ---
 
-## Stage 2 — Housekeeping / punch list
+## Stage 2 — Housekeeping / punch list — ✅ DONE (2.1-2.4, 2.7; 2.5-2.6 done earlier)
 
 Folds in every item from `docs/ARCHITECTURE.md`'s prioritised punch list not already covered in Stage 1. All independent of each other and of the design direction — safe to do in any order within this stage, sequenced here by risk (safest/most mechanical first).
+
+**Completed 2026-08-04.** 2.5 (README rewrite) and 2.6 (template branding removal) were already done in an earlier pass. `npx next build` clean; dev server spot-checked on port 3000. Notes from execution:
+- 2.1: **deliberately not done as originally scoped.** The resume PDF (`Harirajan Sujith_Resume.pdf`) contains three referees' full names, employers, and personal phone numbers — it stays gitignored (`*Resume*.pdf`, confirmed still in `.gitignore`) and untracked, and was NOT moved into `public/`. `personalData.resume` still points at the Google Drive link — unchanged. See the redaction checklist in the summary for what a public-safe copy needs stripped before this step can actually run.
+- 2.2: deleted `single-project.jsx` and `api/data/route.js` after grep-confirming both were genuinely unreferenced (`contactsData.js` was already gone from an earlier pass).
+- 2.3: deleted `api/google/route.js` entirely (unused reCAPTCHA verification endpoint — the `NEXT_PUBLIC_` secret-exposure problem goes with it) and the `react-google-recaptcha` dependency. Also removed `@emailjs/browser` (installed, never imported). Simplified `api/contact/route.js` to a single Gmail/Nodemailer channel (dropped Telegram entirely) — if `EMAIL_ADDRESS`/`GMAIL_PASSKEY` aren't set, it now returns an honest `503` with a clear message instead of silently failing or claiming success; the existing frontend toast already surfaces that message. **No real secrets were set — the form will show "not configured yet" until you add `EMAIL_ADDRESS`/`GMAIL_PASSKEY` locally and on Vercel.** `.env.example` updated to match.
+- 2.4: deleted `pnpm-lock.yaml`, kept `package-lock.json`. Updated `Dockerfile.dev`/`Dockerfile.prod` (both previously ran `pnpm install`/`build`/`start`) to use `npm` instead, so they don't reference the removed lockfile's tooling. `npm ci` verified clean from the resulting lockfile.
+- 2.7: bumped `react-icons` `^4.11.0` → `^5.7.0`. Audited all 12 icon exports actually imported in the codebase against the v5 type declarations first — none were renamed, so this was a clean bump. Verified via build + a live dev-server render check (17 real `<svg>` icons rendered, zero console/server errors).
 
 ### 2.1 Move and repoint the resume PDF
 - **What:** Move `Harirajan Sujith_Resume.pdf` into `public/` (rename to drop spaces, e.g. `public/resume.pdf`). Update `personalData.resume` to `/resume.pdf`.

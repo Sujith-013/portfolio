@@ -1,33 +1,5 @@
-import axios from 'axios';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-
-// Create and configure Nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, 
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.GMAIL_PASSKEY, 
-  },
-});
-
-// Helper function to send a message via Telegram
-async function sendTelegramMessage(token, chat_id, message) {
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  try {
-    const res = await axios.post(url, {
-      text: message,
-      chat_id,
-    });
-    return res.data.ok;
-  } catch (error) {
-    console.error('Error sending Telegram message:', error.response?.data || error.message);
-    return false;
-  }
-};
 
 // HTML email template
 const generateEmailTemplate = (name, email, userMessage) => `
@@ -45,67 +17,46 @@ const generateEmailTemplate = (name, email, userMessage) => `
   </div>
 `;
 
-// Helper function to send an email via Nodemailer
-async function sendEmail(payload, message) {
-  const { name, email, message: userMessage } = payload;
-  
-  const mailOptions = {
-    from: "Portfolio", 
-    to: process.env.EMAIL_ADDRESS, 
-    subject: `New Message From ${name}`, 
-    text: message, 
-    html: generateEmailTemplate(name, email, userMessage), 
-    replyTo: email, 
-  };
-  
-  try {
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Error while sending email:', error.message);
-    return false;
-  }
-};
-
 export async function POST(request) {
   try {
-    const payload = await request.json();
-    const { name, email, message: userMessage } = payload;
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chat_id = process.env.TELEGRAM_CHAT_ID;
+    const { name, email, message } = await request.json();
 
-    // Validate environment variables
-    if (!token || !chat_id) {
+    if (!process.env.EMAIL_ADDRESS || !process.env.GMAIL_PASSKEY) {
       return NextResponse.json({
         success: false,
-        message: 'Telegram token or chat ID is missing.',
-      }, { status: 400 });
+        message: 'The contact form is not configured yet — email delivery is unavailable right now. Please reach out directly instead.',
+      }, { status: 503 });
     }
 
-    const message = `New message from ${name}\n\nEmail: ${email}\n\nMessage:\n\n${userMessage}\n\n`;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.GMAIL_PASSKEY,
+      },
+    });
 
-    // Send Telegram message
-    const telegramSuccess = await sendTelegramMessage(token, chat_id, message);
-
-    // Send email
-    const emailSuccess = await sendEmail(payload, message);
-
-    if (telegramSuccess && emailSuccess) {
-      return NextResponse.json({
-        success: true,
-        message: 'Message and email sent successfully!',
-      }, { status: 200 });
-    }
+    await transporter.sendMail({
+      from: 'Portfolio Contact Form',
+      to: process.env.EMAIL_ADDRESS,
+      subject: `New Message From ${name}`,
+      text: `New message from ${name}\n\nEmail: ${email}\n\nMessage:\n\n${message}`,
+      html: generateEmailTemplate(name, email, message),
+      replyTo: email,
+    });
 
     return NextResponse.json({
-      success: false,
-      message: 'Failed to send message or email.',
-    }, { status: 500 });
+      success: true,
+      message: 'Message sent successfully!',
+    }, { status: 200 });
   } catch (error) {
-    console.error('API Error:', error.message);
+    console.error('Contact form error:', error.message);
     return NextResponse.json({
       success: false,
-      message: 'Server error occurred.',
+      message: 'Failed to send message. Please try again later.',
     }, { status: 500 });
   }
 };
