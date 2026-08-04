@@ -6,7 +6,16 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const REVEAL_READY_CLASS = "reveal-ready";
+let loadRefreshRegistered = false;
+function ensureLoadRefresh() {
+  // Lottie animations and images can change section heights after
+  // ScrollTrigger's initial position calculation. Refreshing once
+  // everything has settled keeps trigger start/end points accurate
+  // instead of silently drifting stale (see gsap-scrolltrigger skill).
+  if (loadRefreshRegistered || typeof window === "undefined") return;
+  loadRefreshRegistered = true;
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+}
 
 /**
  * Shared "one coordinated reveal per section" primitive — every section on
@@ -17,58 +26,95 @@ const REVEAL_READY_CLASS = "reveal-ready";
  * inside scopeRef animates in as ONE timeline (not one ScrollTrigger per
  * element) — text steps get a smaller slide-up, figure steps (images,
  * project cards, anything visual) get a slightly larger movement + a touch
- * of scale, so an image reads as "resolving into view" rather than sliding
- * text. DOM order is preserved regardless of step type, so headline ->
- * supporting text -> figure -> proof point always animates in reading
- * order even when types are mixed.
+ * of scale. DOM order is preserved regardless of step type.
  *
- * FOUC/no-JS safety: elements are fully visible by default (see the
- * [data-reveal] rules in app/css/globals.scss) — nothing is hidden until
- * this hook confirms on the client that it can actually run, and
- * prefers-reduced-motion is backed by both a JS check (below) and a plain
- * CSS @media fallback, so reduced-motion users are never left invisible
- * even in a race condition. Content is never hidden from first paint; nothing
- * here can delay LCP for anything not deliberately opted in via data-reveal.
+ * Fail-safe by construction: nothing is ever hidden except in the same
+ * synchronous pass that immediately wires up the animation to reveal it
+ * again. If there's nothing to reveal, if the visitor prefers reduced
+ * motion, or if anything throws while setting up, elements are simply left
+ * in (or forced back to) their natural visible state — the failure mode is
+ * always "no animation," never "invisible content." A previous version of
+ * this hook hid elements via a CSS class applied unconditionally, then
+ * relied on gsap.matchMedia() to reveal them — but matchMedia's
+ * conditions-object form only invokes its callback when at least one named
+ * condition's query actually matches (see gsap-core's MatchMedia.add
+ * source), so for any visitor WITHOUT prefers-reduced-motion set, the
+ * reveal callback silently never ran, leaving every section permanently
+ * hidden. Reduced-motion is now a plain, unambiguous window.matchMedia()
+ * check made before anything is hidden, not something a callback has to be
+ * trusted to reach.
  */
 export function useSectionReveal(scopeRef, { start = "top 78%" } = {}) {
   useGSAP(
     () => {
-      if (!scopeRef.current) return undefined;
+      const root = scopeRef.current;
+      if (!root) return undefined;
 
-      document.documentElement.classList.add(REVEAL_READY_CLASS);
+      const steps = Array.from(root.querySelectorAll("[data-reveal]"));
+      if (!steps.length) return undefined;
 
-      const mm = gsap.matchMedia();
+      const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      mm.add({ reduceMotion: "(prefers-reduced-motion: reduce)" }, (context) => {
-        const { reduceMotion } = context.conditions;
-        const steps = gsap.utils.toArray("[data-reveal]", scopeRef.current);
+      if (prefersReducedMotion) {
+        // Nothing was ever hidden, so there's nothing to do — reduced
+        // motion means fully visible and usable instantly, not a faster
+        // version of the same animation.
+        return undefined;
+      }
 
-        if (!steps.length) return undefined;
+      ensureLoadRefresh();
 
-        if (reduceMotion) {
-          // Reduced motion means fully visible and usable instantly, not a
-          // faster version of the same animation.
-          gsap.set(steps, { autoAlpha: 1, y: 0, scale: 1 });
-          return undefined;
-        }
-
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: scopeRef.current, start, once: true },
-        });
-
-        tl.from(steps, {
+      try {
+        // Hide, then immediately (same synchronous pass) wire the reveal
+        // that brings it back — never two separate steps that depend on
+        // each other working correctly later.
+        gsap.set(steps, {
           autoAlpha: 0,
           y: (_i, target) => (target.dataset.reveal === "figure" ? 32 : 20),
           scale: (_i, target) => (target.dataset.reveal === "figure" ? 0.97 : 1),
+        });
+
+        const tween = gsap.to(steps, {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
           duration: (_i, target) => (target.dataset.reveal === "figure" ? 0.7 : 0.55),
           ease: "power2.out",
           stagger: 0.12,
+          clearProps: "transform,opacity,visibility",
+          scrollTrigger: {
+            trigger: root,
+            start,
+            once: true,
+            onRefresh: (self) => {
+              // If layout shifted (e.g. a Lottie animation finished
+              // sizing) and this trigger's start point turns out to
+              // already be behind the current scroll position, reveal
+              // immediately instead of leaving it stuck waiting for a
+              // scroll event that already happened.
+              if (self.progress > 0 || self.isActive) {
+                gsap.set(steps, { autoAlpha: 1, y: 0, scale: 1, clearProps: "transform,opacity,visibility" });
+                self.kill();
+              }
+            },
+          },
         });
 
-        return () => tl.scrollTrigger?.kill();
-      });
-
-      return () => mm.revert();
+        return () => {
+          tween.scrollTrigger?.kill();
+          tween.kill();
+        };
+      } catch (error) {
+        // Setup failed for any reason — make sure nothing is left hidden
+        // rather than trusting an animation that didn't wire up correctly.
+        gsap.set(steps, { autoAlpha: 1, y: 0, scale: 1, clearProps: "transform,opacity,visibility" });
+        if (process.env.NODE_ENV !== "production") {
+          console.error("useSectionReveal: falling back to visible, no animation:", error);
+        }
+        return undefined;
+      }
     },
     { scope: scopeRef },
   );
