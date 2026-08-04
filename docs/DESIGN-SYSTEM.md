@@ -31,7 +31,7 @@ Deleting `tailwind.config.js` also removed its `content: [...]` allowlist, which
 
 ## Color: three-layer token system
 
-**Primitive → Semantic** (no separate component layer — the codebase is small enough that a third layer would be ceremony, not structure; per `docs/PRD.md` §9's own non-goal against over-engineering for reuse that won't happen).
+**Primitive → Semantic** (no separate component layer — the codebase is small enough that a third layer would be ceremony, not structure; per `docs/PRD.md` §11's own non-goal against over-engineering for reuse that won't happen).
 
 ### THE ACCENT RULE
 

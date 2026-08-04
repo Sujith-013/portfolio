@@ -2,9 +2,10 @@
 
 ## 1. Goals
 
+- **The five projects are the primary deliverable of this site.** (Revised 2026-08-05 — see §9.) Hero, About, Skills, Education, and Contact are supporting material that establishes credibility and gets a reader to the projects; they are not the point. A visitor should leave knowing specifically what's been built and how well it was built, not just who the subject is. Every other section's job is to earn 20 more seconds of attention that gets spent in the project showcase.
 - Replace a generic, template-derived "developer portfolio" (currently mismatched: web-dev skill list, fake terminal snippet, Software-Developer designation) with a site that reads as deliberately designed and represents the subject's actual field — space systems / aerospace / robotics engineering — accurately and specifically.
 - Survive a 20-second look from a recruiter, a professor, or an admissions committee: the hero and first scroll must communicate *who this is and what they've actually built*, not generic developer-portfolio signifiers.
-- Stay fast. This is a portfolio, not a showreel — Lighthouse performance is a hard constraint, not an aspiration.
+- Stay fast. This is a portfolio, not a showreel — Lighthouse performance is a hard constraint, not an aspiration. This matters more, not less, once real CAD renders and simulation screenshots are the centerpiece — see §10's performance budget.
 - Motion serves comprehension (sequencing, causality, hierarchy) — it is not decoration layered on afterward.
 
 ## 2. Audience
@@ -39,7 +40,7 @@ Current homepage order (`app/page.js`): HeroSection → AboutSection → Experie
 2. **About** — the positioning statement this resume doesn't supply (see CONTENT-AUDIT §3.1): what connects maritime autonomy, ISRU thermal engineering, propulsion micro-fluidics, and CubeSat ADCS work. This is prose you'll need to write; it's the single most important paragraph on the page, and it's exactly what the resume's "Job Related Abilities" narrative gestures at without ever saying plainly.
 3. **Experience** — reverse-chronological, each entry carrying 2-3 concrete bullets (currently zero bullets exist in the data file — see §3). This section is where the resume's actual density belongs; don't compress it back down to title/company/dates only.
 4. **Skills** — grouped by category, matching the resume's own groupings (languages/ML, robotics/sim, CAD/FEA, embedded/hardware, tooling) rather than a single alphabetical marquee. No web-dev-stack leftovers.
-5. **Projects** — feature the resume-verified, quantified work (DSTA CubeSat, Project New Dawn, RobotX, Aliena PMA, Space Copy ISRU) ahead of or instead of the five unverified coursework projects currently in the data file. Each project card needs a plain-language problem/role/outcome narrative, not just a resume-bullet paste — see content gap §3.2 in CONTENT-AUDIT.md.
+5. **Projects** — the site's centerpiece, not a card in a scroll. Full format, routing decision, and asset pipeline specified in §9 and §10 (revised 2026-08-05 — this used to be a one-line bullet assuming a generic card grid; it no longer is, because real CAD renders, simulation output, and result plots are becoming the actual content, not a placeholder). The five resume-verified projects (already correct in `utils/data/projects-data.js` — DSTA CubeSat, Project New Dawn, RobotX, Aliena PMA, Space Copy ISRU) are not being rewritten here; this section is about how they're presented, not what they say.
 6. **Education** — NTU + TU Berlin, with room for the achievement context (CubeSat win, OCEP Vietnam, STEM outreach) that currently has nowhere to live in the data shape.
 7. **Blog** (dev.to integration) — no resume basis for a public-writing habit. Decision needed: keep as-is, replace with a static "writing/talks" placeholder (IEPC presentation could live here instead), or remove the section and route entirely. Flagging as an open decision, not deciding it here.
 8. **Contact** — currently non-functional (see punch list in ARCHITECTURE.md: missing Telegram bot env vars). Fix or simplify before shipping; a broken contact form undermines "technically credible" faster than almost anything else on the page.
@@ -102,7 +103,131 @@ Three directions, each grounded in the resume's actual field rather than a gener
 
 **Recommendation: Direction A.** It's the cheapest to build, the least dependent on any external library or motion complexity, and the most literally honest to the subject matter — a systems engineer's actual work artifacts (spec sheets, trade studies, test reports) are typographic and document-like, not dashboard-like or narrative-thread-like. It also fails safest: if the motion work runs out of time or budget, a well-typeset, well-gridded static version of Direction A still reads as intentional. Direction B or C failing halfway looks unfinished by comparison.
 
-## 9. Non-goals (explicit)
+## 9. Project showcase specification (added 2026-08-05)
+
+**Why this exists:** the site was originally scoped as a standard portfolio landing page with a projects *section* among several equal sections. That's no longer accurate. The subject has substantial real visual assets per project — SolidWorks CAD models and renders, thermal/FEA/CFD simulation screenshots, plots, results figures, "lots per project, at full resolution" — and the explicit goal is now that a visitor leaves knowing what was built and how well, which only the projects can actually demonstrate. This section specifies how they're presented; §10 specifies how the assets that make that possible get into the repo.
+
+### 9.1 Format options considered
+
+**Option 1 — Full dossier sections inline on the landing page, no separate route.**
+Each project becomes a full-width section in the main scroll (replacing the current 5-card sticky stack): numbered eyebrow ("PROJECT 01"), title, spec row (role · organization · result), one large hero image, full narrative, a curated strip of 3-5 supporting images, tools tag row — all inline, nothing hidden.
+*Pros:* one continuous read, no navigation away, simplest mental model, most literally "spec sheet as a flat document."
+*Cons:* five projects × (hero + 3-5 supporting images) means 20-30 real images all eventually loading on one page — directly at odds with "full resolution" and the performance budget; no per-project shareable URL, which matters for the "peers/collaborators… more likely to click through" audience segment in §2; the page becomes very long, which works against "survive a 20-second look" for the sections that still need to earn attention before a reader gets deep into project 4 or 5.
+
+**Option 2 — Curated section inline + dedicated detail route per project.**
+Landing page shows one large hero image (not a thumbnail) + spec row + short narrative + a "View full project" link per project, in a full section each. A dedicated `/projects/[slug]` route holds the complete dossier: full narrative, complete captioned asset gallery grouped by type (Design & CAD / Simulation & Analysis / Results & Data), possibly prev/next project navigation.
+*Pros:* satisfies "large scale, not a thumbnail" on the landing page (one real hero image per project, shown big) *and* "lots of assets, full resolution" without penalizing landing-page load (the gallery only loads when a reader opts in); gives every project a real, shareable, deep-linkable URL — the single best fit for a recruiter forwarding one project to a colleague, or a peer wanting to link the RobotX work specifically; keeps the landing page's total image payload bounded and known (exactly 5 hero images) regardless of how many supporting assets exist per project; architecturally cheap in Next.js App Router (`generateStaticParams` on a `[slug]` route, statically generated at build time, no server cost at runtime).
+*Cons:* more implementation surface (new route, per-project metadata/OG tags, a shared detail-page template); a second page pattern to keep visually consistent with the landing page (mitigated — the token system in `docs/DESIGN-SYSTEM.md` applies identically to any route, this isn't a new design system, just a new template).
+
+**Option 3 — Compact grid with click-to-expand (accordion or modal) on the landing page only.**
+Five small tiles (thumbnail + title + one-line result); clicking a tile expands it in place or opens a modal with the full dossier.
+*Pros:* landing page stays compact and scannable at a glance; asset loading can be deferred until expansion.
+*Cons:* directly contradicts the explicit brief — the *first* view of every project is a thumbnail, which is exactly what "presented at a scale that lets someone actually see the engineering rather than a thumbnail" rules out; modal/accordion-reveal galleries are the generic-SaaS-template affect Direction A is deliberately avoiding; no shareable URL without adding hash/query routing back in, which erases the simplicity that was this option's only advantage.
+
+### 9.2 Recommendation: Option 2
+
+It's the only option that satisfies both explicit, non-negotiable requirements at once — large-scale visibility on the landing page, and complete full-resolution asset sets — without trading off the performance budget or Direction A's document-like restraint. It's also the most consistent with "the five projects are the point of this site": they get real, addressable, first-class pages of their own, not a component nested inside a longer scroll competing for attention with Skills and Education.
+
+### 9.3 Anatomy
+
+**Landing-page showcase section** (one per project, in place of the current sticky-card stack — this is now the largest, most visually weighted section on the page, more than Experience or Education):
+- Eyebrow label: sequence designation, e.g. `PROJECT 01` (`font-mono`, matches the "flight documentation" numbered-drawing convention).
+- Title: `nameFull` (`font-display`), large.
+- Spec row (`font-mono`, label:value pairs): Role · Organization · Duration — the duration field doesn't exist in `projects-data.js` yet; it should be cross-referenced from the matching `utils/data/experience.js` entry (Archimedes/Aliena/Space Copy/SEDS all already carry verified dates) or `educations.js` (DSTA win date) when this is implemented, not invented fresh.
+- The result, one line, `text-accent` — this is a legitimate accent use under `docs/DESIGN-SYSTEM.md`'s reserved-role rule (quantified proof-point data), e.g. "2nd-place global qualification, RobotX 2024."
+- One large hero image, real scale (not a thumbnail) — the artifact itself is the evidence.
+- Full narrative (the prose already written in `projects-data.js`, unchanged).
+- Tools tag row (`font-mono`, existing `tools` array).
+- "View full project →" link to `/projects/[slug]`.
+
+**Detail page** (`/projects/[slug]`):
+- Same header block (title, spec row, result).
+- Full narrative.
+- Captioned asset gallery, grouped by category (Design & CAD / Simulation & Analysis / Results & Data — see §10 for the manifest shape that drives this).
+- Back-to-portfolio link; optional prev/next project navigation.
+
+### 9.4 What this does not change
+
+The five projects' `name`/`nameFull`/`description`/`tools`/`role` values in `projects-data.js` are resume-sourced and already correct (Stage 1.6) — this section is presentation only. No new project content is invented here; a `slug` field (and, when implemented, a `duration` field cross-referenced from already-verified experience/education dates) are the only data-shape additions this spec calls for.
+
+## 10. Asset pipeline specification (added 2026-08-05)
+
+Governs everything under `public/projects/` and how components consume it. Written so Stage 6 (asset population) is mechanical once assets exist, and so the subject can add them incrementally without needing this re-explained per project — see the literal step-by-step version in `docs/ASSET-CHECKLIST.md`.
+
+### 10.1 Directory structure
+
+```
+public/projects/
+  robotx-perception-autonomy-stack/
+    hero.jpg
+    cad-01.jpg
+    sim-01.jpg
+    results-01.jpg
+    ...
+  xenon-propellant-management-assembly/
+    hero.jpg
+    ...
+  isru-regolith-thermal-structural-analysis/
+    hero.jpg
+    ...
+  project-new-dawn/
+    hero.jpg
+    ...
+  dsta-cubesat-adcs-control-law/
+    hero.jpg
+    ...
+```
+
+One directory per project, named by `slug` (kebab-case, derived from `nameFull`, to be added as a new field on each `projectsData` entry). Every project directory has exactly one `hero.jpg` (the landing-page image); every other file is a detail-page gallery asset, named by category prefix + index: `cad-01.jpg`, `cad-02.jpg`, `sim-01.jpg`, `results-01.jpg`. The prefix (`cad` / `sim` / `results`) is also the category the manifest groups it under — see 10.3.
+
+### 10.2 Export formats and resolutions
+
+Next.js's built-in image optimizer re-encodes to AVIF/WebP at request time regardless of source format (already enabled by default — `next.config.js`'s `images` block only configures `remotePatterns`, no format restriction), so the source format matters less than source *size*: an unnecessarily huge source file still costs disk/repo space and optimizer CPU time even though the browser never receives it raw.
+
+| Asset type | Source format | Max long-edge resolution | Target source file size |
+|---|---|---|---|
+| Hero image (1 per project) | JPEG, quality ~90 (or PNG if the render has transparency) | 2400px | ≤ 2MB |
+| CAD/design renders (gallery) | JPEG, quality ~85-90 | 1600px | ≤ 1.5MB |
+| Simulation screenshots (CFD/FEA/thermal) | PNG (contour plots compress better lossless) | 1600px, cropped to the plot/chart itself — not the whole application window with toolbars | ≤ 1.5MB |
+| Results plots/figures | PNG or JPEG depending on source tool | 1600px | ≤ 1MB |
+
+**SolidWorks-specific guidance:** export PhotoView 360 / SOLIDWORKS Visualize renders at 1920×1080 or 2400×1350 (16:9), JPEG quality 90. Don't export at the tool's maximum native resolution (often 4K+) — nothing on the web renders it and it only bloats the repo.
+
+**Simulation tool screenshots:** crop tightly to the contour plot / chart area before exporting — cut the surrounding application chrome (menus, toolbars, panel borders). A tightly-cropped 1200×900 plot reads better at display size than an uncropped 2560×1440 screenshot of the whole window shrunk down.
+
+These are source-file targets (what lands in the repo before Next's optimizer touches it), not what a browser downloads — see 10.4 for the served-size budget.
+
+### 10.3 Manifest, not static imports
+
+Each `projectsData` entry gains an `assets` array (in `utils/data/projects-data.js`, or a separate `utils/data/project-assets.js` if that keeps the main file more readable — implementer's call):
+
+```js
+{
+  slug: 'robotx-perception-autonomy-stack',
+  hero: { file: 'hero.jpg', alt: 'RobotX surface vehicle running perception trials on open water' },
+  assets: [
+    { file: 'cad-01.jpg', category: 'cad', caption: 'Sensor mounting bracket, SolidWorks assembly render' },
+    { file: 'sim-01.jpg', category: 'simulation', caption: 'LiDAR/camera extrinsic calibration point-cloud overlay' },
+    { file: 'results-01.jpg', category: 'results', caption: 'Mission-assurance rate across all 8 RobotX 2024 task scenarios' },
+  ],
+}
+```
+
+**Why a manifest instead of static ES-module imports per image:** the subject is adding assets incrementally, one project at a time, over an unknown timeframe. Static imports (`import cad01 from '@/public/...'`) require editing component/import code for every new file — high-friction for what's fundamentally a content-entry task, and easy to forget to wire up. A manifest is a data edit, consistent with how every other content file in this repo already works (`utils/data/*.js`, hand-edited). `next/image` optimizes any image it's given identically whether the source is a static import or a plain `/public/` path string — static imports mainly buy automatic width/height inference, which this pipeline replaces with the fixed-aspect-ratio convention in 10.4 instead (worth the small tradeoff for the much lower content-entry friction).
+
+**Captions and alt text:** every manifest entry needs a `caption` (shown under the image on the detail page — what it depicts, in the same plain-language register as the project narratives, e.g. "CFD streamline plot around the regolith melt-pool, showing recirculation at the boundary") and an `alt` (accessibility text, can be shorter/more literal than the caption). Neither should claim a specific number or result not already verified in `docs/CONTENT-AUDIT.md` — a caption describes what an image *shows*, it doesn't introduce new claims. Whoever writes captions (subject or assistant, working from the subject's own description of what each image depicts) should treat this the same as any other factual content in this repo.
+
+### 10.4 Performance budget
+
+Direction A's Lighthouse ≥ 90 mobile constraint (§7) gets harder, not easier, once ~5-40 real high-resolution engineering images are in play. Explicit budget:
+
+- **Per-image served-size target:** hero images ≤ 400KB, gallery images ≤ 250KB, *after* Next's optimizer processes them (not the source file size in 10.2, which is larger and never reaches the browser).
+- **Homepage total image budget:** exactly 5 hero images (one per project section), all below-the-fold relative to the hero/about/experience/skills sections that precede Projects in scroll order, so none should be marked `priority` — they lazy-load by `next/image` default. Target ceiling: 5 × 400KB = 2MB total for project imagery reachable by scrolling the full homepage, on top of whatever the rest of the page already weighs.
+- **Detail pages:** no homepage-wide ceiling applies (a reader has opted into the deep-dive), but the same per-image budget holds, and only the first-viewport image(s) skip lazy-loading.
+- **`sizes` prop discipline:** every `next/image` usage in this pipeline sets a real `sizes` attribute tuned to actual rendered width per breakpoint — never left at the 100vw default, which would make mobile download desktop-resolution images.
+- **Format negotiation:** already on by default (see 10.2) — AVIF/WebP served automatically per browser support, no config needed, but worth re-verifying in Stage 8's Lighthouse run that this is actually happening (check `Content-Type` in the Network tab) rather than assumed.
+
+## 11. Non-goals (explicit)
 
 - Not building a CMS or admin panel — content stays in `utils/data/*.js`, hand-edited.
 - Not adding authentication, comments, or any user-generated content surface.
@@ -111,3 +236,5 @@ Three directions, each grounded in the resume's actual field rather than a gener
 - Not solving the dev.to `/blog` route's long-term fate in this pass — flagged as an open decision in §4, not resolved here.
 - Not fixing the contact form's third-party channel choice (Telegram vs. email vs. something else) as a design decision — that's an infrastructure/env-var fix covered in BUILD-PLAN.md, not a PRD-level design call.
 - Not migrating off Tailwind 4, Next 16, or React 19 — these are fixed constraints, not open questions.
+- Not building a real digital-asset-management system (upload UI, image CMS, automated resizing pipeline) for the project assets in §10 — a hand-maintained directory convention plus a manifest data file is proportionate to five projects; revisit only if the project count grows enough that this becomes real friction.
+- Not generating or sourcing the project imagery — every asset in §10's pipeline is supplied by the subject from real CAD/simulation/results work; nothing here fabricates a placeholder render or stock photo standing in for the real thing.

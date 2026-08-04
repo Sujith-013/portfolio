@@ -1,10 +1,12 @@
+"use client";
 // @flow strict
 
 import { personalData } from "@/utils/data/personal-data";
 import { skillsData } from "@/utils/data/skills";
+import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
@@ -12,8 +14,14 @@ import { RiContactsFill } from "react-icons/ri";
 const heroSkills = skillsData.flatMap((group) => group.skills);
 
 function HeroSection() {
+  const scopeRef = useRef(null);
+  // The h1 (name/title) deliberately carries no data-reveal — it's the
+  // hero's LCP-critical content and must be visible and stable on first
+  // paint per docs/PRD.md §5, not animated in from invisible.
+  useSectionReveal(scopeRef);
+
   return (
-    <section className="relative flex flex-col items-center justify-between py-4 lg:py-12">
+    <section ref={scopeRef} className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
         src="/hero.svg"
         alt="Hero"
@@ -33,7 +41,7 @@ function HeroSection() {
             .
           </h1>
 
-          <div className="my-12 flex items-center gap-5">
+          <div data-reveal="text" className="my-12 flex items-center gap-5">
             <Link
               href={personalData.github}
               target='_blank'
@@ -50,7 +58,7 @@ function HeroSection() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div data-reveal="text" className="flex items-center gap-3">
             <Link href="#contact" className="border border-border-strong rounded-full transition-all duration-300 hover:border-accent">
               <button className="px-3 text-xs md:px-8 py-3 md:py-4 bg-canvas rounded-full border-none text-center md:text-sm font-medium uppercase tracking-wider text-text-primary no-underline transition-all duration-200 ease-out md:font-semibold flex items-center gap-1 hover:gap-3 hover:text-accent">
                 <span>Contact me</span>
@@ -66,7 +74,7 @@ function HeroSection() {
           </div>
 
         </div>
-        <div className="order-1 lg:order-2 relative rounded-lg border border-border-strong bg-surface-raised">
+        <div data-reveal="figure" className="order-1 lg:order-2 relative rounded-lg border border-border-strong bg-surface-raised">
           <div className="flex flex-row">
             <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent"></div>
           </div>

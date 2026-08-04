@@ -194,7 +194,18 @@ Everything visual in Stages 4-6 depends on this existing first — do not start 
 
 ---
 
-## Stage 4 — Motion foundation
+## Stage 4 — Motion foundation — ✅ DONE
+
+**Completed 2026-08-05.** `npm install gsap @gsap/react`. Built one shared primitive (`utils/hooks/use-section-reveal.js`) rather than the two originally separate 4.1/4.2 steps, because the planning change folding in mid-session (see `docs/PRD.md` §9-10 — the project showcase is now the primary deliverable) meant the reveal system had to handle image/figure entrances from the start, not just text — building it once, correctly, beat building a text-only version now and a second image-capable version later. `npx next build` clean; every section verified via SSR HTML inspection and compiled-CSS inspection (no browser tooling available this session — see verification notes below).
+
+- **The primitive:** `data-reveal="text"` or `data-reveal="figure"` on any element, in reading-order DOM position. One `useSectionReveal(scopeRef)` call per section builds a single GSAP timeline scoped to that section (`ScrollTrigger` on the section container, `once: true`) that animates every marked descendant in DOM order regardless of type — figures get a larger movement + slight scale (an image "resolving into view"), text gets a smaller slide-up — via GSAP's function-based tween values reading each target's `data-reveal` attribute, not two separate systems. This is deliberately the same primitive Stage 5.5's real project hero images will use — point new `<Image data-reveal="figure">` elements at it, no rebuild needed.
+- **Reduced motion, properly:** three layers, not one. (1) `gsap.matchMedia()` with a `reduceMotion` condition — when true, every marked element is set instantly visible via `gsap.set()`, no animation at all, not a faster one. (2) A plain CSS `@media (prefers-reduced-motion: reduce)` rule in `globals.scss` as a backstop that wins even if the JS check races or fails. (3) No-JS fallback: `[data-reveal]` elements are fully visible by default in the server-rendered HTML — they're only hidden pre-animation once a `reveal-ready` class is added to `<html>` by the hook itself on mount, so content is never permanently unreachable if JS fails to load at all, and there's never a visible→hidden flash (only ever hidden→visible, the intended entrance). Verified: SSR HTML has all 28 `data-reveal` markers present and visible (no `reveal-ready` class server-side); both CSS rules confirmed compiled with real values.
+- **LCP protection:** the hero's `<h1>` (name/title) deliberately carries no `data-reveal` at all — stays plain, always visible, per `docs/PRD.md` §5's explicit rule against animating LCP-critical content from invisible. Everything else in Hero (social icons, CTA buttons, the code panel) does animate.
+- **Applied to all 8 sections** (Hero, About, Experience, Skills, Projects, Education, Blog, Contact) — one coordinated reveal per section, not per-element micro-interactions. Skills' marquee is treated as one `figure` unit (not per-tag — the marquee already has its own continuous motion, animating 25 individual tags on top of it would be exactly the "scattered micro-interactions" this stage was told to avoid). Sticky-stacked Projects cards and grid Blog cards each got individual `figure` reveals (safe to stagger since they're not fighting another animation system).
+- **Converted 8 section components to client components** (`"use client"` + `useRef`) — none of them did server-only data fetching themselves (Blog receives `blogs` as a prop from the already-server-side `page.js` fetch), so this was safe.
+- **Bundle cost, measured not assumed** (`docs/RESOURCE-AUDIT.md` had flagged GSAP's marketing page doesn't disclose a number): GSAP core + ScrollTrigger + `@gsap/react` together are **224KB raw / 77.3KB gzipped** in the actual production build — checked by isolating the chunk containing `gsap`/`ScrollTrigger` references and confirming no unrelated library code shares it. No second animation library anywhere in the bundle.
+- **Caught and fixed in passing:** Stage 3's notes claimed About and Contact's section spacing (`my-12 lg:my-16` → `my-12 lg:my-24`) had been aligned with the other five sections — it hadn't actually landed in the code. Fixed both while touching these files for the reveal wiring.
+- **Not verified live in a browser this session** — no browser automation tool was available. Verified instead via: clean `npx next build`, SSR HTML inspection (data-reveal markers present/visible, h1 clean), compiled CSS inspection (both the reveal-ready gate and the reduced-motion override compiled with correct values), and a clean dev-server log across multiple requests (no hydration warnings, no console errors). **Recommend an actual scroll-through and a devtools `prefers-reduced-motion: reduce` emulation pass before this ships**, per Stage 7.3's planned re-verification — the static checks confirm the wiring is correct, not that it feels right.
 
 ### 4.1 Install and wire GSAP
 - **What:** `npm install gsap`. Set up the `useGSAP` hook pattern (per the installed `gsap-react` skill) and a shared `prefers-reduced-motion` gate using `gsap.matchMedia()` (per `gsap-core`), so every subsequent section's animation opts into the same reduced-motion handling rather than each component reinventing the check.
@@ -247,12 +258,13 @@ Order matches the page's actual top-to-bottom sequence, so at every step the liv
 - **Depends on:** 1.4, 1.5, Stage 3.
 - **Checkpoint:** No infinite/looping marquee remains unless deliberately kept and justified; skills read in clear categories.
 
-### 5.5 Projects
-- **What:** Visual rebuild featuring the resume-verified projects (Stage 1.6) with the plain-language narrative built into cards, per whichever direction's project-card treatment (Direction A: spec-sheet-style card with quantified result as a typographic "spec row").
-- **Files:** projects section + card components (confirm `single-project.jsx` deletion from 2.2 didn't strand any import).
-- **Effort:** Large.
-- **Depends on:** 1.6, 2.2, Stage 3.
-- **Checkpoint:** Featured projects are the resume-verified ones; each has a real code/demo link or no dead affordance; narrative reads as context+outcome, not a bullet dump.
+### 5.5 Projects — re-scoped 2026-08-05, see `docs/PRD.md` §9-10
+- **What:** **This is now the primary deliverable of the whole build, not one section among several — re-scoped from a card-grid rebuild to a full showcase.** Build the Option 2 format specified in `docs/PRD.md` §9: one large-scale hero-image showcase section per project inline on the landing page (replacing the current 5-card sticky stack), each linking to a dedicated `/projects/[slug]` detail route holding the complete captioned asset gallery. Add `slug` (and, when the matching experience/education date is confirmed, `duration`) fields to `projects-data.js`. Build the manifest shape from `docs/PRD.md` §10.3 (`hero` + `assets[]` per project, grouped by `cad`/`simulation`/`results` category). Do not build a section for a project that has no assets yet — partial rollout across the 5 projects is expected and fine (see `docs/ASSET-CHECKLIST.md`'s "work through this incrementally" note).
+- **Files:** `utils/data/projects-data.js` (new fields), new `utils/data/project-assets.js` or inline `assets` arrays, `app/components/homepage/projects/*` (rebuilt), new `app/projects/[slug]/page.js` route + a shared detail-page template, `public/projects/<slug>/*` (assets — supplied by the subject per `docs/ASSET-CHECKLIST.md`, not generated).
+- **Resource:** `docs/PRD.md` §9 (format/routing rationale), §10 (asset pipeline/manifest/performance budget), `docs/ASSET-CHECKLIST.md` (what the subject needs to prepare).
+- **Effort:** Large — larger than originally scoped, since this now includes a new route type and an asset manifest system, not just a card restyle.
+- **Depends on:** 1.6, 2.2, Stage 3, Stage 4 (the reveal primitives Stage 4 builds are designed specifically to serve this section's hero-image reveals — see Stage 4's notes), and the subject supplying at least one project's assets per `docs/ASSET-CHECKLIST.md` before that project's section can go live.
+- **Checkpoint:** Every project with assets shows a full landing-page section (large hero image, not a thumbnail) linking to a working detail-page gallery; a project with no assets yet simply doesn't appear rather than showing a broken/placeholder state; `npx next build` succeeds with `generateStaticParams` producing one static route per project that has a slug.
 
 ### 5.6 Education
 - **What:** Visual rebuild with the achievement context (Stage 1.3) and the incoming/in-progress distinction.
@@ -288,12 +300,10 @@ Order matches the page's actual top-to-bottom sequence, so at every step the liv
 - **Effort:** Trivial once confirmed unreferenced.
 - **Checkpoint:** `grep -rn "ayla\|crefin\|real-estate\|travel.jpg\|portfolio.gif" app utils` returns nothing; repo no longer ships dead weight images.
 
-### 6.2 Real visual assets
-- **What:** Add whatever real photos/renders/diagrams you're supplying (RobotX vehicle, CubeSat, PMA hardware, composite airframe, etc. — flagged as a content gap you own in CONTENT-AUDIT §3 point 3) via `next/image` with real, specific `alt` text.
-- **Files:** `public/`, relevant section components.
-- **Effort:** Depends entirely on what you supply and when — this step is a placeholder for that work, not something this plan can size.
-- **Depends on:** You supplying the assets (external to this plan).
-- **Checkpoint:** Every image on the page is either a real, relevant asset or deliberately absent — no stand-in stock photo remains.
+### 6.2 Real visual assets — superseded 2026-08-05, folded into Stage 5.5
+- **What:** This step used to be a placeholder ("add real photos when you have them"). It's now the fully-specified pipeline in `docs/PRD.md` §10 and the tick-through process in `docs/ASSET-CHECKLIST.md`, and the actual wiring-up work happens as part of Stage 5.5 above, not as a separate later step — there's no reason to build the project showcase twice (once with placeholders, once with real assets) when the format was designed around real assets from the start. Kept here only as a pointer so this stage's numbering doesn't silently disappear.
+- **Files/Effort/Depends on:** see Stage 5.5.
+- **Checkpoint:** see Stage 5.5's checkpoint. The "no stand-in stock photo remains" bar from the original version of this step still applies — the difference is where it's enforced.
 
 ---
 

@@ -1,12 +1,17 @@
+"use client";
 // @flow strict
+import { useSectionReveal } from '@/utils/hooks/use-section-reveal';
 import Link from 'next/link';
+import { useRef } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import BlogCard from './blog-card';
 
 function Blog({ blogs }) {
+  const scopeRef = useRef(null);
+  useSectionReveal(scopeRef);
 
   return (
-    <div id='blogs' className="relative z-50 border-t my-12 lg:my-24 border-border">
+    <div ref={scopeRef} id='blogs' className="relative z-50 border-t my-12 lg:my-24 border-border">
       <div className="w-[100px] h-[100px] bg-ink-500 rounded-full absolute top-6 left-[42%] translate-x-1/2 filter blur-3xl  opacity-20"></div>
 
       <div className="flex justify-center -translate-y-[1px]">
@@ -18,7 +23,7 @@ function Blog({ blogs }) {
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
           <span className="w-24 h-[2px] bg-border-strong"></span>
-          <span className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
+          <span data-reveal="text" className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
             Blogs
           </span>
           <span className="w-24 h-[2px] bg-border-strong"></span>
@@ -29,7 +34,9 @@ function Blog({ blogs }) {
         {
           blogs.slice(0, 6).map((blog, i) => (
             blog?.cover_image &&
-            <BlogCard blog={blog} key={i} />
+            <div data-reveal="figure" key={i}>
+              <BlogCard blog={blog} />
+            </div>
           ))
         }
       </div>

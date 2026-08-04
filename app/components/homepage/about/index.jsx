@@ -1,12 +1,18 @@
+"use client";
 // @flow strict
 
 import { personalData } from "@/utils/data/personal-data";
+import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
+import { useRef } from "react";
 
 
 function AboutSection() {
+  const scopeRef = useRef(null);
+  useSectionReveal(scopeRef);
+
   return (
-    <div id="about" className="my-12 lg:my-16 relative">
+    <div ref={scopeRef} id="about" className="my-12 lg:my-24 relative">
       <div className="hidden lg:flex flex-col items-center absolute top-16 -right-8">
         <span className="font-display bg-surface-raised w-fit text-text-primary rotate-90 p-2 px-5 text-xl rounded-md">
           ABOUT ME
@@ -15,15 +21,16 @@ function AboutSection() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         <div className="order-2 lg:order-1">
-          <p className="font-display font-medium mb-5 text-accent text-xl uppercase">
+          <p data-reveal="text" className="font-display font-medium mb-5 text-accent text-xl uppercase">
             Who I am?
           </p>
-          <p className="text-text-secondary text-sm lg:text-lg">
+          <p data-reveal="text" className="text-text-secondary text-sm lg:text-lg">
             {personalData.description}
           </p>
         </div>
         <div className="flex justify-center order-1 lg:order-2">
           <Image
+            data-reveal="figure"
             src={personalData.profile}
             width={280}
             height={280}

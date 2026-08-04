@@ -6,6 +6,26 @@ body {
   background-color: var(--color-canvas);
 }
 
+// Scroll-reveal FOUC guard — see utils/hooks/use-section-reveal.js.
+// [data-reveal] elements are fully visible by default (server-rendered,
+// no-JS, and JS-not-yet-loaded all land here). They're only hidden
+// pre-animation once the "reveal-ready" class is added by the hook itself
+// on mount, so there's never a visible-then-suddenly-hidden flash, and
+// content is never permanently unreachable if JS fails to run at all.
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+
+// Belt-and-suspenders: even if the JS-side reduced-motion check in the
+// hook races or fails, this plain CSS media query wins on its own.
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 #sticky-card-1 {
   --index: 1;
 }
