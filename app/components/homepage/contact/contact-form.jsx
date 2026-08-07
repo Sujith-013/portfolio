@@ -47,7 +47,15 @@ function ContactForm() {
         message: "",
       });
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      // error.response.data.message covers the honest 503 ("not configured
+      // yet") and other API-reported failures. Anything else — a network
+      // failure, a timeout, no response at all — has no message to read,
+      // and toasting undefined renders a blank, silently-failed-looking
+      // toast. Always show real text instead.
+      toast.error(
+        error?.response?.data?.message ||
+        "Couldn't send that — check your connection and try again, or email me directly."
+      );
     } finally {
       setIsLoading(false);
     };

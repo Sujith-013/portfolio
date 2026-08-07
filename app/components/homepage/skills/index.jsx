@@ -6,10 +6,54 @@ import { skillsIconComponent, skillsImage, skillsMonogram } from "@/utils/skill-
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
 import { useRef } from "react";
-import Marquee from "react-fast-marquee";
+
+function SkillTile({ skill }) {
+  const icon = skillsImage(skill);
+  const IconComponent = !icon ? skillsIconComponent(skill) : null;
+  const monogram = !icon && !IconComponent ? skillsMonogram(skill) : null;
+
+  return (
+    <div className="w-full h-fit flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-default">
+      <div className="h-full w-full rounded-lg border border-border bg-surface group-hover:border-accent transition-all duration-500">
+        <div className="flex -translate-y-[1px] justify-center">
+          <div className="w-3/4">
+            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent" />
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center gap-3 p-4 sm:p-6">
+          {icon && (
+            <div className="h-8 sm:h-10">
+              <Image
+                src={icon.src}
+                alt={skill}
+                width={40}
+                height={40}
+                className="h-full w-auto rounded-lg"
+              />
+            </div>
+          )}
+          {IconComponent && (
+            <div className="h-8 sm:h-10 flex items-center justify-center text-text-secondary">
+              <IconComponent size={32} />
+            </div>
+          )}
+          {monogram && (
+            <div className="h-8 sm:h-10 w-8 sm:w-10 flex items-center justify-center rounded border border-border-strong bg-surface-raised">
+              <span className="font-mono text-[10px] sm:text-xs font-medium text-text-secondary">
+                {monogram}
+              </span>
+            </div>
+          )}
+          <p className="font-mono text-text-primary text-sm sm:text-lg text-center">
+            {skill}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Skills() {
-  const flatSkills = skillsData.flatMap((group) => group.skills);
   const scopeRef = useRef(null);
   useSectionReveal(scopeRef);
 
@@ -33,62 +77,19 @@ function Skills() {
         </div>
       </div>
 
-      <div data-reveal="figure" className="w-full my-12">
-        <Marquee
-          gradient={false}
-          speed={80}
-          pauseOnHover={true}
-          pauseOnClick={true}
-          delay={0}
-          play={true}
-          direction="left"
-        >
-          {flatSkills.map((skill, id) => {
-            const icon = skillsImage(skill);
-            const IconComponent = !icon ? skillsIconComponent(skill) : null;
-            const monogram = !icon && !IconComponent ? skillsMonogram(skill) : null;
-            return (
-              <div className="w-36 min-w-fit h-fit flex flex-col items-center justify-center transition-all duration-500 m-3 sm:m-5 rounded-lg group relative hover:scale-[1.15] cursor-pointer"
-                key={id}>
-                <div className="h-full w-full rounded-lg border border-border bg-surface group-hover:border-accent transition-all duration-500">
-                  <div className="flex -translate-y-[1px] justify-center">
-                    <div className="w-3/4">
-                      <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent" />
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center justify-center gap-3 p-6">
-                    {icon && (
-                      <div className="h-8 sm:h-10">
-                        <Image
-                          src={icon.src}
-                          alt={skill}
-                          width={40}
-                          height={40}
-                          className="h-full w-auto rounded-lg"
-                        />
-                      </div>
-                    )}
-                    {IconComponent && (
-                      <div className="h-8 sm:h-10 flex items-center justify-center text-text-secondary">
-                        <IconComponent size={32} />
-                      </div>
-                    )}
-                    {monogram && (
-                      <div className="h-8 sm:h-10 w-8 sm:w-10 flex items-center justify-center rounded border border-border-strong bg-surface-raised">
-                        <span className="font-mono text-[10px] sm:text-xs font-medium text-text-secondary">
-                          {monogram}
-                        </span>
-                      </div>
-                    )}
-                    <p className="font-mono text-text-primary text-sm sm:text-lg">
-                      {skill}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </Marquee>
+      <div className="flex flex-col gap-8 lg:gap-12 my-8">
+        {skillsData.map((group) => (
+          <div key={group.category} data-reveal="figure">
+            <p className="font-mono text-xs sm:text-sm uppercase tracking-wider text-text-tertiary mb-4">
+              {group.category}
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5">
+              {group.skills.map((skill) => (
+                <SkillTile key={skill} skill={skill} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
