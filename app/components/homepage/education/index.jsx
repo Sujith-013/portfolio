@@ -5,7 +5,6 @@ import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
 import { useRef } from "react";
 import { BsPersonWorkspace } from "react-icons/bs";
-import lottieFile from '../../../assets/lottie/study.json';
 import AnimationLottie from "../../helper/animation-lottie";
 import GlowCard from "../../helper/glow-card";
 
@@ -42,7 +41,7 @@ function Education() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div data-reveal="figure" className="flex justify-center items-start">
             <div className="w-3/4 h-3/4">
-              <AnimationLottie animationPath={lottieFile} />
+              <AnimationLottie animationPath="/lottie/study.json" />
             </div>
           </div>
 

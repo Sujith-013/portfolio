@@ -6,7 +6,6 @@ import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Image from "next/image";
 import { useRef } from "react";
 import { BsPersonWorkspace } from "react-icons/bs";
-import experience from '../../../assets/lottie/code.json';
 import AnimationLottie from "../../helper/animation-lottie";
 import GlowCard from "../../helper/glow-card";
 
@@ -38,7 +37,7 @@ function Experience() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div data-reveal="figure" className="flex justify-center items-start">
             <div className="w-full h-full">
-              <AnimationLottie animationPath={experience} />
+              <AnimationLottie animationPath="/lottie/code.json" />
             </div>
           </div>
 

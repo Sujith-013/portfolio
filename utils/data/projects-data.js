@@ -41,7 +41,7 @@ export const projectsData = [
     result: '', // TODO (optional) — a real quantified/notable result, if one exists. Leave blank if none — the accent proof-point line won't render.
     description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [], // TODO: tools/software used
-    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
   },
   {
@@ -54,7 +54,7 @@ export const projectsData = [
     result: '',
     description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
-    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
   },
   {
@@ -67,7 +67,7 @@ export const projectsData = [
     result: '',
     description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
-    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
   },
   {
@@ -80,7 +80,7 @@ export const projectsData = [
     result: '',
     description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
-    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
   },
   {
@@ -93,7 +93,7 @@ export const projectsData = [
     result: '',
     description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
-    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO' },
+    hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
   },
 ];

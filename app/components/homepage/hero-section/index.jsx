@@ -31,7 +31,7 @@ function HeroSection() {
       />
 
       <div className="grid grid-cols-1 items-start lg:grid-cols-2 lg:gap-12 gap-y-8">
-        <div className="order-2 lg:order-1 flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
+        <div className="flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
           <h1 className="font-display text-3xl font-bold leading-10 text-text-primary md:font-extrabold lg:text-display">
             Hello, <br />
             This is {' '}
@@ -76,7 +76,7 @@ function HeroSection() {
           </div>
 
         </div>
-        <div data-reveal="figure" className="order-1 lg:order-2 relative rounded-lg border border-border-strong bg-surface-raised">
+        <div data-reveal="figure" className="relative rounded-lg border border-border-strong bg-surface-raised">
           <div className="flex flex-row">
             <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent"></div>
           </div>

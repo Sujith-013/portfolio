@@ -1,7 +1,7 @@
 "use client";
 // @flow strict
 
-import { AssetPlaceholder, CodePlaceholder } from "@/app/components/helper/asset-placeholder";
+import { CodePlaceholder, ProjectAsset } from "@/app/components/helper/asset-placeholder";
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Link from "next/link";
 import { useRef } from "react";
@@ -33,12 +33,14 @@ export function ProjectDetailView({ project, grouped }) {
 
       <ProjectHeader project={project} headingLevel="h1" />
 
-      <AssetPlaceholder
+      <ProjectAsset
+        asset={project.hero}
+        slug={project.slug}
         category="hero"
-        width={project.hero.width}
-        height={project.hero.height}
         dataReveal="figure"
         className="w-full mb-8"
+        priority={true}
+        sizes="100vw"
       />
 
       <p data-reveal="text" className="text-text-secondary text-sm lg:text-base max-w-3xl mb-8">
@@ -64,14 +66,16 @@ export function ProjectDetailView({ project, grouped }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {items.map((asset, i) =>
               category === "code" ? (
-                <CodePlaceholder key={i} dataReveal="figure" />
+                <CodePlaceholder key={i} asset={asset} dataReveal="figure" />
               ) : (
                 <div key={i}>
-                  <AssetPlaceholder
+                  <ProjectAsset
+                    asset={asset}
+                    slug={project.slug}
                     category={category}
-                    width={asset.width}
-                    height={asset.height}
                     dataReveal="figure"
+                    priority={false}
+                    sizes="(min-width: 640px) 50vw, 100vw"
                   />
                   <p className="text-xs text-text-tertiary mt-2 font-mono">{asset.caption}</p>
                 </div>

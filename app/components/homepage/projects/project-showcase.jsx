@@ -1,7 +1,7 @@
 "use client";
 // @flow strict
 
-import { AssetPlaceholder } from "@/app/components/helper/asset-placeholder";
+import { ProjectAsset } from "@/app/components/helper/asset-placeholder";
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
 import Link from "next/link";
 import { useRef } from "react";
@@ -26,12 +26,14 @@ export function ProjectShowcase({ project, index }) {
     >
       <ProjectHeader project={project} index={index} headingLevel="h3" />
 
-      <AssetPlaceholder
+      <ProjectAsset
+        asset={project.hero}
+        slug={project.slug}
         category="hero"
-        width={project.hero.width}
-        height={project.hero.height}
         dataReveal="figure"
         className="w-full mb-6"
+        priority={false}
+        sizes="100vw"
       />
 
       <p data-reveal="text" className="text-text-secondary text-sm lg:text-base mb-4 max-w-3xl">
