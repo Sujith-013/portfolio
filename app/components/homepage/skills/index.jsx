@@ -70,9 +70,9 @@ function Skills() {
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
           <span className="w-24 h-[2px] bg-border-strong"></span>
-          <span data-reveal="text" className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
+          <h2 data-reveal="text" className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
             Skills
-          </span>
+          </h2>
           <span className="w-24 h-[2px] bg-border-strong"></span>
         </div>
       </div>
@@ -80,9 +80,9 @@ function Skills() {
       <div className="flex flex-col gap-8 lg:gap-12 my-8">
         {skillsData.map((group) => (
           <div key={group.category} data-reveal="figure">
-            <p className="font-mono text-xs sm:text-sm uppercase tracking-wider text-text-tertiary mb-4">
+            <h3 className="font-mono text-xs sm:text-sm uppercase tracking-wider text-text-tertiary mb-4">
               {group.category}
-            </p>
+            </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5">
               {group.skills.map((skill) => (
                 <SkillTile key={skill} skill={skill} />

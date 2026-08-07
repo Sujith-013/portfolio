@@ -24,7 +24,7 @@ function HeroSection() {
     <section ref={scopeRef} className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
         src="/hero.svg"
-        alt="Hero"
+        alt=""
         width={1572}
         height={795}
         className="absolute -top-[98px] -z-10"
@@ -45,14 +45,16 @@ function HeroSection() {
             <Link
               href={personalData.github}
               target='_blank'
-              className="transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300"
+              aria-label="GitHub"
+              className="rounded transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               <BsGithub size={30} />
             </Link>
             <Link
               href={personalData.linkedIn}
               target='_blank'
-              className="transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300"
+              aria-label="LinkedIn"
+              className="rounded transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               <BsLinkedin size={30} />
             </Link>

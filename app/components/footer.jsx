@@ -10,7 +10,7 @@ function Footer() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-center">
           <p className="text-sm font-mono">
-            © Developer Portfolio by <Link target="_blank" href="https://www.linkedin.com/in/harirajan-sujith-784a861a4/" className="text-accent">Sujith</Link>
+            © {new Date().getFullYear()} <Link target="_blank" href="https://www.linkedin.com/in/harirajan-sujith-784a861a4/" className="text-accent">Sujith</Link>
           </p>
         </div>
       </div>

@@ -24,7 +24,7 @@ export function ProjectShowcase({ project, index }) {
       ref={scopeRef}
       className="py-12 lg:py-16 border-t border-border first:border-t-0 first:pt-0"
     >
-      <ProjectHeader project={project} index={index} />
+      <ProjectHeader project={project} index={index} headingLevel="h3" />
 
       <AssetPlaceholder
         category="hero"

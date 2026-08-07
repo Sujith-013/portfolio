@@ -29,32 +29,43 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
+// Canonical production URL — matches the resume's own portfolio link,
+// README.md, and SETUP.md's NEXT_PUBLIC_APP_URL guidance. Required for
+// next/og's ImageResponse (app/opengraph-image.jsx) and any relative
+// social-image URL to resolve to an absolute one; without it Next falls
+// back to localhost, which is wrong in any shared/production link.
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://sujith-portfolio-eight.vercel.app";
+
+// Single source of truth for the title/description pair — reused across
+// the base tag, OpenGraph, and Twitter card instead of three copies that
+// can silently drift out of sync with each other (the base <meta
+// name="description"> previously still had leftover template phrasing —
+// "a self taught developer... I love to learn new things" — while
+// OpenGraph/Twitter had already been corrected to the resume-accurate
+// version below; this contradicted itself between the same page's own
+// meta tags).
+const TITLE = "Portfolio of Sujith - Space Systems Engineer";
+const DESCRIPTION = "Space systems, robotics, autonomy, and engineering portfolio of Sujith.";
+
 export const metadata = {
-  title: "Portfolio of Sujith - Space Systems Engineer",
-  description:
-    "This is the portfolio of Sujith. I am a Space Systems Engineer and a self taught developer. I love to learn new things and I am always open to collaborating with others. I am a quick learner and I am always looking for new challenges.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
 
   openGraph: {
-    title: "Portfolio of Sujith - Space Systems Engineer",
-    description:
-      "Space systems, robotics, autonomy, and engineering portfolio of Sujith.",
-    images: [
-      {
-        url: "/profile.png",
-        width: 1200,
-        height: 630,
-        alt: "Portfolio of Sujith",
-      },
-    ],
+    title: TITLE,
+    description: DESCRIPTION,
     type: "website",
+    // No `images` entry: app/opengraph-image.jsx is Next's file-convention
+    // route for this and is picked up automatically — declaring images
+    // here too would just be a second, easily-stale copy of the same URL.
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio of Sujith - Space Systems Engineer",
-    description:
-      "Space systems, robotics, autonomy, and engineering portfolio of Sujith.",
-    images: ["/profile.png"],
+    title: TITLE,
+    description: DESCRIPTION,
+    // Same reasoning — app/twitter-image.jsx supplies this automatically.
   },
 };
 

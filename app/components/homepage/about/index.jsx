@@ -13,7 +13,11 @@ function AboutSection() {
 
   return (
     <div ref={scopeRef} id="about" className="my-12 lg:my-24 relative">
-      <div className="hidden lg:flex flex-col items-center absolute top-16 -right-8">
+      {/* Decorative — the real, always-visible section heading is the
+          "Who I am?" <h2> below; this rotated tab repeats the same
+          information for desktop-only visual rhythm, so it's hidden from
+          assistive tech rather than announced as a second heading. */}
+      <div aria-hidden="true" className="hidden lg:flex flex-col items-center absolute top-16 -right-8">
         <span className="font-display bg-surface-raised w-fit text-text-primary rotate-90 p-2 px-5 text-xl rounded-md">
           ABOUT ME
         </span>
@@ -21,9 +25,9 @@ function AboutSection() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         <div className="order-2 lg:order-1">
-          <p data-reveal="text" className="font-display font-medium mb-5 text-accent text-xl uppercase">
+          <h2 data-reveal="text" className="font-display font-medium mb-5 text-accent text-xl uppercase">
             Who I am?
-          </p>
+          </h2>
           <p data-reveal="text" className="text-text-secondary text-sm lg:text-lg">
             {personalData.description}
           </p>

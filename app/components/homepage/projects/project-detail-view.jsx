@@ -31,7 +31,7 @@ export function ProjectDetailView({ project, grouped }) {
         <span>Back to portfolio</span>
       </Link>
 
-      <ProjectHeader project={project} />
+      <ProjectHeader project={project} headingLevel="h1" />
 
       <AssetPlaceholder
         category="hero"
@@ -58,9 +58,9 @@ export function ProjectDetailView({ project, grouped }) {
 
       {grouped.map(({ category, items }) => (
         <div key={category} className="mb-12">
-          <h3 data-reveal="text" className="font-display text-lg text-text-primary mb-4 border-t border-border pt-6">
+          <h2 data-reveal="text" className="font-display text-lg text-text-primary mb-4 border-t border-border pt-6">
             {CATEGORY_TITLES[category] ?? category}
-          </h3>
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {items.map((asset, i) =>
               category === "code" ? (

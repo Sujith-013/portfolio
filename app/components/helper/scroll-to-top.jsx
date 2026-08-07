@@ -27,7 +27,11 @@ const ScrollToTop = () => {
   const onClickBtn = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <button className={btnCls} onClick={onClickBtn}>
+    <button
+      className={`${btnCls} outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2`}
+      onClick={onClickBtn}
+      aria-label="Scroll to top"
+    >
       <FaArrowUp />
     </button>
   );

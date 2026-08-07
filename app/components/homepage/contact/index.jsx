@@ -15,7 +15,12 @@ function ContactSection() {
 
   return (
     <div ref={scopeRef} id="contact" className="my-12 lg:my-24 relative mt-24 text-text-primary">
-      <div className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
+      {/* Decorative — the real, always-visible section heading is
+          ContactForm's "Contact with me" <h2>; this rotated tab repeats
+          the same information for desktop-only visual rhythm, so it's
+          hidden from assistive tech rather than announced as a second,
+          redundant heading. */}
+      <div aria-hidden="true" className="hidden lg:flex flex-col items-center absolute top-24 -right-8">
         <span className="font-display bg-surface-raised w-fit text-text-primary rotate-90 p-2 px-5 text-xl rounded-md">
           CONTACT
         </span>
@@ -36,13 +41,23 @@ function ContactSection() {
             </p>
           </div>
           <div className="mt-8 lg:mt-16 flex items-center gap-5 lg:gap-10">
-            <Link target="_blank" href={personalData.github}>
+            <Link
+              target="_blank"
+              href={personalData.github}
+              aria-label="GitHub"
+              className="rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            >
               <IoLogoGithub
                 className="bg-ink-300 p-3 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900 cursor-pointer"
                 size={48}
               />
             </Link>
-            <Link target="_blank" href={personalData.linkedIn}>
+            <Link
+              target="_blank"
+              href={personalData.linkedIn}
+              aria-label="LinkedIn"
+              className="rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            >
               <BiLogoLinkedin
                 className="bg-ink-300 p-3 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900 cursor-pointer"
                 size={48}

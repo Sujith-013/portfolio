@@ -335,6 +335,16 @@ Order matches the page's actual top-to-bottom sequence, so at every step the liv
 
 ## Stage 7 — Accessibility pass
 
+**Progress 2026-08-07 (Polish pass 2) — 7.1 and most of 7.2 done ahead of schedule**, folded into a broader metadata/leftovers/accessibility cleanup rather than waiting for Stage 6.2's real assets (the alt-text fixes below are all for decorative chrome SVGs and existing informational images, not the still-placeholder project assets, so there was no real dependency on Stage 6.2 after all). Full findings and rationale in `docs/POLISH-AUDIT.md` — summary:
+
+- **Alt text (7.1): done.** All decorative background/glow SVGs (`hero.svg`, `section.svg`, `blur-23.svg`) previously carried a copy-pasted `alt="Hero"` regardless of context — fixed to `alt=""`. Informational images (profile photo, skill icons) were already correct.
+- **Heading hierarchy (new finding, not originally scoped as its own item but squarely a 7.2-adjacent structural accessibility issue): fixed.** The homepage had exactly one real heading (`<h1>` in the hero) — every section title was a styled `<span>`/`<p>`, and `/projects/[slug]` had no `<h1>` at all. Rebuilt a proper single-`<h1>`-per-page outline across every route (`ProjectHeader` now takes a `headingLevel` prop so the same component can be an `<h1>` on its own route and an `<h3>` when nested on the homepage).
+- **Visible focus states (7.2): done, real gap not just verification.** All 5 nav links had `outline-none` with no `focus`/`focus-visible` replacement — tabbing gave zero visible position indicator. Same issue on the 3 contact-form inputs (`ring-0 outline-0`, only a subtle border-color change). Fixed with `focus-visible:outline` (nav, icon-only links) / `focus:outline` (form fields), reusing the already-verified `signal-500` accent token — no new contrast computation needed.
+- **Keyboard navigation through the nav — a second, more serious bug found while checking the first.** The mobile nav had no toggle button anywhere in the codebase; below `md` it was permanently `max-h-0 opacity-0` with nothing to ever open it — nav links were structurally unreachable on narrow viewports, not just visually hidden. Predates this session. Fixed: `navbar.jsx` is now a client component with a real hamburger toggle (`useState`, `aria-expanded`/`aria-controls`/`aria-label`).
+- **Form label association:** the three contact-form `<label>`s had no `htmlFor` linking them to their inputs — fixed with matching `id`/`htmlFor` pairs plus `aria-invalid`/`aria-describedby` on the email field.
+- **GlowCard's mouse-tracked glow:** confirmed decorative-only, gates no functionality, no keyboard equivalent owed — checkpoint satisfied by inspection, not a gap.
+- **Contrast:** nothing new to compute — every color used this pass (focus rings, favicon, OG image, new headings) reuses pairings already in `docs/DESIGN-SYSTEM.md`'s verified table.
+
 ### 7.1 Alt text audit
 - **What:** Fix every empty/generic `alt` (per ARCHITECTURE.md: `blog-card.jsx`, decorative SVGs hardcoded to `alt="Hero"`) — decorative gets `alt=""`, informational gets a real description.
 - **Files:** every component using `<Image>` or `<svg>`.
@@ -347,6 +357,7 @@ Order matches the page's actual top-to-bottom sequence, so at every step the liv
 - **Effort:** Medium.
 - **Depends on:** Stage 5 (needs the finished visual system to test against).
 - **Checkpoint:** A full keyboard-only pass (no mouse) reaches and activates every interactive element with a visible focus indicator at each stop.
+- **Remaining for a real 7.2 close-out:** an actual hands-on keyboard/screen-reader pass (this session verified via SSR HTML/class inspection, same caveat as Stage 4's fix — no browser automation tool available in this environment).
 
 ### 7.3 Reduced-motion re-verification
 - **What:** Re-run the reduced-motion test from Stage 4 against the finished, fully-built site (not just the trivial test animation) — confirm every section's real ScrollTrigger animation is gated correctly, not just the prototype.
@@ -390,6 +401,10 @@ Order matches the page's actual top-to-bottom sequence, so at every step the liv
 - **Depends on:** Everything.
 - **Effort:** Small.
 - **Checkpoint:** Nothing in `docs/CONTENT-AUDIT.md`'s "currently says" column is still true of the live site.
+
+**Partial progress 2026-08-07 (Polish pass 2).** Grepped the whole repo for `said7388`, `developer-portfolio`, `"Developer Portfolio"`, the Google Drive resume link, and leftover placeholder fields — full table of findings in `docs/POLISH-AUDIT.md`. Fixed: footer's "© Developer Portfolio by..." → "© {year} Sujith"; `package.json`/lockfile's `"name": "developer-portfolio"` → `"sujith-portfolio"`; the metadata description's leftover "self taught developer" template phrasing (see Stage 7/metadata notes below). Flagged, not fixed: the resume's external Google Drive link (blocked on the Stage 2.1 PII-redaction decision, unchanged). Confirmed intentional, not a leftover: `projects-data.js`'s `TODO:` placeholders. Also confirmed the `said7388`/`developer-portfolio` mentions still in `docs/ARCHITECTURE.md`/`docs/CONTENT-AUDIT.md`/`docs/PRD.md` are dated audit-trail records of past state, not live leftovers — left alone on purpose.
+
+**Metadata/OG audit, new this pass, no prior stage number — logged here.** `app/layout.js`'s base `<meta name="description">` contradicted its own `openGraph`/`twitter` descriptions (old template phrasing vs. the already-corrected version) — unified into one constant. Added missing `metadataBase` (`next build` had been warning about this). The OG/Twitter image was `personalData.profile` declared as `1200×630` while the actual file is `828×1006` — replaced with a real, correctly-sized (`1200×630`, verified) token-based card built via `next/og`'s `ImageResponse` (`app/opengraph-image.jsx` + `app/twitter-image.jsx`), no photography. Favicon was a malformed non-square `26×32` cropped photo — replaced with a proper square multi-size `.ico` (16/32/48px) plus `icon.png`/`apple-icon.png`, all a consistent "S" monogram in the existing `signal-500`/`ink-900` tokens. Full detail in `docs/POLISH-AUDIT.md`.
 
 ---
 

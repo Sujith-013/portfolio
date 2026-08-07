@@ -18,7 +18,7 @@ function Experience() {
     <div ref={scopeRef} id="experience" className="relative z-50 border-t my-12 lg:my-24 border-border">
       <Image
         src="/section.svg"
-        alt="Hero"
+        alt=""
         width={1572}
         height={795}
         className="absolute top-0 -z-10"
@@ -27,9 +27,9 @@ function Experience() {
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
           <span className="w-24 h-[2px] bg-border-strong"></span>
-          <span data-reveal="text" className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
+          <h2 data-reveal="text" className="font-display bg-surface-raised w-fit text-text-primary p-2 px-5 text-xl rounded-md">
             Experiences
-          </span>
+          </h2>
           <span className="w-24 h-[2px] bg-border-strong"></span>
         </div>
       </div>
@@ -50,7 +50,7 @@ function Experience() {
                     <div data-reveal="text" className="p-3 relative">
                       <Image
                         src="/blur-23.svg"
-                        alt="Hero"
+                        alt=""
                         width={1080}
                         height={200}
                         className="absolute bottom-0 opacity-80"
@@ -65,9 +65,9 @@ function Experience() {
                           <BsPersonWorkspace size={36} />
                         </div>
                         <div>
-                          <p className="text-base sm:text-xl mb-2 font-medium text-text-primary">
+                          <h3 className="text-base sm:text-xl mb-2 font-medium text-text-primary">
                             {experience.title}
-                          </p>
+                          </h3>
                           <p className="text-sm sm:text-base mb-3 text-text-secondary">
                             {experience.company}
                           </p>
