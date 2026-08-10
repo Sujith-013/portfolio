@@ -17,7 +17,16 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+
+# editor
+.vscode/
+.idea/
+
+# python bytecode (from skill scripts under .claude/skills/)
+__pycache__/
+*.pyc
 
 # debug
 npm-debug.log*
