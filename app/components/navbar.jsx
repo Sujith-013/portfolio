@@ -5,12 +5,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaBars, FaXmark } from "react-icons/fa6";
 
+// Order matches the page's actual scroll order (app/page.js), not the
+// original template's — that one listed EDUCATION before PROJECTS while
+// the page itself renders Projects, then Education, a mismatch inherited
+// from the initial commit and never corrected until this pass.
 const NAV_LINKS = [
   { href: "/#about", label: "ABOUT" },
   { href: "/#experience", label: "EXPERIENCE" },
   { href: "/#skills", label: "SKILLS" },
-  { href: "/#education", label: "EDUCATION" },
   { href: "/#projects", label: "PROJECTS" },
+  { href: "/#education", label: "EDUCATION" },
 ];
 
 // Focus-visible only (not plain :focus) so a mouse click doesn't leave a
