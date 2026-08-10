@@ -4,17 +4,19 @@ One screen to work from. Detail lives elsewhere — don't re-read those here, ju
 - **`docs/WHERE-THINGS-LIVE.md`** — every file path, organized by what you want to change.
 - **`docs/ASSET-CHECKLIST.md`** — full per-project checklist and pipeline rationale.
 - **`docs/CONTENT-TEMPLATE.md`** — the copy-five-times content fields + the full export spec table.
-- **`docs/DECISIONS.md`** — five open questions (contact form, resume hosting, etc.) — none block the work below.
+- **`docs/DECISIONS.md`** — two open questions (resume hosting, GTM analytics) plus three already resolved — none block the work below.
 
 ---
 
 ## 1. State of the site
 
-Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes). All five projects are **100% placeholder** — every title/description/tool/result is a literal `TODO:` string, every image/video slot is a grey dimensioned box. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. Five decisions remain open (`docs/DECISIONS.md`) but none of them block this work — the only thing left is you supplying content and assets, five times.
+Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes). All five projects are **100% placeholder** — every title/description/tool/result is a literal `TODO:` string, every image/video slot is a grey dimensioned box. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. Two decisions remain open (resume hosting, GTM analytics — `docs/DECISIONS.md`) but neither blocks this work — the only thing left is you supplying content and assets, five times.
 
 ---
 
 ## 2. The add-one-asset loop
+
+**First time touching a project's assets:** every project still has `assets: demoAssets()` — a shared function call, not an array you can edit entries in directly (all five projects reuse it). Before step 2 below, replace that one line with the literal array it produces (copy the 7 `placeholderAsset(...)` lines straight out of `demoAssets()`'s own definition, a few lines up in the same file) — now you have real objects to edit, and editing one project's copy never touches the others.
 
 **Image:**
 1. Export/crop to spec (`docs/CONTENT-TEMPLATE.md` Part 2) → save as `public/projects/<slug>/<name>.jpg`.

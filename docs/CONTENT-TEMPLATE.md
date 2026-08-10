@@ -20,7 +20,7 @@ Result (optional — leave blank if nothing quantified exists):
 ```
 
 Field notes, straight from the code:
-- **Title** → `project.nameFull` — rendered as the page's only `<h1>` on `/projects/<slug>` (`project-header.jsx:29`), and as the `<h3>` per project on the homepage. Also feeds the tab title (`app/projects/[slug]/page.js:18`: `"${nameFull} — Portfolio of Sujith"`).
+- **Title** → `project.nameFull` — rendered as the page's only `<h1>` on `/projects/<slug>` (`project-header.jsx:28`), and as the `<h3>` per project on the homepage. Also feeds the tab title (`app/projects/[slug]/page.js:18`: `"${nameFull} — Portfolio of Sujith"`).
 - **Context** → `project.context` — one line under the title (`project-header.jsx:31`), e.g. "Personal build, 2024" or "Coursework, senior capstone." Keep it short; it's styled as a single mono-font line, not a sentence.
 - **Narrative** → `project.description` — the one body paragraph, rendered on both the homepage card and the detail page (`project-detail-view.jsx:47`). This is the only place the "what/why/outcome" story goes — there's no separate long-form field.
 - **Tools** → `project.tools`, an array. If left empty, the page silently renders a single `"TODO: tools"` pill instead of crashing (`project-showcase.jsx:44`, `project-detail-view.jsx:51`) — so an empty list is visibly wrong, not invisible.
