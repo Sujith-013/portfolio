@@ -35,10 +35,17 @@ function ContactForm() {
 
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
-        userInput
-      );
+      // Relative on purpose: this always runs in the browser, on the same
+      // origin as the API route, so it never needed an absolute URL built
+      // from an env var. It used to be `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
+      // — with that var unset (the default state, and true of every local/
+      // preview environment unless someone remembers to set it), the
+      // template literal baked in as the literal string "undefined/api/contact",
+      // which the browser resolves relative to the current page — never
+      // hitting the real route. Caught during redeploy prep because every
+      // earlier verification pass POSTed to /api/contact directly, bypassing
+      // this exact line.
+      const res = await axios.post("/api/contact", userInput);
 
       toast.success("Message sent successfully!");
       setUserInput({
