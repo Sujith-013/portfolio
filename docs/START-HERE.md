@@ -48,16 +48,22 @@ Format, routing, motion, accessibility, performance, and metadata are **finished
 After every 2-3 assets, not just at the end:
 
 ```
-npx next build    # must stay clean — a bad width/height in the data file
-                  # usually fails the build right here
+npm run check     # instant — catches missing files, wrong dimensions, oversized
+                  # exports, missing posters, and half-filled content by name
+npx next build    # must stay clean too — a bad width/height occasionally only
+                  # surfaces here
 npm run dev       # then open localhost:3000/projects/<slug>
 ```
 
-On the page, check:
-- The image is sharp, not stretched/squeezed (wrong aspect ratio vs. the real file is the most common mistake).
+**`npm run check` is the fast one — run it constantly, not just before a commit.** It reads `utils/data/projects-data.js` and checks it against `docs/CONTENT-TEMPLATE.md`'s spec directly: every real (`placeholder: false`) asset's file actually exists on disk, its actual pixel dimensions match what the data file declares, it's under the export-spec size cap, every real video has a real poster frame, and no real asset's caption is still the literal `TODO` text. It prints one line per project (✅/❌) plus a specific reason for every failure — e.g. `rover: hero image missing at public/projects/rover/hero.jpg` — never a stack trace. Placeholder projects/assets you haven't gotten to yet are never reported as errors, only real ones that are actually broken. Exit code is non-zero the moment anything's wrong, zero when everything's clean, so it's safe to run after every single edit.
+
+On the page itself, additionally check:
+- The image is sharp, not stretched/squeezed (`npm run check` catches a declared/actual mismatch, but eyeball it anyway).
 - The caption under it matches what you meant.
 - No dashed grey placeholder box where you expected a real image (`placeholder: false` didn't get set, or the filename doesn't match).
 - Video: poster frame shows, playback only starts when you click it.
 - The homepage hero for that project matches what's on its detail page.
 
-Wrong result almost always means: filename typo, `width`/`height` not matching the actual file, or `placeholder` left `true`. Full troubleshooting/paths: `docs/WHERE-THINGS-LIVE.md`.
+Wrong result almost always means: filename typo, `width`/`height` not matching the actual file, or `placeholder` left `true` — `npm run check` names the exact one. Full troubleshooting/paths: `docs/WHERE-THINGS-LIVE.md`.
+
+**Also worth knowing:** a malformed real asset (missing file, missing/invalid `width`/`height`, an empty code snippet) degrades to the grey placeholder box instead of crashing the page — you'll see a specific warning in the terminal running `npm run dev` (not a browser error) telling you exactly which project and field. `npm run check` will have already caught the same thing by name before you got that far.

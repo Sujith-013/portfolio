@@ -47,9 +47,25 @@ export function AssetPlaceholder({ category = "cad", width, height, dataReveal, 
  * real snippet once one exists (asset.placeholder === false, per the same
  * opt-in convention ProjectAsset below uses), the dashed placeholder
  * otherwise.
+ *
+ * Requires a genuine non-empty string, not just a truthy value — a stray
+ * `snippet: {}` or `snippet: ''` left behind while editing the manifest by
+ * hand would otherwise either throw (React can't render a raw object as a
+ * child) or silently render an empty block. Falling back to the placeholder
+ * is the same "never crash, always degrade" rule ProjectAsset uses below.
  */
 export function CodePlaceholder({ asset, dataReveal, className = "" }) {
-  if (asset?.placeholder === false && asset?.snippet) {
+  const hasRealSnippet =
+    asset?.placeholder === false && typeof asset?.snippet === "string" && asset.snippet.trim().length > 0;
+
+  if (asset?.placeholder === false && !hasRealSnippet && process.env.NODE_ENV !== "production") {
+    console.error(
+      'CodePlaceholder: asset has placeholder: false but "snippet" is missing, empty, or not a string — rendering the placeholder block instead of crashing or showing nothing. Asset:',
+      asset,
+    );
+  }
+
+  if (hasRealSnippet) {
     return (
       <div
         data-reveal={dataReveal}
@@ -104,9 +120,34 @@ export function CodePlaceholder({ asset, dataReveal, className = "" }) {
  * (the /projects/[slug] detail page's own hero) — never for the homepage
  * showcase heroes, which stay lazy per §10.4's explicit "none should be
  * marked priority" rule for below-the-fold homepage imagery.
+ *
+ * A real (non-placeholder) entry also needs a valid, finite, positive
+ * `width`/`height` — not just a `file`. next/image throws a hard render
+ * error ("Image with src ... is missing required 'width' property") for a
+ * non-fill image with a missing/undefined size, which turns one bad manifest
+ * edit into a 500 on the whole route instead of one broken tile — confirmed
+ * live in dev while building this guard. Falling back to the placeholder box
+ * for a malformed "real" entry is the same choice already made everywhere
+ * else in this file: never crash, always degrade to something visibly
+ * unfinished instead.
  */
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
 export function ProjectAsset({ asset, slug, category, dataReveal, className = "", priority = false, sizes }) {
-  const isReal = asset?.placeholder === false && asset?.file;
+  const isReal =
+    asset?.placeholder === false &&
+    !!asset?.file &&
+    isFiniteNumber(asset?.width) &&
+    isFiniteNumber(asset?.height);
+
+  if (asset?.placeholder === false && !isReal && process.env.NODE_ENV !== "production") {
+    console.error(
+      `ProjectAsset: "${slug}" has an asset with placeholder: false but a missing file/width/height — rendering the placeholder box instead of crashing. Run "npm run check" to catch this before it reaches the page. Asset:`,
+      asset,
+    );
+  }
 
   if (!isReal) {
     return (
