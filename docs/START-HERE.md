@@ -8,15 +8,23 @@ One screen to work from. Detail lives elsewhere — don't re-read those here, ju
 
 ---
 
+## 0. Reference implementation — `aircraft-design`
+
+`aircraft-design` is fully wired up with dummy content — every field, all 8 assets (hero, 2 CAD, 2 simulation, 1 results, 1 video + poster, 1 code snippet), every caption. Every dummy value is prefixed `[DUMMY]` in the data and the images themselves are labelled on their face ("DUMMY — CAD RENDER 01" etc., generated placeholders, not real renders). It exists purely to show the finished shape end to end — read it (`utils/data/projects-data.js`, first project) and look at it live (`/projects/aircraft-design`) before starting your own. It is **not** real progress on that project; replace it the same way you'd fill in any other, piece by piece, per §2 below.
+
+Format verdict from building it fully populated (desktop and mobile): **holds, one fix already made.** A category with only one asset (results, video, code — the default shape) used to sit left-aligned with a dead gap in the 2-column gallery grid on desktop; fixed so a lone asset now spans the full row (`project-detail-view.jsx`, `sm:only:col-span-2`) — no export change needed, so unless you *want* a second results/video shot, one is enough. The full detail page runs long on mobile once every section is populated (~7 stacked images/video/code, single column) — expected for a deep-dive page you navigate to deliberately, not a problem; the homepage teaser (`ProjectShowcase`) stays short by design — hero, description, tools, one link, no gallery — so the homepage itself never gets long no matter how full a project's detail page is.
+
+---
+
 ## 1. State of the site
 
-Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes). All five projects are **100% placeholder** — every title/description/tool/result is a literal `TODO:` string, every image/video slot is a grey dimensioned box. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. Two decisions remain open (resume hosting, GTM analytics — `docs/DECISIONS.md`) but neither blocks this work — the only thing left is you supplying content and assets, five times.
+Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes; gallery grid balance re-verified building the reference above). Real content for all five projects is still **100% TODO** — `aircraft-design` additionally carries the full `[DUMMY]` reference build described in §0, the other four are untouched grey placeholder boxes and literal `TODO:` strings. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. Two decisions remain open (resume hosting, GTM analytics — `docs/DECISIONS.md`) but neither blocks this work — the only thing left is you supplying content and assets, five times (four, plus replacing the reference dummy on the fifth).
 
 ---
 
 ## 2. The add-one-asset loop
 
-**First time touching a project's assets:** every project still has `assets: demoAssets()` — a shared function call, not an array you can edit entries in directly (all five projects reuse it). Before step 2 below, replace that one line with the literal array it produces (copy the 7 `placeholderAsset(...)` lines straight out of `demoAssets()`'s own definition, a few lines up in the same file) — now you have real objects to edit, and editing one project's copy never touches the others.
+**First time touching a project's assets:** every project except `aircraft-design` still has `assets: demoAssets()` — a shared function call, not an array you can edit entries in directly (the four remaining projects reuse it). Before step 2 below, replace that one line with the literal array it produces (copy the 7 `placeholderAsset(...)` lines straight out of `demoAssets()`'s own definition, a few lines up in the same file) — now you have real objects to edit, and editing one project's copy never touches the others. `aircraft-design`'s `assets` array is already a literal array of 7 fully-filled `[DUMMY]` objects (§0) — use its shape as the concrete example of what your own array should look like once real.
 
 **Image:**
 1. Export/crop to spec (`docs/CONTENT-TEMPLATE.md` Part 2) → save as `public/projects/<slug>/<name>.jpg`.

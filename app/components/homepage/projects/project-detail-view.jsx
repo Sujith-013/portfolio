@@ -63,19 +63,29 @@ export function ProjectDetailView({ project, grouped }) {
           <h2 data-reveal="text" className="font-display text-lg text-text-primary mb-4 border-t border-border pt-6">
             {CATEGORY_TITLES[category] ?? category}
           </h2>
+          {/*
+            sm:only:col-span-2 — a category with exactly one asset (results,
+            video and code all default to 1 per demoAssets()) would otherwise
+            sit left-aligned with a bare gap in the right column on a 2-col
+            grid ≥640px. `only:` (Tailwind's :only-child variant, same family
+            as the `first:`/`last:` already used elsewhere) makes a lone item
+            span the full row instead — a two-item category is unaffected.
+            Found and fixed while building the aircraft-design reference
+            implementation (docs/START-HERE.md §0).
+          */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {items.map((asset, i) =>
               category === "code" ? (
-                <CodePlaceholder key={i} asset={asset} dataReveal="figure" />
+                <CodePlaceholder key={i} asset={asset} dataReveal="figure" className="sm:only:col-span-2" />
               ) : (
-                <div key={i}>
+                <div key={i} className="sm:only:col-span-2">
                   <ProjectAsset
                     asset={asset}
                     slug={project.slug}
                     category={category}
                     dataReveal="figure"
                     priority={false}
-                    sizes="(min-width: 640px) 50vw, 100vw"
+                    sizes={items.length === 1 ? "100vw" : "(min-width: 640px) 50vw, 100vw"}
                   />
                   <p className="text-xs text-text-tertiary mt-2 font-mono">{asset.caption}</p>
                 </div>
