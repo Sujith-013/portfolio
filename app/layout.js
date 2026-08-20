@@ -1,5 +1,5 @@
 import { GoogleTagManager } from "@next/third-parties/google";
-import { IBM_Plex_Mono, Inter, Roboto_Slab } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Roboto_Slab } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/footer";
@@ -9,14 +9,38 @@ import "./css/theme.css";
 import "./css/globals.scss";
 import "./css/card.scss";
 
-// Body copy — unchanged from the original template.
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+// Body copy. Replaced Inter (Stage 3) with IBM Plex Sans — see
+// docs/DESIGN-SYSTEM.md "Typography" for the full argument.
+//
+// weight: "variable", not a static array — Google serves IBM Plex Sans
+// with a real wght axis (100-700), and requesting discrete static
+// weights (["400","500","600","700"]) from a variable-capable family
+// hit a real next/font + Turbopack bug: every requested weight's
+// @font-face was silently pointed at the SAME physical Regular (400)
+// file (verified by inspecting the built .next/static/chunks/*.css —
+// 4 distinct font-weight declarations, 1 underlying file, confirmed via
+// fontTools' OS/2.usWeightClass/postscript name on the actual bytes).
+// font-medium/semibold/bold would have rendered as plain Regular.
+// `variable` loads the real variable instance and lets font-weight
+// interpolate for real — matches every weight utility actually used on
+// sans text (400 default, 500/600/700 via font-medium/semibold/bold).
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: "variable",
+  variable: "--font-plex-sans",
+});
 
 // Display face for name/headings/section eyebrows — a slab serif,
 // chosen for its "engineered" structural weight over a literary serif.
+// Also variable (same reasoning as plexSans above — Roboto Slab has a
+// wght axis too, and the static-array form hit the identical bug).
+// app/components/homepage/hero-section/index.jsx's h1 requests
+// md:font-extrabold (800) on this face; the old static-weight-array
+// setup only loaded 700, so 800 had no matching @font-face at all.
+// Variable covers the full range including 800 for real.
 const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
-  weight: ["700"],
+  weight: "variable",
   variable: "--font-roboto-slab",
 });
 
@@ -72,7 +96,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${robotoSlab.variable} ${plexMono.variable} font-sans`}>
+      <body className={`${plexSans.variable} ${robotoSlab.variable} ${plexMono.variable} font-sans`}>
         <ToastContainer />
         <main className="min-h-screen relative mx-auto px-6 sm:px-12 lg:max-w-[70rem] xl:max-w-[76rem] 2xl:max-w-[92rem] text-text-primary">
           <Navbar />

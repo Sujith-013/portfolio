@@ -110,7 +110,7 @@ A handful of things were genuinely multi-hue before and are now monochrome+accen
 
 ### Contrast verification
 
-Computed via the WCAG relative-luminance formula (not eyeballed), for every token pairing actually used in a component:
+Computed via the WCAG relative-luminance formula (not eyeballed), for every token pairing actually used in a component. Re-run from scratch on this pass (a standalone script against the live hex values in `theme.css`, not copied forward) since color and type are easy to let drift apart — colors themselves are untouched by the Stage-3-revisit font swap, so no ratio was expected to move, and none did:
 
 | Pair | Ratio | Requirement | Result |
 |---|---|---|---|
@@ -122,12 +122,14 @@ Computed via the WCAG relative-luminance formula (not eyeballed), for every toke
 | `ink-100`/`ink-300` on `ink-700` raised (form text) | 13.79 / 7.43 | 4.5 | PASS |
 | `signal-500` accent on `ink-900` / `ink-800` | 12.74 / 12.34 | 4.5 | PASS |
 | `signal-400` accent-hover on `ink-900` | 13.59 | 4.5 | PASS |
-| `ink-950` text on `signal-500` (primary button label) | 12.74 | 4.5 | PASS |
+| `ink-950` text on `signal-500` (primary button label) | 13.86 | 4.5 | PASS |
 | `danger-400` on `ink-900` / `ink-700` | 6.72 / 6.04 | 4.5 | PASS |
 | `ink-500` functional border on `ink-900` / `ink-800` (non-text) | 3.22 / 3.12 | 3.0 | PASS |
 | `signal-500` focus ring on `ink-900` (non-text) | 12.74 | 3.0 | PASS |
 
 Every pairing actually in use clears WCAG AA. `ink-600` (the *decorative*-divider tier) does not hit 3:1 against canvas by design — it's intentionally subtle and never used for a functional boundary a user needs to perceive to operate the UI (that's what `ink-500`/`border-strong` is for).
+
+One correction from this pass: `ink-950` text on `signal-500` was previously recorded as 12.74, which is actually the `signal-500`-on-`ink-900` figure directly above it, transcribed into the wrong row. The real computed ratio for that pair is 13.86 — still a comfortable PASS, nothing was ever at risk, but recording it accurately now that it's been independently recomputed rather than carried forward.
 
 ---
 
@@ -137,19 +139,45 @@ Three roles, one face each — chosen so nothing is ad hoc per component.
 
 | Role | Face | Utility | Loaded weights | License |
 |---|---|---|---|---|
-| Body copy | Inter | `font-sans` (default) | Variable (unchanged from original) | SIL OFL 1.1 |
-| Display / headings | Roboto Slab | `font-display` | 700 only | Apache License 2.0 |
-| Technical / data | IBM Plex Mono | `font-mono` | 400, 500 | SIL OFL 1.1 |
+| Body copy | **IBM Plex Sans** | `font-sans` (default) | Variable, wght 100-700 | SIL OFL 1.1 |
+| Display / headings | Roboto Slab | `font-display` | Variable, wght 100-900 | Apache License 2.0 |
+| Technical / data | IBM Plex Mono | `font-mono` | 400, 500 (static) | SIL OFL 1.1 |
 
-All three are loaded via `next/font/google` with the `variable` option in `app/layout.js` and referenced in `theme.css` as `--font-sans`/`--font-display`/`--font-mono` — fully self-hosted (verified: production build outputs real `.woff2` files under `.next/static/media/`, zero requests to `fonts.googleapis.com`/`fonts.gstatic.com` from the rendered page).
+All three are loaded via `next/font/google` in `app/layout.js` and referenced in `theme.css` as `--font-sans`/`--font-display`/`--font-mono` — fully self-hosted (verified: production build outputs real `.woff2` files under `.next/static/media/`, zero requests to `fonts.googleapis.com`/`fonts.gstatic.com` from the rendered page — re-confirmed on this pass, see "Body face" below).
 
-**Why Roboto Slab, not a literary serif or a second sans:** Direction A calls for a slab or serif display face specifically because the subject's actual work product (FLATSAT logs, FEA reports, systems-engineering trade studies) is technical documentation, not consumer software — a slab serif's visible structural weight reads as "engineered," where a transitional/literary serif (e.g. a Fraunces-style face) would read as editorial. Roboto Slab is Google's own type team's slab, wide weight range, Apache-2.0 licensed, and well-established (not a novelty pick).
+### Body face: Inter → IBM Plex Sans
 
-**Why IBM Plex Mono:** IBM designed the whole Plex superfamily specifically for corporate/technical documentation — it's not a generic code-editor font pressed into service, it's built for exactly this brief. Also excellent at small sizes, which matters since it's used for dates/tags/spec labels, not just the fake-terminal blocks.
+Inter, Geist, and Space Grotesk are out — all three now read as the reflexive default of AI-assisted design tooling specifically, which undercuts the "engineered, not templated" direction this system is built around. Inter was the body face inherited from the original template at Stage 3 and never actually re-argued; this pass replaces it and re-argues the choice from scratch rather than reaching for the nearest alternative.
 
-**Where each is applied:** `font-display` → nav logo, hero name/headline, section eyebrow pill labels ("ABOUT ME", "Skills", "Educations", "PROJECTS", "CONTACT", "Contact with me", 404 heading), project card titles. `font-mono` → nav links, dates/durations, status badges, skill tags, blog post metadata (date/read-time), and the existing fake-terminal code blocks (this was already `font-mono` before Stage 3 — it just fell back to a generic system monospace stack; it now resolves to IBM Plex Mono for real). Everything else — body prose, bullet lists, form labels — stays the default `font-sans` (Inter).
+**The pick: IBM Plex Sans.** Argued against the actual requirements, not assumed:
+
+- **Genuinely open-licensed & self-hostable:** SIL OFL 1.1, loaded via `next/font/google`, same licensing tier Inter already cleared. Verified self-hosted exactly the same way the other two faces are (below).
+- **Real range at small sizes for dense technical copy:** this is IBM's own stated design brief for the whole Plex superfamily — built for corporate/technical documentation UI, not a display face pressed into body duty. This doc already made that exact argument for Plex Mono below; Plex Sans is the same team solving the same problem for running text. Distinguishable `1`/`l`/`I` and `0`/`O`, consistent x-height, holds up at the `text-xs`/`text-sm` sizes this site actually uses for captions, tags, and dense card copy.
+- **Doesn't read as a default:** not part of the Inter/Geist/Space Grotesk cluster, and not in the runner-up tier either (Roboto, Poppins, Montserrat, Manrope, DM Sans). IBM Plex has its own recognizable identity — most visible in the flat-cut terminals on `k`/`K`/`R`/`t`.
+- **Pairs with what stays, structurally not just aesthetically:** IBM Plex Sans and IBM Plex Mono are literal siblings in the same superfamily — same x-height, same stroke contrast, same construction logic, drawn together. Body and technical/data faces sharing real DNA is a stronger pairing argument than two unrelated faces that merely don't clash. Against Roboto Slab: both Plex Sans and Roboto Slab are purpose-built for technical/structural reading rather than editorial prose, so the three-face system now argues the same "engineered documentation" premise end to end — before, only Plex Mono and Roboto Slab carried that argument; Inter was along for the ride.
+
+**Roboto Slab and IBM Plex Mono — checked against the same list, both clear.** Neither is Inter, Geist, or Space Grotesk, and neither is in the wider "generic AI-tool default" tier those three anchor (Roboto/Poppins/Montserrat/DM Sans/Manrope for sans, JetBrains Mono/Fira Code for the mono-as-default pattern). Both already had a specific, non-arbitrary rationale in this doc before this pass (slab-for-"engineered" vs. literary serif; Plex Mono's IBM-documentation brief) rather than being picked as "a monospace" or "a serif." No replacement needed for either.
+
+**A real bug found and fixed while wiring this up:** the initial swap requested IBM Plex Sans and Roboto Slab as arrays of discrete static weights (`["400","500","600","700"]` etc.) — the same pattern IBM Plex Mono already used correctly. But both families are also published on Google Fonts as true variable fonts (`wght` axis), and requesting discrete static weights from a variable-capable family hit a real `next/font`+Turbopack bug: every requested weight's `@font-face` rule was silently pointed at the *same physical file* (verified by inspecting the compiled `.next/static/chunks/*.css` — 4 distinct `font-weight` declarations for Plex Sans, 1 underlying file; confirmed on the actual bytes via `fontTools`, whose `OS/2.usWeightClass`/postscript name reported `IBMPlexSans-Regular` for all four). `font-medium`/`font-semibold`/`font-bold` would have rendered as plain Regular everywhere on the site. IBM Plex Mono has no variable axis at all, which is exactly why it alone came out correct on the first attempt. Fixed by requesting `weight: "variable"` on both families instead — verified via `fontTools` that the delivered `.woff2` files now carry a real `fvar` table (Plex Sans: `wght` 100-700; Roboto Slab: `wght` 100-900), so `font-weight` now interpolates for real. This also incidentally fixed a second, older bug: the hero `<h1>`'s `md:font-extrabold` (800) on Roboto Slab had no matching weight loaded at all pre-Stage-3-revisit (only 700 was ever requested) — variable coverage now includes it.
+
+**Where each is applied:** `font-display` → nav logo, hero name/headline, section eyebrow pill labels ("ABOUT ME", "Skills", "Educations", "PROJECTS", "CONTACT", "Contact with me", 404 heading), project card titles. `font-mono` → nav links, dates/durations, status badges, skill tags, blog post metadata (date/read-time), and the existing fake-terminal code blocks. Everything else — body prose, bullet lists, form labels, tool-tag pills — stays the default `font-sans`, now IBM Plex Sans.
 
 **One new type-scale token:** `--text-display: 2.75rem` (with a paired `1.15` line-height) formalizes what was previously a one-off arbitrary `text-[2.6rem]` on the hero `<h1>` — Tailwind's default scale jumps from `text-4xl` (2.25rem) to `text-5xl` (3rem) with nothing at the size the hero actually needed, so this is a genuine, documented gap-fill rather than an arbitrary value smuggled back in.
+
+### Line-length re-verification (computed, not eyeballed)
+
+Character width isn't assumed — pulled from the actual shipped `.woff2` files' `hmtx` tables via `fontTools`, weighted by standard English letter frequency (including a ~17.5% space fraction), then converted to CSS px at the sizes actually used. Checked against the site's widest body-copy container, `max-w-3xl` (768px, used by project descriptions and the contact-form card):
+
+| Face | Size | Avg char width | Chars/line @ 768px |
+|---|---|---|---|
+| IBM Plex Sans (new) | 16px (`text-base`) | 7.17px | ~107 |
+| IBM Plex Sans (new) | 14px (`text-sm`) | 6.28px | ~122 |
+| Inter (old, for comparison) | 16px | 7.60px | ~101 |
+| Inter (old, for comparison) | 14px | 6.65px | ~115 |
+
+Both faces run past the ~45-90 char "ideal reading line" guideline at the full 768px container width — this is a **pre-existing container-width condition, not something the font swap introduced**: IBM Plex Sans is marginally narrower than Inter at the same size (~6% more characters per line), a small regression in the wrong direction, not the cause. Not fixing it here — it's a layout/container decision out of scope for a font swap, and this site's paragraphs are a few sentences of description copy, not long-form article prose, so the practical reading-fatigue cost is low. Worth a `max-w-2xl` pass if this ever becomes an actual reading surface.
+
+On mobile, this isn't a concern at all: viewport-constrained containers (~340-380px effective width after page padding) at `text-sm` (14px, the mobile default before the `lg:text-base` bump) come out to roughly 54-60 characters/line — inside the ideal range without any change needed.
 
 ---
 

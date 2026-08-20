@@ -72,7 +72,7 @@
      Font files loaded via next/font/google in app/layout.js; these
      vars point at the CSS variables next/font exposes.
      --------------------------------------------------------------- */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-roboto-slab), ui-serif, Georgia, serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
 
