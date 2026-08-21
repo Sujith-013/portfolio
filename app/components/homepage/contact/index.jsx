@@ -32,13 +32,21 @@ function ContactSection() {
         </div>
         <div data-reveal="text" className="lg:w-3/4 ">
           <div className="flex flex-col gap-5 lg:gap-9">
-            <p className="text-sm md:text-xl flex items-center gap-3">
+            {/* Was an icon + plain text row with hover/pointer styling and no
+                actual link — looked interactive, did nothing. Now a real
+                mailto: affordance, same treatment as the GitHub/LinkedIn
+                links below it, so the hover state means something. */}
+            <a
+              href={`mailto:${personalData.email}`}
+              className="text-sm md:text-xl flex items-center gap-3 no-underline text-inherit outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded"
+              aria-label={`Email ${personalData.email}`}
+            >
               <MdAlternateEmail
-                className="bg-ink-300 p-2 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900 cursor-pointer"
+                className="bg-ink-300 p-2 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900"
                 size={36}
               />
               <span>{personalData.email}</span>
-            </p>
+            </a>
           </div>
           <div className="mt-8 lg:mt-16 flex items-center gap-5 lg:gap-10">
             <Link

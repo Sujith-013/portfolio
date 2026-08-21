@@ -54,7 +54,7 @@ export function ProjectShowcase({ project, index }) {
       <Link
         data-reveal="text"
         href={`/projects/${project.slug}`}
-        className="inline-flex items-center gap-1 hover:gap-3 rounded-full border border-border-strong px-5 py-2.5 text-xs sm:text-sm font-medium uppercase tracking-wider text-text-primary no-underline transition-all duration-200 ease-out hover:text-accent hover:border-accent"
+        className="inline-flex items-center gap-1 rounded-full border border-border-strong px-5 py-2.5 text-xs sm:text-sm font-medium uppercase tracking-wider text-text-primary no-underline transition-all duration-200 ease-out hover:text-accent hover:border-accent"
       >
         <span>View full project</span>
         <FaArrowRight size={14} />

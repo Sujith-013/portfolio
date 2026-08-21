@@ -24,7 +24,7 @@ export function AssetPlaceholder({ category = "cad", width, height, dataReveal, 
   return (
     <div
       data-reveal={dataReveal}
-      className={`relative flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-strong bg-surface text-text-tertiary ${className}`}
+      className={`relative flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border-strong bg-surface text-text-tertiary ${className}`}
       style={{ aspectRatio: width && height ? `${width} / ${height}` : undefined }}
     >
       {category === "video" && <FaPlay size={20} className="opacity-60" />}
@@ -69,7 +69,7 @@ export function CodePlaceholder({ asset, dataReveal, className = "" }) {
     return (
       <div
         data-reveal={dataReveal}
-        className={`rounded-lg border border-border bg-surface p-4 overflow-x-auto ${className}`}
+        className={`rounded-md border border-border bg-surface p-4 overflow-x-auto ${className}`}
       >
         {asset.language && (
           <p className="font-mono text-[10px] uppercase tracking-wide text-text-tertiary mb-2">
@@ -96,7 +96,7 @@ export function CodePlaceholder({ asset, dataReveal, className = "" }) {
   return (
     <div
       data-reveal={dataReveal}
-      className={`flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-strong bg-surface text-text-tertiary p-8 min-h-[10rem] ${className}`}
+      className={`flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border-strong bg-surface text-text-tertiary p-8 min-h-[10rem] ${className}`}
     >
       <span className="font-mono text-[10px] sm:text-xs uppercase tracking-wide text-center">
         CODE SNIPPET
@@ -168,7 +168,7 @@ export function ProjectAsset({ asset, slug, category, dataReveal, className = ""
     return (
       <video
         data-reveal={dataReveal}
-        className={`w-full rounded-lg border border-border bg-surface ${className}`}
+        className={`w-full rounded-md border border-border bg-surface ${className}`}
         style={{ aspectRatio: asset.width && asset.height ? `${asset.width} / ${asset.height}` : undefined }}
         controls
         preload="none"
@@ -186,7 +186,7 @@ export function ProjectAsset({ asset, slug, category, dataReveal, className = ""
   return (
     <Image
       data-reveal={dataReveal}
-      className={`w-full h-auto rounded-lg border border-border object-cover ${className}`}
+      className={`w-full h-auto rounded-md border border-border object-cover ${className}`}
       src={src}
       alt={asset.alt || asset.caption || ""}
       width={asset.width}

@@ -13,8 +13,8 @@ function SkillTile({ skill }) {
   const monogram = !icon && !IconComponent ? skillsMonogram(skill) : null;
 
   return (
-    <div className="w-full h-fit flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-default">
-      <div className="h-full w-full rounded-lg border border-border bg-surface group-hover:border-accent transition-all duration-500">
+    <div className="w-full h-fit flex flex-col items-center justify-center transition-all duration-500 rounded-md group relative hover:scale-[1.08] cursor-default">
+      <div className="h-full w-full rounded-md border border-border bg-surface group-hover:border-accent transition-all duration-500">
         <div className="flex flex-col items-center justify-center gap-3 p-4 sm:p-6">
           {icon && (
             <div className="h-8 sm:h-10">
@@ -23,7 +23,7 @@ function SkillTile({ skill }) {
                 alt={skill}
                 width={40}
                 height={40}
-                className="h-full w-auto rounded-lg"
+                className="h-full w-auto rounded-md"
               />
             </div>
           )}

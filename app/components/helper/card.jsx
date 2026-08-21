@@ -7,7 +7,7 @@
 // removed rather than recolored. No JS is needed for a border-color
 // transition, so this is a plain server component, not a client one.
 const Card = ({ children }) => (
-  <article className="h-fit cursor-pointer border border-border bg-surface text-text-secondary rounded-xl transition-colors duration-300 hover:border-accent w-full">
+  <article className="h-fit cursor-pointer border border-border bg-surface text-text-secondary rounded-md transition-colors duration-300 hover:border-accent w-full">
     {children}
   </article>
 );
