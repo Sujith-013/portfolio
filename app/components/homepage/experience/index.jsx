@@ -3,11 +3,10 @@
 
 import { experiences } from "@/utils/data/experience";
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
-import Image from "next/image";
 import { useRef } from "react";
 import { BsPersonWorkspace } from "react-icons/bs";
 import AnimationLottie from "../../helper/animation-lottie";
-import GlowCard from "../../helper/glow-card";
+import Card from "../../helper/card";
 
 function Experience() {
   const scopeRef = useRef(null);
@@ -15,14 +14,6 @@ function Experience() {
 
   return (
     <div ref={scopeRef} id="experience" className="relative z-50 border-t my-12 lg:my-24 border-border">
-      <Image
-        src="/section.svg"
-        alt=""
-        width={1572}
-        height={795}
-        className="absolute top-0 -z-10"
-      />
-
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
           <span className="w-24 h-[2px] bg-border-strong"></span>
@@ -45,15 +36,8 @@ function Experience() {
             <div className="flex flex-col gap-6">
               {
                 experiences.map(experience => (
-                  <GlowCard key={experience.id} identifier={`experience-${experience.id}`}>
+                  <Card key={experience.id}>
                     <div data-reveal="text" className="p-3 relative">
-                      <Image
-                        src="/blur-23.svg"
-                        alt=""
-                        width={1080}
-                        height={200}
-                        className="absolute bottom-0 opacity-80"
-                      />
                       <div className="flex justify-center">
                         <p className="font-mono text-xs sm:text-sm text-accent">
                           {experience.duration}
@@ -82,7 +66,7 @@ function Experience() {
                         </div>
                       </div>
                     </div>
-                  </GlowCard>
+                  </Card>
                 ))
               }
             </div>

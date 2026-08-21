@@ -7,7 +7,6 @@ import ScrollToTop from "./components/helper/scroll-to-top";
 import Navbar from "./components/navbar";
 import "./css/theme.css";
 import "./css/globals.scss";
-import "./css/card.scss";
 
 // Body copy. Replaced Inter (Stage 3) with IBM Plex Sans — see
 // docs/DESIGN-SYSTEM.md "Typography" for the full argument.

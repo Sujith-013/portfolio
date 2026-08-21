@@ -15,11 +15,6 @@ function SkillTile({ skill }) {
   return (
     <div className="w-full h-fit flex flex-col items-center justify-center transition-all duration-500 rounded-lg group relative hover:scale-[1.08] cursor-default">
       <div className="h-full w-full rounded-lg border border-border bg-surface group-hover:border-accent transition-all duration-500">
-        <div className="flex -translate-y-[1px] justify-center">
-          <div className="w-3/4">
-            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent" />
-          </div>
-        </div>
         <div className="flex flex-col items-center justify-center gap-3 p-4 sm:p-6">
           {icon && (
             <div className="h-8 sm:h-10">
@@ -59,14 +54,6 @@ function Skills() {
 
   return (
     <div ref={scopeRef} id="skills" className="relative z-50 border-t my-12 lg:my-24 border-border">
-      <div className="w-[100px] h-[100px] bg-ink-500 rounded-full absolute top-6 left-[42%] translate-x-1/2 filter blur-3xl  opacity-20"></div>
-
-      <div className="flex justify-center -translate-y-[1px]">
-        <div className="w-3/4">
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-border-strong to-transparent  w-full" />
-        </div>
-      </div>
-
       <div className="flex justify-center my-5 lg:py-8">
         <div className="flex  items-center">
           <span className="w-24 h-[2px] bg-border-strong"></span>

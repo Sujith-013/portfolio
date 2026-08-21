@@ -22,7 +22,7 @@ const INK_600 = "#262e52";
 const INK_500 = "#5b6390";
 const INK_300 = "#a6acc7";
 const INK_50 = "#f8f9fc";
-const SIGNAL_500 = "#16f2b3";
+const SIGNAL_500 = "#a27d28"; // see docs/DESIGN-SYSTEM.md — was #16f2b3
 
 export default async function OpengraphImage() {
   const [robotoSlab, plexMono] = await Promise.all([

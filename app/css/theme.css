@@ -27,7 +27,7 @@
      Every step verified against its expected background at WCAG AA
      (4.5:1 text, 3:1 non-text/UI) — see docs/DESIGN-SYSTEM.md §Contrast.
      --------------------------------------------------------------- */
-  --color-ink-950: #05060d; /* deepest shadow / glow underlay */
+  --color-ink-950: #05060d; /* deepest shadow tone; also accent-button label text */
   --color-ink-900: #0d1224; /* canvas — unchanged from the original bg */
   --color-ink-800: #10152c; /* surface: cards, nav */
   --color-ink-700: #161c38; /* raised surface: form fields, code blocks */
@@ -40,10 +40,13 @@
 
   /* ---------------------------------------------------------------
      PRIMITIVES — signal (the one reserved accent)
+     Muted brass/amber, hue ~42°. Replaces the Stage-3 neon mint
+     (#16f2b3) — see docs/DESIGN-SYSTEM.md "The accent: neon mint →
+     considered amber" for the argument and computed contrast figures.
      --------------------------------------------------------------- */
-  --color-signal-600: #0fcf97; /* pressed / active state */
-  --color-signal-500: #16f2b3; /* default accent — unchanged existing hue */
-  --color-signal-400: #5cf5c8; /* hover state */
+  --color-signal-600: #846621; /* pressed / active state (3.5:1 non-text on canvas) */
+  --color-signal-500: #a27d28; /* default accent (4.9:1 on canvas, 4.7:1 on surface) */
+  --color-signal-400: #be932f; /* hover state (6.6:1 on canvas) */
 
   /* ---------------------------------------------------------------
      PRIMITIVE — danger (form validation only; not a second accent)

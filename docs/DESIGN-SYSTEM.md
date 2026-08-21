@@ -8,13 +8,13 @@ There is no light mode and none is planned. The old `@media (prefers-color-schem
 
 ## Where the tokens live
 
-`app/css/theme.css` — a plain `.css` file (deliberately not `.scss`) containing `@import "tailwindcss"` and the `@theme` block. Tailwind v4's `@theme` at-rule needs to be evaluated by `@tailwindcss/postcss` directly; routing it through Sass first was tested and avoided (see "Why plain CSS, not SCSS" below). `app/layout.js` imports `theme.css` first, then `globals.scss` (base body rules), then `card.scss` (glow-card effect) — that order matters for cascade.
+`app/css/theme.css` — a plain `.css` file (deliberately not `.scss`) containing `@import "tailwindcss"` and the `@theme` block. Tailwind v4's `@theme` at-rule needs to be evaluated by `@tailwindcss/postcss` directly; routing it through Sass first was tested and avoided (see "Why plain CSS, not SCSS" below). `app/layout.js` imports `theme.css` first, then `globals.scss` (base body rules) — that order matters for cascade. (A third import, `card.scss`, existed here through the color-audit pass below; it held the glow-card hover effect and was deleted once that effect was replaced with a plain Tailwind hover state — see "Audit: gradients, glow, blur, decorative stripes".)
 
 `tailwind.config.js` no longer exists. Everything it held was either dead (`container` customization, `bg-gradient-radial`/`bg-gradient-conic`, a broken/unused `4k` breakpoint — none were referenced anywhere in the codebase) or redundant under Tailwind v4's automatic content detection. Tailwind v4 doesn't require a JS config file at all when there's nothing JS-only to configure.
 
 ### Why plain CSS, not SCSS
 
-Tested empirically rather than assumed: Sass compiles `.scss` to plain CSS *before* PostCSS/Tailwind ever sees it, and Tailwind v4 relies on native CSS features (cascade layers, its own at-rules) that Sass predates. Keeping `@theme` in a plain `.css` file sidesteps any ambiguity. `globals.scss` and `card.scss` are kept as Sass only because nothing in them needs to interact with `@theme` at the Tailwind-processing layer — `card.scss` references the compiled tokens via plain `var(--color-*)`, which works because Tailwind's `@theme` block generates real global CSS custom properties, readable from any stylesheet in the cascade.
+Tested empirically rather than assumed: Sass compiles `.scss` to plain CSS *before* PostCSS/Tailwind ever sees it, and Tailwind v4 relies on native CSS features (cascade layers, its own at-rules) that Sass predates. Keeping `@theme` in a plain `.css` file sidesteps any ambiguity. `globals.scss` is kept as Sass only because nothing in it needs to interact with `@theme` at the Tailwind-processing layer — it references the compiled tokens via plain `var(--color-*)`, which works because Tailwind's `@theme` block generates real global CSS custom properties, readable from any stylesheet in the cascade. (`card.scss` used to be the other file here, on the same basis — it's gone now; see "Audit: gradients, glow, blur, decorative stripes" below.)
 
 ### Content scanning: `@source`
 
@@ -35,13 +35,13 @@ Deleting `tailwind.config.js` also removed its `content: [...]` allowlist, which
 
 ### THE ACCENT RULE
 
-> `--color-accent` (and its `signal-*` primitives) is reserved for exactly two jobs:
+> `--color-accent` (and its `signal-*` primitives) **is** reserved for exactly two jobs, and nothing else:
 > 1. **Quantified/proof-point data and identifying labels** — dates, durations, project titles, section eyebrow labels.
 > 2. **Interactive affordances** — links, hover/focus/active states, the primary call-to-action.
 >
-> It is never used for decorative gradients, ambient glows, large fills, or bulk emphasis. If what you're coloring is neither data nor interactive, reach for an `ink-*` token instead.
+> It **is not**: a decorative gradient stop, an ambient glow or blur, a large fill, bulk emphasis, a divider/stripe, or a stand-in "brand color" applied because something looks unfinished without a splash of hue. If what you're coloring is neither data nor interactive, reach for an `ink-*` token instead — a page that needs more visual interest earns it from type, spacing, and border weight, not from a second reason to reach for the accent.
 
-This is stated as a comment directly above the `@theme` block in `theme.css` too, so it survives even if this doc drifts. Before Stage 3, the same hex (`#16f2b3`) already lived almost entirely inside these two categories (dates, project titles, eyebrow labels, hover states) — the fix wasn't relocating the accent, it was removing the four *other* colors (pink, violet, amber, cyan, orange) that were competing with it everywhere else, so the one accent that was already disciplined could actually read as singular.
+This is stated as a comment directly above the `@theme` block in `theme.css` too, so it survives even if this doc drifts. Before Stage 3, the same hex (`#16f2b3`) already lived almost entirely inside these two categories (dates, project titles, eyebrow labels, hover states) — the Stage-3 fix wasn't relocating the accent, it was removing the four *other* colors (pink, violet, amber, cyan, orange) that were competing with it everywhere else, so the one accent that was already disciplined could actually read as singular. This pass (below) keeps the same *role* discipline and instead re-examines the *hue* itself, plus a second, previously-missed source of stray color and glow living in raw SVG assets — see "The accent: neon mint → considered amber" and "Audit: gradients, glow, blur, decorative stripes".
 
 ### Primitives
 
@@ -49,7 +49,7 @@ This is stated as a comment directly above the `@theme` block in `theme.css` too
 
 | Token | Hex | Role |
 |---|---|---|
-| `ink-950` | `#05060d` | Deepest shadow / glow-card underlay |
+| `ink-950` | `#05060d` | Deepest shadow tone; also the label-text color on `bg-accent`/`bg-accent-hover` buttons |
 | `ink-900` | `#0d1224` | Canvas (page background) — unchanged from the original |
 | `ink-800` | `#10152c` | Surface: cards, nav |
 | `ink-700` | `#161c38` | Raised surface: form fields, code-block panels |
@@ -60,13 +60,13 @@ This is stated as a comment directly above the `@theme` block in `theme.css` too
 | `ink-100` | `#e7e9f2` | Primary body text |
 | `ink-50` | `#f8f9fc` | Headings, max-emphasis text |
 
-**`signal-*`** — the one reserved accent, hue unchanged from the original site.
+**`signal-*`** — the one reserved accent. Hue changed this pass, from `#16f2b3` (neon mint) to a muted brass/amber (hue ~42°) — see "The accent: neon mint → considered amber" below for the full argument.
 
 | Token | Hex | Role |
 |---|---|---|
-| `signal-600` | `#0fcf97` | Pressed / active state |
-| `signal-500` | `#16f2b3` | Default accent |
-| `signal-400` | `#5cf5c8` | Hover state |
+| `signal-600` | `#846621` | Pressed / active state |
+| `signal-500` | `#a27d28` | Default accent |
+| `signal-400` | `#be932f` | Hover state |
 
 **`danger-400`** — `#f87171`. Form-validation error text only. This is a necessary functional UI state (most design systems carve out red for errors even in strict monochrome+accent systems), not a second accent — it never appears outside `<ContactForm>`'s validation messages.
 
@@ -90,27 +90,51 @@ Components should reach for these first; they exist so intent reads at the call 
 --color-danger          → danger-400
 ```
 
+### The accent: neon mint → considered amber
+
+**Honest assessment first.** `#16f2b3` on `#0d1224` — a saturated, high-luminance mint green (relative luminance 0.669, near the top of the whole scale) sitting on a near-black canvas — is exactly the neon-accent-on-near-black combination that reads as generated-template design. Being disciplined about *where* the accent was used (the two roles under THE ACCENT RULE, unchanged since Stage 3) never fixed *what* the hue itself signaled: that particular saturated-green-on-black pairing is common enough in AI-tool default output that it's recognizable on sight, independent of how restrained its usage is. Confining a neon color to a small role doesn't stop it from being neon.
+
+**The replacement: a muted brass/amber, hue ~42°.** Argued against the actual constraint, not swapped for the next available bright color:
+
+- **Considered, not glowing.** The old accent's luminance (0.669) was roughly 3× higher than what any of its actual contrast requirements needed — it was over-satisfying WCAG AA by a wide margin, which is a large part of why it read as glowing rather than chosen. The new `signal-500` (`#a27d28`, L=0.225) is tuned to land just above the required thresholds (4.72–4.87:1 against canvas/surface, see the recomputed table below) rather than far past them. Same underlying method used for the two hover/pressed tones (`signal-400`/`signal-600`): each picked by solving for the minimum relative luminance its actual use requires, not by eyeballing a brighter or darker version of the same hue.
+- **Complementary to the ink scale, not adjacent to it.** The `ink-*` primitives sit at hue ~227° ("night sky," per the primitives table above). A hue at ~42° is close to directly complementary — that's what makes it read as a deliberate figure against the neutral scale rather than a marginally-brighter shade of the background, which is the actual job of an accent in a near-monochrome system.
+- **Clear of the flagged list on its own terms.** Not neon (moderate 60% saturation, not the near-100% saturation that reads "glowing"), not part of a purple-and-black pairing (nowhere near violet), not one stop in a rainbow (still exactly one hue, same as before), not a pastel (luminance/saturation profile of a considered mid-tone, not a washed-out tint), and it's a flat token-driven fill everywhere — never a gradient (see the audit below).
+- **Distinct from `danger-400`.** The error-state red (`#f87171`, hue ~0°) and the new accent (hue ~42°) sit ~42° apart on the wheel — enough separation that the two don't read as variations of the same warning color, which matters more now that both are warm hues (the old mint, at ~160°, had no such adjacency risk purely by being on the opposite side of the wheel; distinctness had to be re-checked deliberately here rather than assumed for free).
+- **Pairs with what's already established.** This system's premise is "engineered documentation" (aircraft/flight theme, Roboto Slab + IBM Plex Mono — see Typography below). A muted brass/amber reads as instrument-panel or nameplate amber — a considered, referential color choice for that premise — rather than an interface-tool default.
+
+The three-tone ramp (`signal-600`/`500`/`400`) keeps the exact same role structure as before (pressed/default/hover) — only the hue and the luminance targets changed. `--color-accent`/`--color-accent-hover`/`--color-accent-active` still point at the same primitives; no component had to change which token it reaches for, only what that token now resolves to.
+
 ### Deliberate recolors (not just token substitution)
 
 A handful of things were genuinely multi-hue before and are now monochrome+accent by design, not by accident:
 
 - **Hero and project-card fake terminal blocks** — previously 6 hues (pink/white/gray/amber/orange/cyan) doing ad-hoc syntax highlighting with no real meaning. Now strictly `ink-50` (keys) / `ink-100` (values) / `ink-300` (punctuation) — zero accent inside these blocks. The content in them is decorative code-block flavor, not the site's actual proof-point data, so it doesn't earn accent treatment. (Stage 5.1 may introduce a real proof-point moment in the hero; that's a content/layout decision, not this stage's to make.)
 - **"Traffic light" window-chrome dots** (hero + project-card) — were literal red/orange/green; now a graduated neutral (`ink-500`/`ink-400`/`ink-300`). Three saturated hues for a decorative flourish directly violated the accent rule.
-- **Ambient background blur blobs** (skills, blog, projects sections) — were `violet-100`; now `ink-500` at the same low opacity. Purely decorative depth, no data/interactive role, so no hue.
-- **Section divider rules** (the thin gradient lines above cards/sections) — were pink-to-violet or violet-only; now `border-strong` (neutral). These appear on nearly every card; making them accent-colored would have been the single biggest source of "accent overuse" on the page.
-- **Glow-card hover effect** (`card.scss`) — was a 4-stop pink/purple/blue/near-white conic gradient; now cycles the three `signal-*` tones plus one `ink-50` highlight point. Same mouse-tracked mechanic (untouched — that's existing interaction code, not new motion), recolored to the one accent instead of an unrelated rainbow.
-- **Primary buttons** ("Get Resume", "Send Message", scroll-to-top, 404's "Go to Home") — were a pink-to-violet gradient fill; now solid `bg-accent` with `text-ink-950` (verified 12.7:1 contrast). This is the accent's most legitimate use: the page's actual primary interactive affordances.
+- **Ambient background blur blobs** (skills, projects sections — Tailwind `bg-ink-500 blur-3xl` divs) — were `violet-100` before Stage 3, recolored to `ink-500` at low opacity at the time. **Removed entirely this pass**, not just recolored — see "Audit: gradients, glow, blur, decorative stripes" below; a neutral-hued blur is still a blur, and the current instruction set flags ambient blur/glow regardless of hue.
+- **Section divider rules** (the thin gradient hairlines above cards/section headers) — were pink-to-violet or violet-only before Stage 3, recolored to `border-strong` (neutral) at the time. **Removed entirely this pass** — every instance sat directly on top of a section or panel that already had its own solid `border-t`/`border`, so the gradient hairline was a redundant "highlight over an existing border," not a distinct piece of information. See the audit below.
+- **Glow-card hover effect** (`card.scss` + `glow-card.jsx`) — was a 4-stop pink/purple/blue/near-white conic gradient before Stage 3, recolored to cycle the three `signal-*` tones at the time. **Replaced entirely this pass**: a mouse-tracked, blurred, gradient hover glow is itself a template-glassmorphism pattern independent of which hue drives it. `card.scss` is deleted; `glow-card.jsx` is replaced by `app/components/helper/card.jsx`, a flat `border-border → hover:border-accent` transition with no JS, no blur, no gradient. See the audit below.
+- **Primary buttons** ("Get Resume", "Send Message", scroll-to-top, 404's "Go to Home") — were a pink-to-violet gradient fill before Stage 3; already solid `bg-accent` with `text-ink-950` since then. Recomputed this pass for the new hue: 5.30:1 (was 12.74:1 under the old neon mint — still a comfortable PASS, just no longer wildly over-satisfying the 4.5:1 requirement, consistent with "considered, not glowing" above). This is the accent's most legitimate use: the page's actual primary interactive affordances.
 - **Secondary buttons** ("Contact me", "View More") — outlined in `border-strong`, text goes `accent` only on hover. Kept visually distinct from the primary buttons rather than both screaming accent.
 - **Contact icon circles** — were a light gray (`#8b98a5`) circle with a dark glyph, an intentional light-button-on-dark-page inversion. Preserved as `bg-ink-300` / `text-ink-900`, with `hover:bg-accent` (interactive state).
+
+### Audit: gradients, glow, blur, decorative stripes
+
+A full repo grep for `gradient|blur|glow|shadow` this pass, checked against every match rather than assumed clean from the Stage-3 pass (which had recolored some of these, not removed them — recoloring a gradient/blur to a neutral hue still leaves a gradient/blur, and that's now explicitly in scope). Four findings, all fixed (the first two are groups of multiple identical instances, not single occurrences):
+
+1. **Five decorative gradient hairlines** (`bg-gradient-to-r from-transparent via-border-strong to-transparent`) — footer top rule, the hero terminal panel's top rule, two in Skills (per-tile and section-header), one in Education's section-header. Every one of them sat directly on top of a container that already had its own solid `border`/`border-t` — a faded highlight duplicating a border that was already there. **Removed** (not flattened to solid), since the underlying real border already does the job.
+2. **Two ambient blur blobs** (`bg-ink-500 rounded-full ... blur-3xl opacity-20/30`) — Skills and Projects sections. Purely decorative depth with no data/interactive role — the exact case THE ACCENT RULE already excludes, and blur/glow-as-decoration is out regardless of which token drives it. **Removed.**
+3. **The glow-card mouse-tracked hover effect** (`card.scss`'s conic-gradient + `filter: blur(...)`, driven by `glow-card.jsx`'s pointermove listener) — used on every Experience/Education card. Already recolored to `signal-*` at Stage 3, but a blurred, mouse-tracked conic gradient is a recognizable glassmorphism-template pattern independent of hue. **Replaced**: `card.scss` deleted, `glow-card.jsx` replaced by `app/components/helper/card.jsx` — a plain component (no `"use client"`, no listener) with a flat `hover:border-accent` transition. Same interactive signal (the card visibly responds to hover), none of the mechanism.
+4. **Three raw SVG background assets — `public/hero.svg`, `public/section.svg`, `public/blur-23.svg`** — the single biggest finding. These were never touched by the Stage-3 token migration because they're static image files, not Tailwind classes, so a class-level grep for `#16f2b3` never surfaced them. Opened and inspected directly: all three contain Gaussian-blurred (`feGaussianBlur`), radial/linear-gradient-filled ellipse "glow" shapes in raw `#8244FF` (violet), `#F926AE` (magenta/pink), and `#5B21B6` (violet) — literally the purple-and-black-plus-glow combination this task flags, sitting undetected behind the hero, and behind the Experience/Education section headers and every Experience/Education card. (`docs/POLISH-AUDIT.md` and `docs/BUILD-PLAN.md` had previously flagged and fixed these three files' *alt text* — correctly changed to `alt=""` as decorative — without anyone opening the files to look at what they actually rendered.) **Deleted**, and every `<Image>` reference to them removed from `hero-section/index.jsx`, `experience/index.jsx`, and `education/index.jsx` — confirmed via repo-wide grep that no other file referenced any of the three filenames before deleting.
+
+Post-fix, `grep -rniE "gradient|blur-3xl|filter blur|glow" app/` returns nothing outside `theme.css`'s own rule-statement comment and `card.jsx`'s comment explaining what it replaced.
 
 ### Out of scope, deliberately
 
 - `app/api/contact/route.js`'s HTML email template still uses raw hex. Email clients don't reliably support CSS custom properties, so inline hex is the *correct* practice there, not a violation — it was excluded from migration on purpose.
-- `card.scss`'s `#000`/`#0000`/`#fff`/`#ffffff26` are CSS mask/alpha compositing values (white = opaque, transparent = hidden, by mask convention), not brand hues. Left as-is.
 
 ### Contrast verification
 
-Computed via the WCAG relative-luminance formula (not eyeballed), for every token pairing actually used in a component. Re-run from scratch on this pass (a standalone script against the live hex values in `theme.css`, not copied forward) since color and type are easy to let drift apart — colors themselves are untouched by the Stage-3-revisit font swap, so no ratio was expected to move, and none did:
+Computed via the WCAG relative-luminance formula (not eyeballed), for every token pairing actually used in a component. Re-run from scratch this pass (a standalone script against the live hex values in `theme.css`) — the `ink-*`/`danger-*` figures are unchanged from the previous pass (those hexes didn't move), but every `signal-*` row is new since the accent hue changed:
 
 | Pair | Ratio | Requirement | Result |
 |---|---|---|---|
@@ -120,16 +144,18 @@ Computed via the WCAG relative-luminance formula (not eyeballed), for every toke
 | `ink-400` text on `ink-900` canvas | 5.07 | 4.5 | PASS |
 | `ink-100`/`ink-300`/`ink-400` on `ink-800` surface | 14.87 / 8.02 / 4.91 | 4.5 | PASS |
 | `ink-100`/`ink-300` on `ink-700` raised (form text) | 13.79 / 7.43 | 4.5 | PASS |
-| `signal-500` accent on `ink-900` / `ink-800` | 12.74 / 12.34 | 4.5 | PASS |
-| `signal-400` accent-hover on `ink-900` | 13.59 | 4.5 | PASS |
-| `ink-950` text on `signal-500` (primary button label) | 13.86 | 4.5 | PASS |
+| `signal-500` accent on `ink-900` canvas / `ink-800` surface | 4.87 / 4.72 | 4.5 | PASS |
+| `signal-400` accent-hover text on `ink-900` | 6.56 | 4.5 | PASS |
+| `ink-950` text on `signal-500` (primary button label) | 5.30 | 4.5 | PASS |
+| `ink-950` text on `signal-400` (primary button label, hover) | 7.13 | 4.5 | PASS |
 | `danger-400` on `ink-900` / `ink-700` | 6.72 / 6.04 | 4.5 | PASS |
 | `ink-500` functional border on `ink-900` / `ink-800` (non-text) | 3.22 / 3.12 | 3.0 | PASS |
-| `signal-500` focus ring on `ink-900` (non-text) | 12.74 | 3.0 | PASS |
+| `signal-500` focus ring on `ink-900` (non-text) | 4.87 | 3.0 | PASS |
+| `signal-600` pressed/active on `ink-900` (non-text, currently unwired to any class) | 3.46 | 3.0 | PASS |
 
 Every pairing actually in use clears WCAG AA. `ink-600` (the *decorative*-divider tier) does not hit 3:1 against canvas by design — it's intentionally subtle and never used for a functional boundary a user needs to perceive to operate the UI (that's what `ink-500`/`border-strong` is for).
 
-One correction from this pass: `ink-950` text on `signal-500` was previously recorded as 12.74, which is actually the `signal-500`-on-`ink-900` figure directly above it, transcribed into the wrong row. The real computed ratio for that pair is 13.86 — still a comfortable PASS, nothing was ever at risk, but recording it accurately now that it's been independently recomputed rather than carried forward.
+Note the margins: every `signal-*` row now clears its requirement by roughly 0.2–2.6, not by a factor of 3× like the old neon mint did (12.74:1 against a 4.5:1 requirement). That tighter margin is the direct, intended consequence of "considered, not glowing" above — the new accent was chosen to clear WCAG AA, not to floodlight past it.
 
 ---
 

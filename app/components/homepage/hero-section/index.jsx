@@ -4,7 +4,6 @@
 import { personalData } from "@/utils/data/personal-data";
 import { skillsData } from "@/utils/data/skills";
 import { useSectionReveal } from "@/utils/hooks/use-section-reveal";
-import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useRef } from "react";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
@@ -22,14 +21,6 @@ function HeroSection() {
 
   return (
     <section ref={scopeRef} className="relative flex flex-col items-center justify-between py-4 lg:py-12">
-      <Image
-        src="/hero.svg"
-        alt=""
-        width={1572}
-        height={795}
-        className="absolute -top-[98px] -z-10"
-      />
-
       <div className="grid grid-cols-1 items-start lg:grid-cols-2 lg:gap-12 gap-y-8">
         <div className="flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
           <h1 className="font-display text-3xl font-bold leading-10 text-text-primary md:font-extrabold lg:text-display">
@@ -77,9 +68,6 @@ function HeroSection() {
 
         </div>
         <div data-reveal="figure" className="relative rounded-lg border border-border-strong bg-surface-raised">
-          <div className="flex flex-row">
-            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-border-strong to-transparent"></div>
-          </div>
           <div className="px-4 lg:px-8 py-5">
             <div className="flex flex-row space-x-2">
               <div className="h-3 w-3 rounded-full bg-ink-500"></div>

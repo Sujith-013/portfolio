@@ -11,7 +11,6 @@ const Projects = () => {
 
   return (
     <div ref={scopeRef} id='projects' className="relative z-50 my-12 lg:my-24">
-      <div className="w-[80px] h-[80px] bg-ink-500 rounded-full absolute -top-3 left-0 translate-x-1/2 filter blur-3xl opacity-30"></div>
       <div className="flex items-center justify-start relative mb-12">
         <h2 data-reveal="text" className="font-display bg-surface-raised absolute left-0  w-fit text-text-primary px-5 py-3 text-xl rounded-md">
           PROJECTS
