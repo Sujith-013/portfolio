@@ -15,7 +15,7 @@ import { join } from "node:path";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Sujith — Space Systems Engineer. Aerospace, robotics, autonomy.";
+export const alt = "Sujith, Space Systems Engineer. Aerospace, robotics, autonomy.";
 
 const INK_900 = "#0d1224";
 const INK_600 = "#262e52";

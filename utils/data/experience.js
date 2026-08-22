@@ -38,7 +38,7 @@ export const experiences = [
     company: "ASTRAEUS, Germany",
     duration: "(Aug 2025 - Present)",
     bullets: [
-      "Working on the DIANA project, hitting thermal-protection-mass targets across 4 architectural concepts by optimizing active/passive thermal control and radiation mitigation — a projected +15% mission survivability margin.",
+      "Working on the DIANA project, hitting thermal-protection-mass targets across 4 architectural concepts by optimizing active/passive thermal control and radiation mitigation, a projected +15% mission survivability margin.",
       "Running system-level trade studies with VHAB and DALUS for ECLSS modeling, cutting equivalent system mass by 12% and improving power efficiency by 18%.",
     ],
   },

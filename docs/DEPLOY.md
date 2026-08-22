@@ -44,11 +44,12 @@ None of these three block a redeploy — they're pre-existing, not introduced by
 | `EMAIL_ADDRESS` | `app/api/contact/route.js` | Optional, but both-or-neither with `GMAIL_PASSKEY` | Contact form returns an honest `503` ("not configured yet"), no crash, no silent failure. |
 | `GMAIL_PASSKEY` | `app/api/contact/route.js` | Optional, paired with `EMAIL_ADDRESS` | Same as above. Must be a Gmail **app password** (`myaccount.google.com/apppasswords`), not the real account password. |
 | `NEXT_PUBLIC_APP_URL` | `app/layout.js` (metadata base / OG image resolution) | Optional | Falls back to a hardcoded string that still names the *old, deleted* Vercel project (`https://sujith-portfolio-eight.vercel.app`) — **set this explicitly after your first deploy**, once Vercel assigns the new project's real URL (or your custom domain), so OG images and metadata resolve correctly instead of silently pointing at a dead project. |
-| `NEXT_PUBLIC_GTM` | `app/layout.js` (`GoogleTagManager`) | Optional | No tracking fires, no error — inert. Only set this if you actually want Google Tag Manager analytics (open decision, see `docs/DECISIONS.md`). |
 
-**None of these are required for a working deploy.** Every one degrades honestly if left unset — the worst case with all four unset is: no contact-form email delivery (visible 503, not broken), OG image metadata pointing at the old project's URL string (cosmetic, not a crash), and no analytics. Nothing 500s, nothing silently lies.
+**None of these are required for a working deploy.** Every one degrades honestly if left unset — the worst case with all three unset is: no contact-form email delivery (visible 503, not broken), OG image metadata pointing at the old project's URL string (cosmetic, not a crash). Nothing 500s, nothing silently lies.
 
-`.env.example` at the repo root already lists all four with blank values — copy it to `.env` locally if you want to test the contact form end to end before setting real values on Vercel.
+`.env.example` at the repo root already lists all three with blank values — copy it to `.env` locally if you want to test the contact form end to end before setting real values on Vercel.
+
+There is no analytics variable to set. Google Tag Manager was wired but never turned on (see `docs/DECISIONS.md` #4) and has been removed outright — the site loads no third-party scripts and collects nothing beyond what a visitor submits through the contact form.
 
 *Not on this list:* `NODE_ENV` — read once, in `utils/hooks/use-section-reveal.js`, only to gate a `console.error` in non-production. Vercel (and `next build`/`next start`) sets this automatically; never set it manually in the dashboard.
 

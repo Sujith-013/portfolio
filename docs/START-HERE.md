@@ -4,7 +4,7 @@ One screen to work from. Detail lives elsewhere — don't re-read those here, ju
 - **`docs/WHERE-THINGS-LIVE.md`** — every file path, organized by what you want to change.
 - **`docs/ASSET-CHECKLIST.md`** — full per-project checklist and pipeline rationale.
 - **`docs/CONTENT-TEMPLATE.md`** — the copy-five-times content fields + the full export spec table.
-- **`docs/DECISIONS.md`** — two open questions (resume hosting, GTM analytics) plus three already resolved — none block the work below.
+- **`docs/DECISIONS.md`** — one open question (resume hosting) plus four already resolved — doesn't block the work below.
 
 ---
 
@@ -18,7 +18,7 @@ Format verdict from building it fully populated (desktop and mobile): **holds, o
 
 ## 1. State of the site
 
-Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes; gallery grid balance re-verified building the reference above). Real content for all five projects is still **100% TODO** — `aircraft-design` additionally carries the full `[DUMMY]` reference build described in §0, the other four are untouched grey placeholder boxes and literal `TODO:` strings. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. Two decisions remain open (resume hosting, GTM analytics — `docs/DECISIONS.md`) but neither blocks this work — the only thing left is you supplying content and assets, five times (four, plus replacing the reference dummy on the fifth).
+Format, routing, motion, accessibility, performance, and metadata are **finished and verified** (`docs/POLISH-AUDIT.md`, three passes; gallery grid balance re-verified building the reference above). Real content for all five projects is still **100% TODO** — `aircraft-design` additionally carries the full `[DUMMY]` reference build described in §0, the other four are untouched grey placeholder boxes and literal `TODO:` strings. The asset pipeline itself (manifest → `ProjectAsset` → real `<Image>`/`<video>`) is built and tested end-to-end, so wiring in a real asset is a pure data edit, not a code change. One decision remains open (resume hosting — `docs/DECISIONS.md`) but it doesn't block this work — the only thing left is you supplying content and assets, five times (four, plus replacing the reference dummy on the fifth).
 
 ---
 

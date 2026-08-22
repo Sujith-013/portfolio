@@ -24,7 +24,7 @@ export async function POST(request) {
     if (!process.env.EMAIL_ADDRESS || !process.env.GMAIL_PASSKEY) {
       return NextResponse.json({
         success: false,
-        message: 'The contact form is not configured yet — email delivery is unavailable right now. Please reach out directly instead.',
+        message: 'The contact form is not configured yet. Email delivery is unavailable right now. Please reach out directly instead.',
       }, { status: 503 });
     }
 

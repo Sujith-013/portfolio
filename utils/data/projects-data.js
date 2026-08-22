@@ -43,7 +43,7 @@ export const projectsData = [
     slug: 'aircraft-design',
     domain: 'Aircraft Design',
     name: 'Aircraft Design',
-    nameFull: '[DUMMY] FlexWing — Compliant Trailing-Edge Test Article',
+    nameFull: '[DUMMY] FlexWing: Compliant Trailing-Edge Test Article',
     context: '[DUMMY] Personal build, summer 2025, ~3 months',
     result: '[DUMMY] Survived 200+ bench actuation cycles before the airframe was retired',
     description:
@@ -68,7 +68,7 @@ export const projectsData = [
         file: 'cad-01.jpg',
         width: 1600,
         height: 1200,
-        caption: '[DUMMY] CAD render 01 — flexure rib assembly, exploded view',
+        caption: '[DUMMY] CAD render 01: flexure rib assembly, exploded view',
       },
       {
         category: 'cad',
@@ -76,7 +76,7 @@ export const projectsData = [
         file: 'cad-02.jpg',
         width: 1600,
         height: 1200,
-        caption: '[DUMMY] CAD render 02 — trailing-edge flexure geometry, iteration 3',
+        caption: '[DUMMY] CAD render 02: trailing-edge flexure geometry, iteration 3',
       },
       {
         category: 'simulation',
@@ -84,7 +84,7 @@ export const projectsData = [
         file: 'sim-01.jpg',
         width: 1600,
         height: 900,
-        caption: '[DUMMY] Simulation 01 — FEA stress plot at max deflection (placeholder figure)',
+        caption: '[DUMMY] Simulation 01: FEA stress plot at max deflection (placeholder figure)',
       },
       {
         category: 'simulation',
@@ -92,7 +92,7 @@ export const projectsData = [
         file: 'sim-02.jpg',
         width: 1600,
         height: 900,
-        caption: '[DUMMY] Simulation 02 — cyclic load thermal placeholder figure',
+        caption: '[DUMMY] Simulation 02: cyclic load thermal placeholder figure',
       },
       {
         category: 'results',
@@ -100,7 +100,7 @@ export const projectsData = [
         file: 'results-01.jpg',
         width: 1600,
         height: 900,
-        caption: '[DUMMY] Results plot — bench actuation cycle count vs. rib iteration (placeholder data)',
+        caption: '[DUMMY] Results plot: bench actuation cycle count vs. rib iteration (placeholder data)',
       },
       {
         category: 'video',
@@ -116,9 +116,9 @@ export const projectsData = [
         category: 'code',
         placeholder: false,
         language: 'C++ (Arduino)',
-        caption: '[DUMMY] Flexure servo control loop — placeholder snippet, not real project code',
+        caption: '[DUMMY] Flexure servo control loop: placeholder snippet, not real project code',
         snippet:
-          '// [DUMMY] placeholder snippet — reference formatting only, not real project code\n' +
+          '// [DUMMY] placeholder snippet, reference formatting only, not real project code\n' +
           '// Reads a bench-load cell and holds the flexure at a commanded deflection\n' +
           '// angle via a simple proportional loop.\n\n' +
           'const int LOAD_CELL_PIN = A0;\n' +
@@ -149,7 +149,7 @@ export const projectsData = [
     nameFull: 'TODO: project title',
     context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
     result: '',
-    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    description: 'TODO: problem/goal, your approach, and outcome. See docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
     hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
@@ -162,7 +162,7 @@ export const projectsData = [
     nameFull: 'TODO: project title',
     context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
     result: '',
-    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    description: 'TODO: problem/goal, your approach, and outcome. See docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
     hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
@@ -175,7 +175,7 @@ export const projectsData = [
     nameFull: 'TODO: project title',
     context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
     result: '',
-    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    description: 'TODO: problem/goal, your approach, and outcome. See docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
     hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),
@@ -188,7 +188,7 @@ export const projectsData = [
     nameFull: 'TODO: project title',
     context: 'TODO: project type (personal/coursework/etc.) + rough timeframe',
     result: '',
-    description: 'TODO: problem/goal, your approach, and outcome — see docs/ASSET-CHECKLIST.md for exactly what to send.',
+    description: 'TODO: problem/goal, your approach, and outcome. See docs/ASSET-CHECKLIST.md for exactly what to send.',
     tools: [],
     hero: { file: 'hero.jpg', width: 2400, height: 1350, alt: 'TODO', placeholder: true },
     assets: demoAssets(),

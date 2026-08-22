@@ -61,7 +61,7 @@ function ContactForm() {
       // toast. Always show real text instead.
       toast.error(
         error?.response?.data?.message ||
-        "Couldn't send that — check your connection and try again, or email me directly."
+        "Couldn't send that. Check your connection and try again, or email me directly."
       );
     } finally {
       setIsLoading(false);

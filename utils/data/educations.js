@@ -13,7 +13,7 @@ export const educations = [
     institution: "Nanyang Technological University (NTU), Singapore",
     status: "Expected 2026",
     achievements: [
-      "1st Place, DSTA National CubeSat Challenge 2025 — engineered an optimized ADCS control law for inertial maneuvering, a 400% improvement in pointing agility.",
+      "1st Place, DSTA National CubeSat Challenge 2025: engineered an optimized ADCS control law for inertial maneuvering, a 400% improvement in pointing agility.",
       "Managed a $30,000+ budget for library construction and educational programs in Trà Vinh through the OCEP Vietnam service project.",
       "Led STEM outreach and a Micro:bit embedded-systems curriculum for primary schoolers at Taman Jurong CC through NTU's Leadership Development Programme.",
     ],
