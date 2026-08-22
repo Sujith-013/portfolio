@@ -81,6 +81,8 @@ Dropping a file into `public/projects/<slug>/` **does nothing by itself.** Files
 
 The component that reads this and decides what to render is `ProjectAsset` in `app/components/helper/asset-placeholder.jsx` — you don't need to touch this file to add an asset, only to know it exists if something isn't rendering as expected.
 
+Every real (`placeholder: false`) image and video also gets a loading state for free: a `bg-surface-raised` skeleton tone sits behind the media, sized to the asset's exact aspect ratio, and simply gets covered once the real pixels paint — no JS, no per-asset setup. See `docs/DESIGN-SYSTEM.md` "Audit: loading states" for why it's built that way.
+
 ### Worked example — adding one CAD image to `aircraft-design`
 
 **Before** (in `utils/data/projects-data.js`, inside `aircraft-design`'s `assets` array — this is what `demoAssets()` generates by default):

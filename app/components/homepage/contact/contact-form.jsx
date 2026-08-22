@@ -74,7 +74,7 @@ function ContactForm() {
   // click is normal, expected UX for form fields, not noise the way it
   // would be on a nav link.
   const inputCls =
-    "bg-surface-raised w-full border rounded-md border-border-strong focus:border-accent outline-0 focus:outline focus:outline-2 focus:outline-accent focus:outline-offset-2 transition-all duration-300 px-3 py-2";
+    "bg-surface-raised w-full border rounded-md border-border-strong focus:border-accent outline-0 focus:outline focus:outline-2 focus:outline-accent focus:outline-offset-2 px-3 py-2";
 
   return (
     <div>
@@ -135,7 +135,7 @@ function ContactForm() {
               All fields are required!
             </p>}
             <button
-              className="flex items-center gap-1 rounded-full bg-accent px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-ink-950 no-underline transition-all duration-200 ease-out hover:bg-accent-hover hover:no-underline md:font-semibold"
+              className="flex items-center gap-1 rounded-full bg-accent px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-ink-950 no-underline hover:bg-accent-hover hover:no-underline md:font-semibold"
               role="button"
               onClick={handleSendMail}
               disabled={isLoading}

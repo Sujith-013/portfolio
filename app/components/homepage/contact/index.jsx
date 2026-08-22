@@ -42,7 +42,7 @@ function ContactSection() {
               aria-label={`Email ${personalData.email}`}
             >
               <MdAlternateEmail
-                className="bg-ink-300 p-2 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900"
+                className="bg-ink-300 p-2 rounded-full hover:bg-accent text-ink-900"
                 size={36}
               />
               <span>{personalData.email}</span>
@@ -56,7 +56,7 @@ function ContactSection() {
               className="rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               <IoLogoGithub
-                className="bg-ink-300 p-3 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900 cursor-pointer"
+                className="bg-ink-300 p-3 rounded-full hover:bg-accent text-ink-900 cursor-pointer"
                 size={48}
               />
             </Link>
@@ -67,7 +67,7 @@ function ContactSection() {
               className="rounded-full outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               <BiLogoLinkedin
-                className="bg-ink-300 p-3 rounded-full hover:bg-accent hover:scale-110 transition-all duration-300 text-ink-900 cursor-pointer"
+                className="bg-ink-300 p-3 rounded-full hover:bg-accent text-ink-900 cursor-pointer"
                 size={48}
               />
             </Link>

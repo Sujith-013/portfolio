@@ -45,7 +45,7 @@ function Navbar() {
             making the entire nav unreachable on narrow viewports. */}
         <button
           type="button"
-          className="md:hidden text-text-primary hover:text-accent transition-colors duration-300 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded p-2"
+          className="md:hidden text-text-primary hover:text-accent outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded p-2"
           aria-expanded={isOpen}
           aria-controls="navbar-default"
           aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -56,12 +56,16 @@ function Navbar() {
 
         <ul
           id="navbar-default"
-          className={`${isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} mt-4 flex w-full flex-col items-start overflow-hidden text-sm transition-all duration-300 md:mt-0 md:max-h-screen md:w-auto md:flex-row md:items-center md:space-x-1 md:overflow-visible md:opacity-100`}
+          // The open/close transition confirms a real interaction (the menu
+          // toggle), so it stays — but motion-reduce:transition-none makes
+          // it an instant show/hide for anyone who's asked for that, same
+          // as everything else on this pass.
+          className={`${isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"} mt-4 flex w-full flex-col items-start overflow-hidden text-sm transition-all duration-300 motion-reduce:transition-none md:mt-0 md:max-h-screen md:w-auto md:flex-row md:items-center md:space-x-1 md:overflow-visible md:opacity-100`}
         >
           {NAV_LINKS.map(({ href, label }) => (
             <li key={href} className="w-full md:w-auto">
               <Link className={LINK_CLS} href={href} onClick={() => setIsOpen(false)}>
-                <div className="text-sm font-mono text-text-primary transition-colors duration-300 hover:text-accent">
+                <div className="text-sm font-mono text-text-primary hover:text-accent">
                   {label}
                 </div>
               </Link>

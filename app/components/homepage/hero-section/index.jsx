@@ -33,7 +33,7 @@ function HeroSection() {
             href={personalData.github}
             target='_blank'
             aria-label="GitHub"
-            className="rounded transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            className="rounded text-text-secondary hover:text-accent outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           >
             <BsGithub size={30} />
           </Link>
@@ -41,21 +41,21 @@ function HeroSection() {
             href={personalData.linkedIn}
             target='_blank'
             aria-label="LinkedIn"
-            className="rounded transition-all text-text-secondary hover:text-accent hover:scale-125 duration-300 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            className="rounded text-text-secondary hover:text-accent outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           >
             <BsLinkedin size={30} />
           </Link>
         </div>
 
         <div data-reveal="text" className="flex items-center gap-3">
-          <Link href="#contact" className="border border-border-strong rounded-full transition-all duration-300 hover:border-accent">
-            <button className="px-3 text-xs md:px-8 py-3 md:py-4 bg-canvas rounded-full border-none text-center md:text-sm font-medium uppercase tracking-wider text-text-primary no-underline transition-all duration-200 ease-out md:font-semibold flex items-center gap-1 hover:text-accent">
+          <Link href="#contact" className="border border-border-strong rounded-full hover:border-accent">
+            <button className="px-3 text-xs md:px-8 py-3 md:py-4 bg-canvas rounded-full border-none text-center md:text-sm font-medium uppercase tracking-wider text-text-primary no-underline md:font-semibold flex items-center gap-1 hover:text-accent">
               <span>Contact me</span>
               <RiContactsFill size={16} />
             </button>
           </Link>
 
-          <Link className="flex items-center gap-1 rounded-full bg-accent px-3 md:px-8 py-3 md:py-4 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-ink-950 no-underline transition-all duration-200 ease-out hover:bg-accent-hover hover:no-underline md:font-semibold" role="button" target="_blank" href={personalData.resume}
+          <Link className="flex items-center gap-1 rounded-full bg-accent px-3 md:px-8 py-3 md:py-4 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-ink-950 no-underline hover:bg-accent-hover hover:no-underline md:font-semibold" role="button" target="_blank" href={personalData.resume}
           >
             <span>Get Resume</span>
             <MdDownload size={16} />

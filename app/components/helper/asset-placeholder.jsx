@@ -130,7 +130,23 @@ export function CodePlaceholder({ asset, dataReveal, className = "" }) {
  * for a malformed "real" entry is the same choice already made everywhere
  * else in this file: never crash, always degrade to something visibly
  * unfinished instead.
+ *
+ * Real image/video assets get a loading state: an inset skeleton tone
+ * (bg-surface-raised, motion-safe:animate-pulse) sits behind the media in
+ * the same aspect-ratio box the real asset will fill. This is pure CSS,
+ * not a load event handled in JS — an <img> (and, once a poster is set,
+ * the poster paints the same way) is transparent until it has something to
+ * paint, so the skeleton simply shows through until the real pixels cover
+ * it, with no state to get stuck in. That means it needs no "use client",
+ * degrades to the always-correct native img/video behavior if JS never
+ * runs at all, and the exact box size is reserved up front from the
+ * manifest's width/height — nothing shifts when the asset finishes
+ * loading. motion-safe: keeps the pulse itself off under reduced motion,
+ * leaving a plain static tone. See docs/DESIGN-SYSTEM.md "Audit: loading
+ * states" for why this replaced shipping with none at all.
  */
+const SKELETON = <div className="absolute inset-0 bg-surface-raised motion-safe:animate-pulse" aria-hidden="true" />;
+
 function isFiniteNumber(value) {
   return typeof value === "number" && Number.isFinite(value) && value > 0;
 }
@@ -162,37 +178,53 @@ export function ProjectAsset({ asset, slug, category, dataReveal, className = ""
   }
 
   const src = `/projects/${slug}/${asset.file}`;
+  const aspectRatio = `${asset.width} / ${asset.height}`;
 
   if (category === "video") {
     const posterSrc = asset.poster ? `/projects/${slug}/${asset.poster}` : undefined;
     return (
-      <video
+      <div
         data-reveal={dataReveal}
-        className={`w-full rounded-md border border-border bg-surface ${className}`}
-        style={{ aspectRatio: asset.width && asset.height ? `${asset.width} / ${asset.height}` : undefined }}
-        controls
-        preload="none"
-        poster={posterSrc}
-        // Click-to-play by default per docs/PRD.md §10.5 — no autoplay,
-        // no loop. That means the reduced-motion rule is satisfied
-        // structurally: nothing here ever plays without the visitor
-        // pressing play, under any motion preference.
+        className={`relative overflow-hidden rounded-md border border-border bg-surface ${className}`}
+        style={{ aspectRatio }}
       >
-        <source src={src} type="video/mp4" />
-      </video>
+        {SKELETON}
+        <video
+          className="relative block w-full h-full object-cover"
+          controls
+          preload="none"
+          poster={posterSrc}
+          // Click-to-play by default per docs/PRD.md §10.5 — no autoplay,
+          // no loop. That means the reduced-motion rule is satisfied
+          // structurally: nothing here ever plays without the visitor
+          // pressing play, under any motion preference.
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      </div>
     );
   }
 
   return (
-    <Image
+    <div
       data-reveal={dataReveal}
-      className={`w-full h-auto rounded-md border border-border object-cover ${className}`}
-      src={src}
-      alt={asset.alt || asset.caption || ""}
-      width={asset.width}
-      height={asset.height}
-      priority={priority}
-      sizes={sizes}
-    />
+      className={`relative overflow-hidden rounded-md border border-border bg-surface ${className}`}
+      style={{ aspectRatio }}
+    >
+      {SKELETON}
+      {/* fill (not width/height) so next/image's own absolute-positioned
+          output stacks over the skeleton by DOM order alone, and sizes
+          itself off the wrapper's aspect-ratio box exactly — no separate
+          width/height math that could drift from the wrapper's ratio and
+          trip next/image's distortion warning. */}
+      <Image
+        className="object-cover"
+        src={src}
+        alt={asset.alt || asset.caption || ""}
+        fill
+        priority={priority}
+        sizes={sizes}
+      />
+    </div>
   );
 }

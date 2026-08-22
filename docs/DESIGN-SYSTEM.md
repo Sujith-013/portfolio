@@ -253,6 +253,39 @@ One thing noticed here, **not fixed, flagged instead:** `aircraft-design`'s `her
 
 ---
 
+## Audit: motion restraint
+
+A pass over every `hover:`/`transition`/`duration`/`animate`/`scale`/`translate` class in `app/components` (the Stage-4 `data-reveal` scroll reveals, `utils/hooks/use-section-reveal.js`, were explicitly out of scope — those stay). Rule applied: motion stays only where it aids comprehension or confirms a real interaction; a hover state on its own is a state change, not an animation, so it should read as immediate, not eased in over a duration.
+
+**Removed — decorative motion with no interaction behind it:**
+
+- **The profile photo's `hover:grayscale-0 hover:scale-110` reveal, `duration-1000`.** A plain, non-interactive `<Image>` (no link, no click handler) had a full-second hover animation that revealed color and grew the image — motion with nothing to confirm, since hovering a non-interactive photo does nothing. **Removed**, along with `cursor-pointer` (there was never anything to click). The photo is now a static grayscale image, matching the site's near-monochrome direction rather than hiding it behind a hover gimmick.
+- **`SkillTile`'s `hover:scale-[1.08]` and `group-hover:border-accent`, `duration-500`.** The tile itself carries `cursor-default` — the codebase's own admission that these tiles aren't interactive — while still growing and re-bordering on hover. **Removed entirely**; the tile is now a plain static box, consistent with what `cursor-default` already says about it.
+- **`hover:scale-110`/`hover:scale-125` on every icon-only link** (contact section's email/GitHub/LinkedIn icons, hero's GitHub/LinkedIn icons) **and `hover:text-xl` on the scroll-to-top button.** Real links and a real button, so the hover state itself stays — but the icon growing in size on hover confirms nothing about the interaction; the color/background change already does that job. **Removed** the scale/size growth from all five, kept the color/background hover.
+
+**Changed from animated to immediate — real interactions, but eased over a duration that read as an animation rather than a state change:**
+
+`transition-colors`/`transition-all` + `duration-200`/`duration-300`/`duration-500` was applied uniformly to essentially every hover and focus state on the site: `card.jsx`'s border-on-hover, the nav links and mobile-menu toggle, both hero CTAs and both social links, the "View full project" and "Back to portfolio" links, the contact-form inputs' focus border and its submit button. None of these move or resize — they're all a color, border, or background swap. **The `transition-*`/`duration-*`/`ease-*` classes were removed from all of them**, so the state change is instant: hover/focus now reads as immediate and legible, not as a small animation playing on every pointer pass. Nothing about *what* changes on hover/focus was touched, only whether it eases in or snaps.
+
+**Kept, deliberately — confirms a real interaction, not decorative:**
+
+- **The mobile nav menu's open/close transition** (`navbar.jsx`, `max-h-0 opacity-0` ↔ `max-h-screen opacity-100`, `duration-300`). This isn't a hover state, it's a click-triggered panel appearing/disappearing — an abrupt cut here would be more disorienting than the eased version, not less. Kept, but paired with `motion-reduce:transition-none` so it's an instant show/hide under reduced motion rather than a smaller version of the same animation — the one transition on the site that still animates now also has an explicit reduced-motion opt-out, which none of the removed ones needed since they no longer animate at all.
+- **The Stage-4 `data-reveal` scroll reveals** (`useSectionReveal`) — explicitly out of scope per this pass's own framing above, and already fail-open under reduced motion (see the hook's own docstring).
+
+## Audit: loading states
+
+The site was about to receive large real images and video with nothing marking the gap between "layout reserved" and "asset painted" — worth fixing before real assets land, not after. Scope: `ProjectAsset`'s real-image and real-video render paths in `app/components/helper/asset-placeholder.jsx` (the dashed `AssetPlaceholder`/`CodePlaceholder` boxes aren't a loading state — they don't load anything, they're a permanent "not real yet" marker, untouched here).
+
+**What changed:** both the image and video branches now render inside a wrapper `<div>` sized to the asset's exact aspect ratio (`style={{ aspectRatio }}`, computed from the manifest's `width`/`height` — the same values that already gated whether an asset counts as "real"), with a skeleton tone (`bg-surface-raised`, a token already used elsewhere for exactly this "one step up from the base surface" role) sitting behind the media as an absolutely-positioned layer.
+
+**Why this needs no JavaScript at all**, which is the load-bearing design decision here, not an implementation detail: an `<img>` (and a `<video poster>`, once painted) is transparent until it has real pixels to show — that's native browser behavior, not something either element does on request. So the skeleton doesn't need a load event to know when to hide; it never actively hides. It just sits one layer behind the media in the same positioned stacking context, and the instant the real asset has pixels to paint, those pixels cover it. No `useState`, no `onLoad` handler, no "use client" — `ProjectAsset` and `AssetPlaceholder` stay exactly the plain components they already were. That satisfies the "must degrade to visible content if JS fails" requirement in the strongest available way: there's no JS in the loading-state mechanism to fail in the first place. Confirmed with a full Playwright pass at `javaScriptEnabled: false` — every image and the video poster on `/projects/aircraft-design` render correctly with JS off, same as with it on.
+
+**Reserving exact layout space:** the wrapper's `aspectRatio` comes from the manifest before any request for the asset itself goes out, so the box is the right size on first paint — nothing shifts when the asset finishes loading, on a fast connection or a slow one. The real `<Image>` switched from explicit `width`/`height` to `fill` to size itself off that same wrapper rather than duplicating the ratio in a second place that could drift from it.
+
+**Not animating under reduced motion:** the skeleton tone uses `motion-safe:animate-pulse` — Tailwind's built-in reduced-motion variant, not a bespoke `prefers-reduced-motion` media query — so the pulse itself is present only when motion is allowed; under reduced motion it's a flat, static tone. Verified directly: `getComputedStyle(...).animationName` reads `"pulse"` under normal preferences and `"none"` under `reducedMotion: 'reduce'`, for every skeleton on `/projects/aircraft-design`.
+
+---
+
 ## What's still deferred (later stages, not this one)
 
 - **Marquee → static grouped grid for Skills** (Stage 5.4) — the data is grouped by category now (`utils/data/skills.js`), but the component still flattens it into the existing `react-fast-marquee` scroll for visual continuity. The PRD explicitly flags the infinite marquee as working against "restrained"; replacing it is a layout change, out of scope for a tokens-only stage.

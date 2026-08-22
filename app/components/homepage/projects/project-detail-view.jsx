@@ -25,7 +25,7 @@ export function ProjectDetailView({ project, grouped }) {
       <Link
         data-reveal="text"
         href="/#projects"
-        className="inline-flex items-center gap-2 text-sm text-text-tertiary hover:text-accent transition-colors duration-300 mb-8 no-underline"
+        className="inline-flex items-center gap-2 text-sm text-text-tertiary hover:text-accent mb-8 no-underline"
       >
         <FaArrowLeft size={14} />
         <span>Back to portfolio</span>

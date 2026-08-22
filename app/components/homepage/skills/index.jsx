@@ -12,9 +12,13 @@ function SkillTile({ skill }) {
   const IconComponent = !icon ? skillsIconComponent(skill) : null;
   const monogram = !icon && !IconComponent ? skillsMonogram(skill) : null;
 
+  // cursor-default already says this tile isn't interactive — it had a
+  // hover:scale + group-hover:border-accent animation anyway, motion with
+  // nothing behind it to confirm. See docs/DESIGN-SYSTEM.md "Audit: motion
+  // restraint" for why it's gone.
   return (
-    <div className="w-full h-fit flex flex-col items-center justify-center transition-all duration-500 rounded-md group relative hover:scale-[1.08] cursor-default">
-      <div className="h-full w-full rounded-md border border-border bg-surface group-hover:border-accent transition-all duration-500">
+    <div className="w-full h-fit flex flex-col items-center justify-center rounded-md cursor-default">
+      <div className="h-full w-full rounded-md border border-border bg-surface">
         <div className="flex flex-col items-center justify-center gap-3 p-4 sm:p-6">
           {icon && (
             <div className="h-8 sm:h-10">

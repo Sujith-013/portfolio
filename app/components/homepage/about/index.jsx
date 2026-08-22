@@ -33,13 +33,18 @@ function AboutSection() {
           </p>
         </div>
         <div className="flex justify-center order-1 lg:order-2">
+          {/* Static grayscale — matches the site's near-monochrome direction
+              (docs/DESIGN-SYSTEM.md). Previously a hover:grayscale-0/scale-110
+              "reveal" on a plain, non-interactive photo — motion with no
+              interaction behind it to confirm. See docs/DESIGN-SYSTEM.md
+              "Audit: motion restraint" for why it's gone. */}
           <Image
             data-reveal="figure"
             src={personalData.profile}
             width={280}
             height={280}
             alt="Sujith"
-            className="rounded-md transition-all duration-1000 grayscale hover:grayscale-0 hover:scale-110 cursor-pointer"
+            className="rounded-md grayscale"
           />
         </div>
       </div>
